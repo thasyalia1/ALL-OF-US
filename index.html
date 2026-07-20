@@ -866,29 +866,58 @@
             return photoEmojis[Math.floor(Math.random() * photoEmojis.length)]; 
         }
 
-        function loadGallery() {
-            const saved = localStorage.getItem('galleryPhotos');
-            if (saved) {
-                try {
-                    const photos = JSON.parse(saved);
-                    galleryGrid.innerHTML = '';
-                    if (photos.length === 0) {
-                        galleryGrid.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
-                    } else {
-                        photos.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
-                    }
-                } catch (e) { console.error(e); }
+function loadGallery() {
+    const saved = localStorage.getItem('galleryPhotos');
+    if (saved) {
+        try {
+            const photos = JSON.parse(saved);
+            galleryGrid.innerHTML = '';
+            if (photos.length === 0) {
+                galleryGrid.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
             } else {
-                const defaults = [
-                    { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
-                    { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
-                    { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
-                ];
-                localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
-                defaults.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
-                syncAllToCloud();
+                photos.forEach((p, i) => {
+                    // Check if image is a URL (Postimages) or Base64
+                    const isUrl = p.image && (p.image.startsWith('http') || p.image.startsWith('https'));
+                    const imageSrc = p.image || '';
+                    
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `
+                        <div class="photo-placeholder">
+                            ${imageSrc ? `<img src="${imageSrc}" alt="${p.name}" loading="lazy">` : `${p.emoji || '📸'}<span class="upload-hint">No image</span>`}
+                        </div>
+                        <div class="photo-label">${p.name}</div>
+                        <div class="photo-date">${p.date || '✧'}</div>
+                        <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${i})"><i class="fas fa-times"></i></button>
+                    `;
+                    galleryGrid.appendChild(item);
+                });
             }
-        }
+        } catch (e) { console.error('Load gallery error:', e); }
+    } else {
+        // Default photos
+        const defaults = [
+            { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
+            { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
+            { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
+        ];
+        localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
+        defaults.forEach((p, i) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <div class="photo-placeholder">
+                    ${p.emoji || '📸'}<span class="upload-hint">No image</span>
+                </div>
+                <div class="photo-label">${p.name}</div>
+                <div class="photo-date">${p.date || '✧'}</div>
+                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${i})"><i class="fas fa-times"></i></button>
+            `;
+            galleryGrid.appendChild(item);
+        });
+        syncAllToCloud();
+    }
+}
 
         function addPhotoToDOM(name, date, emoji, image, index) {
             const item = document.createElement('div');

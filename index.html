@@ -131,7 +131,6 @@
         .page-title { font-family: 'Brush Script MT', cursive; font-size: 2.5rem; color: #f4d068; text-align: center; margin-bottom: 1.5rem; }
         .page-subtitle { text-align: center; color: rgba(244,208,104,0.5); font-style: italic; margin-bottom: 2rem; font-size: 0.95rem; }
 
-        /* BOTTLES */
         .bottle-feed { display: flex; flex-direction: column; gap: 18px; max-height: 350px; overflow-y: auto; padding-right: 8px; margin-bottom: 20px; }
         .bottle-feed::-webkit-scrollbar { width: 4px; }
         .bottle-feed::-webkit-scrollbar-track { background: #2a130c; border-radius: 10px; }
@@ -164,7 +163,6 @@
         .letter-form button:hover { background: #801322; }
         .letter-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
 
-        /* TIMER */
         .timer-display { background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%); border-radius: 2.5rem; padding: 2rem 1.5rem; border: 2px solid #ebd6c8; text-align: center; position: relative; overflow: hidden; max-width: 500px; margin: 0 auto; }
         .timer-display::before { content: '⏳'; position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1; transform: rotate(15deg); }
         .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 8px; }
@@ -178,7 +176,6 @@
         .timer-controls button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-family: 'Georgia', serif; }
         .timer-controls button:hover { background: #801322; transform: scale(1.02); }
 
-        /* BIRTHDAY */
         .wish-archive { display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; padding-right: 4px; margin-bottom: 15px; }
         .wish-archive::-webkit-scrollbar { width: 4px; }
         .wish-archive::-webkit-scrollbar-track { background: #2a130c; border-radius: 10px; }
@@ -197,9 +194,8 @@
         .birthday-input-area button:hover { background: #801322; }
         .wish-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
 
-        /* GALLERY */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 15px; }
-        .gallery-item { background: rgba(255,248,240,0.92); border-radius: 1.5rem; padding: 15px; border: 2px solid rgba(244,208,104,0.2); transition: all 0.4s ease; text-align: center; cursor: pointer; position: relative; overflow: hidden; }
+        .gallery-item { background: rgba(255,248,240,0.92); border-radius: 1.5rem; padding: 15px; border: 2px solid rgba(244,208,104,0.2); transition: all 0.4s ease; text-align: center; position: relative; overflow: hidden; }
         .gallery-item:hover { transform: translateY(-8px) scale(1.02); border-color: #f4d068; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
         .gallery-item .photo-placeholder { width: 100%; height: 200px; background: linear-gradient(135deg, #f5e6da, #e5dccd); border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 4rem; color: #a67c2e; border: 2px dashed rgba(166,124,46,0.3); transition: 0.3s; position: relative; }
         .gallery-item:hover .photo-placeholder { border-color: #f4d068; background: linear-gradient(135deg, #fcf3ea, #f5e6da); }
@@ -214,11 +210,8 @@
         .add-photo-area { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; justify-content: center; align-items: center; }
         .add-photo-area input { flex: 1; min-width: 150px; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 18px; font-family: 'Georgia', serif; color: #3e2c24; }
         .add-photo-area input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .add-photo-area .btn-upload { background: #a71d31; border: none; border-radius: 3rem; padding: 10px 20px; color: #fff; cursor: pointer; font-family: 'Georgia', serif; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
-        .add-photo-area .btn-upload:hover { background: #801322; transform: scale(1.02); }
         .add-photo-area .btn-add { background: #a71d31; border: none; border-radius: 3rem; padding: 10px 24px; color: #fff; cursor: pointer; font-family: 'Georgia', serif; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .add-photo-area .btn-add:hover { background: #801322; transform: scale(1.02); }
-        .add-photo-area .btn-ready { background: #4caf50 !important; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; z-index: 3000; padding: 20px; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -395,12 +388,11 @@
             <div class="add-photo-area">
                 <input type="text" id="newPhotoName" placeholder="📸 Photo title...">
                 <input type="text" id="newPhotoDate" placeholder="Date (e.g. Jan 2025)" style="max-width:140px;">
-                <input type="file" id="imageUploadInput" accept="image/*" style="display:none;">
-                <button class="btn-upload" id="uploadImageBtn"><i class="fas fa-upload"></i> Upload Image</button>
+                <input type="text" id="newPhotoUrl" placeholder="🔗 Paste image URL (postimages.org)" style="flex:2;min-width:200px;">
                 <button class="btn-add" id="addPhotoBtn"><i class="fas fa-plus-circle"></i> Add Photo</button>
             </div>
             <div style="text-align:center;margin-top:8px;font-size:0.7rem;color:rgba(244,208,104,0.3);">
-                <i class="fas fa-info-circle"></i> Upload gambar terus dari device anda
+                <i class="fas fa-info-circle"></i> Upload ke <a href="https://postimages.org" target="_blank" style="color:#f4d068;">postimages.org</a>, copy <strong>Direct Link</strong>, paste di atas!
             </div>
         </div>
 
@@ -497,7 +489,7 @@
         });
 
         // =====================================================
-        // 5. CLOUD SYNC - FIXED!
+        // 5. CLOUD SYNC
         // =====================================================
         // 🔴 TUNAI KEDUA-DUA INI DENGAN DATA JSONBIN ANDA!
         const BIN_ID = '6a5e1473f5f4af5e29a78528';
@@ -860,19 +852,19 @@
         loadWishes();
 
         // =====================================================
-        // 9. GALLERY
+        // 9. GALLERY - POSTIMAGES URL
         // =====================================================
         const galleryGrid = document.getElementById('galleryGrid');
         const newPhotoName = document.getElementById('newPhotoName');
         const newPhotoDate = document.getElementById('newPhotoDate');
+        const newPhotoUrl = document.getElementById('newPhotoUrl');
         const addPhotoBtn = document.getElementById('addPhotoBtn');
-        const uploadImageBtn = document.getElementById('uploadImageBtn');
-        const imageUploadInput = document.getElementById('imageUploadInput');
-
-        let tempImageData = null;
 
         const photoEmojis = ['🌅','🌄','🌺','🌻','🌹','🌸','💐','🌿','🍃','☀️','🌙','⭐','🌈','💫','✨'];
-        function getRandomEmoji() { return photoEmojis[Math.floor(Math.random() * photoEmojis.length)]; }
+
+        function getRandomEmoji() { 
+            return photoEmojis[Math.floor(Math.random() * photoEmojis.length)]; 
+        }
 
         function loadGallery() {
             const saved = localStorage.getItem('galleryPhotos');
@@ -903,8 +895,8 @@
             item.className = 'gallery-item';
             const hasImage = image && image.trim() !== '';
             item.innerHTML = `
-                <div class="photo-placeholder" onclick="uploadImage(${index})">
-                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">click to upload</span>`}
+                <div class="photo-placeholder">
+                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">No image</span>`}
                 </div>
                 <div class="photo-label">${name}</div>
                 <div class="photo-date">${date || '✧'}</div>
@@ -913,100 +905,40 @@
             galleryGrid.appendChild(item);
         }
 
-        // Compress image function
-        function compressImage(imageData, maxWidth = 500, maxHeight = 500, quality = 0.6) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = function() {
-                    let width = img.width, height = img.height;
-                    if (width > maxWidth) { height = (maxWidth / width) * height; width = maxWidth; }
-                    if (height > maxHeight) { width = (maxHeight / height) * width; height = maxHeight; }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', quality));
-                };
-                img.src = imageData;
-            });
-        }
-
-        window.uploadImage = function(index) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = async function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                showToast('🔄 Compressing image...');
-                const reader = new FileReader();
-                reader.onload = async function(ev) {
-                    try {
-                        const compressedImage = await compressImage(ev.target.result, 500, 500, 0.6);
-                        const saved = localStorage.getItem('galleryPhotos');
-                        if (saved) {
-                            const photos = JSON.parse(saved);
-                            if (index >= 0 && index < photos.length) {
-                                photos[index].image = compressedImage;
-                                localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-                                syncAllToCloud();
-                                loadGallery();
-                                showToast('📸 Photo uploaded & synced!');
-                            }
-                        }
-                    } catch(err) {
-                        console.error('Compression error:', err);
-                        showToast('⚠️ Error compressing image');
-                    }
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        };
-
-        uploadImageBtn.addEventListener('click', function() { imageUploadInput.click(); });
-
-        imageUploadInput.addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('🔄 Compressing image...');
-            const reader = new FileReader();
-            reader.onload = async function(ev) {
-                try {
-                    const compressedImage = await compressImage(ev.target.result, 500, 500, 0.6);
-                    tempImageData = compressedImage;
-                    showToast('📸 Image compressed & ready!');
-                    uploadImageBtn.textContent = '✅ Image Ready';
-                    uploadImageBtn.style.background = '#4caf50';
-                } catch(err) {
-                    console.error('Compression error:', err);
-                    showToast('⚠️ Error compressing image');
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-
+        // ===== ADD PHOTO WITH URL =====
         addPhotoBtn.addEventListener('click', function() {
             const name = newPhotoName.value.trim();
-            if (!name) { alert('Please enter a photo title!'); return; }
+            if (!name) { 
+                alert('Please enter a photo title!'); 
+                return; 
+            }
             const date = newPhotoDate.value.trim() || '✧';
+            const imageUrl = newPhotoUrl.value.trim();
+
             const saved = localStorage.getItem('galleryPhotos');
             const photos = saved ? JSON.parse(saved) : [];
-            const imageData = tempImageData || '';
-            const emoji = imageData ? '' : getRandomEmoji();
-            photos.push({ name, date, emoji, image: imageData });
+            const emoji = imageUrl ? '' : getRandomEmoji();
+
+            photos.push({ 
+                name: name, 
+                date: date, 
+                emoji: emoji, 
+                image: imageUrl 
+            });
+            
             localStorage.setItem('galleryPhotos', JSON.stringify(photos));
             syncAllToCloud();
+
+            // Clear inputs
             newPhotoName.value = '';
             newPhotoDate.value = '';
-            tempImageData = null;
-            uploadImageBtn.textContent = '📤 Upload Image';
-            uploadImageBtn.style.background = '#a71d31';
-            imageUploadInput.value = '';
+            newPhotoUrl.value = '';
+
             loadGallery();
             showToast('📸 Photo added & synced!');
         });
 
+        // ===== DELETE PHOTO =====
         window.deletePhoto = function(index) {
             const saved = localStorage.getItem('galleryPhotos');
             if (!saved) return;
@@ -1115,7 +1047,7 @@
         console.log('💾 Data auto-saves to localStorage and cloud');
         console.log('✅ All sections sync: Letters, Wishes, Photos, Timer');
         console.log('🔑 BIN_ID:', BIN_ID);
-        console.log('🔑 MASTER_KEY:', MASTER_KEY.substring(0, 20) + '...');
+        console.log('📸 Use Postimages for photos: https://postimages.org');
     </script>
 </body>
 </html>

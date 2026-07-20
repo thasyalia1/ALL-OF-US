@@ -579,73 +579,95 @@
         // Auto-sync every 30 seconds
         setInterval(saveToCloud, 30000);
 
-        // =====================================================
-        // 5. TIMER
-        // =====================================================
-        const daysEl = document.getElementById('daysDisplay');
-        const hoursEl = document.getElementById('hoursDisplay');
-        const minutesEl = document.getElementById('minutesDisplay');
-        const secondsEl = document.getElementById('secondsDisplay');
-        const timerMsg = document.getElementById('timerSubMessage');
-        const startDateInput = document.getElementById('startDateInput');
-        const updateBtn = document.getElementById('updateTimerBtn');
+        // ==// =====================================================
+// TIMER
+// =====================================================
+const daysEl = document.getElementById('daysDisplay');
+const hoursEl = document.getElementById('hoursDisplay');
+const minutesEl = document.getElementById('minutesDisplay');
+const secondsEl = document.getElementById('secondsDisplay');
+const timerMsg = document.getElementById('timerSubMessage');
+const startDateInput = document.getElementById('startDateInput');
+const updateBtn = document.getElementById('updateTimerBtn');
 
-        function loadTimerDate() {
-            const saved = localStorage.getItem('timerStartDate');
-            if (saved) { startDateInput.value = saved; }
-            else {
-                const d = new Date(); d.setDate(d.getDate() - 30);
-                const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
-                startDateInput.value = `${y}-${m}-${day}`;
-                localStorage.setItem('timerStartDate', startDateInput.value);
-                syncAllToCloud();
-            }
-        }
+function calcDiff(start, end) {
+    const ms = Math.abs(end - start);
+    const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60), d = Math.floor(h/24);
+    return { days:d, hours:h%24, minutes:m%60, seconds:s%60 };
+}
 
-        function calcDiff(start, end) {
-            const ms = Math.abs(end - start);
-            const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60), d = Math.floor(h/24);
-            return { days:d, hours:h%24, minutes:m%60, seconds:s%60 };
-        }
+function getTimerMsg(days) {
+    const msgs = [
+        { max:1, text:'"the first day feels like an eternity"' },
+        { max:7, text:'"a week without you feels like a lifetime"' },
+        { max:30, text:'"a month without you feels like a year"' },
+        { max:60, text:'"time moves slow when you\'re not here"' },
+        { max:90, text:'"three months and the days blur together"' },
+        { max:365, text:'"a year without you, and i still count"' },
+        { max:Infinity, text:'"every day without you is a day too long"' }
+    ];
+    for (const m of msgs) { if (days <= m.max) return m.text; }
+    return '"time moves slow when you\'re not here"';
+}
 
-        function getTimerMsg(days) {
-            const msgs = [
-                { max:1, text:'"the first day feels like an eternity"' },
-                { max:7, text:'"a week without you feels like a lifetime"' },
-                { max:30, text:'"a month without you feels like a year"' },
-                { max:60, text:'"time moves slow when you\'re not here"' },
-                { max:90, text:'"three months and the days blur together"' },
-                { max:365, text:'"a year without you, and i still count"' },
-                { max:Infinity, text:'"every day without you is a day too long"' }
-            ];
-            for (const m of msgs) { if (days <= m.max) return m.text; }
-            return '"time moves slow when you\'re not here"';
-        }
+function loadTimerDate() {
+    const saved = localStorage.getItem('timerStartDate');
+    if (saved) { 
+        startDateInput.value = saved; 
+    } else {
+        const d = new Date();
+        d.setDate(d.getDate() - 30);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        startDateInput.value = `${y}-${m}-${day}`;
+        localStorage.setItem('timerStartDate', startDateInput.value);
+    }
+}
 
-        function updateTimer() {
-            const val = startDateInput.value;
-            if (!val) { daysEl.textContent='0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; timerMsg.textContent='please set a date'; return; }
-            const start = new Date(val + 'T00:00:00');
-            const now = new Date();
-            if (isNaN(start.getTime())) { daysEl.textContent='0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; timerMsg.textContent='invalid date'; return; }
-            const diff = calcDiff(start, now);
-            daysEl.textContent = diff.days;
-            hoursEl.textContent = String(diff.hours).padStart(2,'0');
-            minutesEl.textContent = String(diff.minutes).padStart(2,'0');
-            secondsEl.textContent = String(diff.seconds).padStart(2,'0');
-            timerMsg.textContent = getTimerMsg(diff.days);
-        }
+function updateTimer() {
+    const val = startDateInput.value;
+    if (!val) { 
+        daysEl.textContent='0'; 
+        hoursEl.textContent='00'; 
+        minutesEl.textContent='00'; 
+        secondsEl.textContent='00'; 
+        timerMsg.textContent='please set a date'; 
+        return; 
+    }
+    const start = new Date(val + 'T00:00:00');
+    const now = new Date();
+    if (isNaN(start.getTime())) { 
+        daysEl.textContent='0'; 
+        hoursEl.textContent='00'; 
+        minutesEl.textContent='00'; 
+        secondsEl.textContent='00'; 
+        timerMsg.textContent='invalid date'; 
+        return; 
+    }
+    const diff = calcDiff(start, now);
+    daysEl.textContent = diff.days;
+    hoursEl.textContent = String(diff.hours).padStart(2, '0');
+    minutesEl.textContent = String(diff.minutes).padStart(2, '0');
+    secondsEl.textContent = String(diff.seconds).padStart(2, '0');
+    timerMsg.textContent = getTimerMsg(diff.days);
+}
 
-        updateBtn.addEventListener('click', function() {
-            localStorage.setItem('timerStartDate', startDateInput.value);
-            syncAllToCloud();
-            updateTimer();
-            showToast('⏳ Timer updated!');
-        });
-
-        setInterval(updateTimer, 1000);
-        loadTimerDate();
+// Update timer when button clicked
+if (updateBtn) {
+    updateBtn.addEventListener('click', function() {
+        localStorage.setItem('timerStartDate', startDateInput.value);
         updateTimer();
+        showToast('⏳ Timer updated!');
+    });
+}
+
+// Load timer date and start
+loadTimerDate();
+updateTimer();
+
+// Update every second
+setInterval(updateTimer, 1000);
 
         // =====================================================
         // 6. BOTTLES (LETTERS)

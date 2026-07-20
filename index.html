@@ -402,17 +402,17 @@
             </div>
         </div>
 
-<!--<!-- PAGE 3: BIRTHDAY -->
+<!-- PAGE 3: BIRTHDAY -->
 <div class="page" id="page-birthday">
     <h2 class="page-title">🎂 To Live It All</h2>
-    <p class="page-subtitle">💝 Birthday wishes with optional password protection</p>
+    <p class="page-subtitle">💝 Click on a wish to open it like a beautiful scroll</p>
     <div class="wish-archive" id="wishArchive"></div>
     <div class="birthday-input-area">
         <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
         <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
     </div>
     <div style="text-align:center;margin-top:4px;font-size:0.65rem;color:rgba(244,208,104,0.3);">
-        <i class="fas fa-info-circle"></i> You'll be asked if you want to add a password to each wish
+        <i class="fas fa-info-circle"></i> You'll be asked if you want to add password protection
     </div>
     <div class="wish-count" id="wishCount">0 wishes</div>
 </div>
@@ -827,12 +827,186 @@ console.log('⏳ Timer system started!');
         loadBottles();
 
 // =====================================================
-// 7. BIRTHDAY - FLOATING MESSAGES + PASSWORD PER WISH!
+// 7. BIRTHDAY - FLOATING MESSAGES + SCROLL ANIMATION!
 // =====================================================
 const wishArchive = document.getElementById('wishArchive');
 const wishInput = document.getElementById('birthdayWishInput');
 const wishBtn = document.getElementById('updateBirthdayBtn');
 const wishCount = document.getElementById('wishCount');
+
+// ===== CREATE SCROLL MODAL =====
+function createScrollModal(text, date, name) {
+    // Remove existing modal if any
+    const existing = document.getElementById('scrollModal');
+    if (existing) existing.remove();
+    
+    const overlay = document.createElement('div');
+    overlay.id = 'scrollModal';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(8px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    // Close on click outside
+    overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeScrollModal();
+        }
+    });
+    
+    // Escape key to close
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeScrollModal();
+        }
+    });
+    
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        background: linear-gradient(160deg, #fbf7ee 0%, #f5efe6 60%, #ede5d8 100%);
+        max-width: 500px;
+        width: 100%;
+        padding: 40px 35px 35px 35px;
+        border-radius: 8px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,69,19,0.08);
+        border: 1px solid #e0d8c3;
+        position: relative;
+        max-height: 90vh;
+        overflow: hidden;
+        animation: unfoldScroll 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    `;
+    
+    // Scroll content - will animate
+    modal.innerHTML = `
+        <button onclick="closeScrollModal()" style="
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: #888;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 5;
+            font-family: 'Georgia', serif;
+        " onmouseover="this.style.color='#333';this.style.transform='rotate(90deg)'" onmouseout="this.style.color='#888';this.style.transform='rotate(0)'">
+            ✕
+        </button>
+        
+        <div style="
+            border-bottom: 2px solid #d4cbb5;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+            text-align: left;
+        ">
+            <div style="font-size: 0.7rem; color: #a67c2e; text-transform: uppercase; letter-spacing: 3px; font-family: 'Georgia', serif;">
+                💝 A Birthday Wish For You
+            </div>
+            <div style="font-size: 1.2rem; font-weight: 700; color: #2c1810; font-family: 'Georgia', serif; margin-top: 2px;">
+                ${name || 'Naziff'}
+            </div>
+        </div>
+        
+        <div id="scrollContent" style="
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            color: #333;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 8px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: scrollReveal 1s ease forwards 0.3s;
+        ">
+            ${text}
+        </div>
+        
+        <div style="
+            text-align: right;
+            font-style: italic;
+            font-size: 0.8rem;
+            color: #8a6d5a;
+            border-top: 1px dashed #d4cbb5;
+            padding-top: 14px;
+            margin-top: 14px;
+            font-family: 'Georgia', serif;
+            opacity: 0;
+            animation: scrollReveal 1s ease forwards 0.6s;
+        ">
+            📜 with love, always
+            <br>
+            <span style="font-size: 0.7rem; color: #a67c2e;">${date || getCurrentDate()}</span>
+        </div>
+    `;
+    
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    
+    // Add keyframe animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes unfoldScroll {
+            0% {
+                transform: scale(0.8) translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes scrollReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #scrollContent::-webkit-scrollbar {
+            width: 4px;
+        }
+        #scrollContent::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        #scrollContent::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// ===== CLOSE SCROLL MODAL =====
+function closeScrollModal() {
+    const modal = document.getElementById('scrollModal');
+    if (modal) {
+        modal.style.opacity = '0';
+        modal.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => modal.remove(), 300);
+    }
+}
 
 // ===== LOAD WISHES =====
 function loadWishes() {
@@ -849,7 +1023,7 @@ function loadWishes() {
                 emptyMsg.textContent = 'No birthday wishes yet. Send one! 🎂';
                 wishArchive.appendChild(emptyMsg);
             } else {
-                wishes.forEach((w, i) => addWishToDOM(w.text, w.date, w.hasPassword, w.password, i));
+                wishes.forEach((w, i) => addWishToDOM(w.text, w.date, w.hasPassword, w.password, i, w.name));
             }
         } catch (e) { console.error(e); }
     } else {
@@ -857,7 +1031,8 @@ function loadWishes() {
             text: 'another trip around the sun — may your heart stay soft & wild.', 
             date: getCurrentDate(),
             hasPassword: false,
-            password: ''
+            password: '',
+            name: 'Naziff'
         };
         localStorage.setItem('wishArchive', JSON.stringify([defaultWish]));
         syncAllToCloud();
@@ -868,7 +1043,7 @@ function loadWishes() {
 }
 
 // ===== ADD WISH TO DOM (FLOATING STYLE) =====
-function addWishToDOM(text, date, hasPassword, password, index) {
+function addWishToDOM(text, date, hasPassword, password, index, name) {
     const entry = document.createElement('div');
     entry.className = 'wish-entry';
     entry.style.cssText = `
@@ -881,14 +1056,31 @@ function addWishToDOM(text, date, hasPassword, password, index) {
         color: #3e2c24;
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         transition: all 0.3s ease;
-        cursor: ${hasPassword ? 'pointer' : 'default'};
+        cursor: pointer;
     `;
     
-    // Store password in dataset
+    // Store data
     entry.dataset.password = password || '';
     entry.dataset.hasPassword = hasPassword ? 'true' : 'false';
     entry.dataset.index = index;
     entry.dataset.isUnlocked = 'false';
+    entry.dataset.text = text;
+    entry.dataset.date = date;
+    entry.dataset.name = name || 'Naziff';
+    
+    // Click to open scroll (if no password or already unlocked)
+    entry.addEventListener('click', function() {
+        const hasPass = this.dataset.hasPassword === 'true';
+        const isUnlocked = this.dataset.isUnlocked === 'true';
+        
+        if (hasPass && !isUnlocked) {
+            unlockWish(index);
+            return;
+        }
+        
+        // Open scroll with wish
+        createScrollModal(text, date, name || 'Naziff');
+    });
     
     // If has password, show locked state
     let content = '';
@@ -896,23 +1088,11 @@ function addWishToDOM(text, date, hasPassword, password, index) {
         content = `
             <div style="display:flex;align-items:center;gap:10px;">
                 <span style="font-size:1.5rem;">🔒</span>
-                <span style="color:#8f7668;font-style:italic;font-size:0.9rem;">🔐 This wish is password protected</span>
-                <button onclick="unlockWish(${index})" style="
-                    background: #a71d31;
-                    border: none;
-                    border-radius: 2rem;
-                    padding: 4px 14px;
-                    color: #fff;
-                    cursor: pointer;
-                    font-family: 'Georgia', serif;
-                    font-size: 0.7rem;
-                    transition: 0.2s;
-                " onmouseover="this.style.background='#801322'" onmouseout="this.style.background='#a71d31'">
-                    🔑 Unlock
-                </button>
+                <span style="color:#8f7668;font-style:italic;font-size:0.9rem;">🔐 Click to unlock</span>
+                <span style="font-size:0.6rem;color:#a71d31;background:rgba(167,29,49,0.1);padding:2px 10px;border-radius:20px;">password protected</span>
             </div>
-            <div class="wish-text" style="font-size:0.95rem;line-height:1.5;font-style:italic;margin-top:8px;display:none;" id="wishContent_${index}">
-                “${text}”
+            <div style="font-size:0.7rem;color:#a18b7d;margin-top:4px;">
+                💡 Click to enter password
             </div>
             <div class="wish-meta" style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.7rem;color:#8f7668;">
                 <span>💝 with love</span>
@@ -920,12 +1100,15 @@ function addWishToDOM(text, date, hasPassword, password, index) {
             </div>
         `;
     } else {
+        // Show preview for public wishes
+        const preview = text.length > 60 ? text.substring(0, 60) + '...' : text;
         content = `
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                <span style="font-size:0.8rem;color:#a67c2e;">💝</span>
-                <span style="font-size:0.7rem;color:#a67c2e;font-style:italic;">No password</span>
+                <span style="font-size:0.7rem;color:#a67c2e;">💝</span>
+                <span style="font-size:0.6rem;color:#a67c2e;background:rgba(166,124,46,0.1);padding:1px 10px;border-radius:20px;">public</span>
             </div>
-            <div class="wish-text" style="font-size:0.95rem;line-height:1.5;font-style:italic;">“${text}”</div>
+            <div class="wish-preview" style="font-size:0.85rem;color:#8f7668;font-style:italic;">“${preview}”</div>
+            <div style="font-size:0.6rem;color:#a18b7d;margin-top:2px;">👆 Click to read full wish</div>
             <div class="wish-meta" style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.7rem;color:#8f7668;">
                 <span>💝 with love</span>
                 <span>${date || getCurrentDate()}</span>
@@ -935,12 +1118,12 @@ function addWishToDOM(text, date, hasPassword, password, index) {
     
     entry.innerHTML = `
         ${content}
-        <button class="delete-wish" onclick="deleteWish(${index})" style="
+        <button class="delete-wish" onclick="event.stopPropagation(); deleteWish(${index})" style="
             position:absolute;top:8px;right:12px;
             background:none;border:none;color:#b48b7a;
-            cursor:pointer;font-size:0.9rem;opacity:0.4;
+            cursor:pointer;font-size:0.9rem;opacity:0.3;
             transition:0.2s;
-        " onmouseover="this.style.opacity='1';this.style.color='#c0392b'" onmouseout="this.style.opacity='0.4';this.style.color='#b48b7a'">
+        " onmouseover="this.style.opacity='1';this.style.color='#c0392b'" onmouseout="this.style.opacity='0.3';this.style.color='#b48b7a'">
             <i class="fas fa-times"></i>
         </button>
     `;
@@ -963,20 +1146,12 @@ window.unlockWish = function(index) {
         
         const passwordInput = prompt('🔐 Enter password for this wish:');
         if (passwordInput === wish.password) {
-            // Unlock and show content
+            // Mark as unlocked
             const entry = wishArchive.querySelectorAll('.wish-entry')[index];
             if (entry) {
-                const contentDiv = entry.querySelector('.wish-text');
-                if (contentDiv) {
-                    contentDiv.style.display = 'block';
-                }
-                // Remove lock elements
-                const lockDiv = entry.querySelector('div[style*="display:flex;align-items:center;gap:10px;"]');
-                if (lockDiv) {
-                    lockDiv.style.display = 'none';
-                }
-                entry.style.borderLeftColor = '#4caf50';
                 entry.dataset.isUnlocked = 'true';
+                // Open the wish with scroll animation
+                createScrollModal(wish.text, wish.date, wish.name || 'Naziff');
                 showToast('🔓 Wish unlocked!');
             }
         } else if (passwordInput !== null) {
@@ -1007,13 +1182,16 @@ function updateWishCount() {
     wishCount.textContent = `${count} ${count === 1 ? 'wish' : 'wishes'}`;
 }
 
-// ===== ADD WISH WITH OPTION - PASSWORD ATAU TAK =====
+// ===== ADD WISH =====
 wishBtn.addEventListener('click', function() {
     const text = wishInput.value.trim();
     if (!text) { 
         alert('Please write a birthday wish!'); 
         return; 
     }
+    
+    // Ask for name (optional)
+    const name = prompt('👤 Who is this wish for?', 'Naziff') || 'Naziff';
     
     // Ask if user wants to add password
     const addPassword = confirm('🔐 Do you want to add a password to this wish?\n\nClick OK to add password\nClick Cancel for no password');
@@ -1040,7 +1218,8 @@ wishBtn.addEventListener('click', function() {
         text: text, 
         date: date, 
         hasPassword: hasPassword, 
-        password: password 
+        password: password,
+        name: name
     });
     
     localStorage.setItem('wishArchive', JSON.stringify(wishes));
@@ -1063,8 +1242,8 @@ wishInput.addEventListener('keypress', function(e) {
 loadWishes();
 
 console.log('🎂 Birthday system initialized');
-console.log('💡 Each wish can have its own password or no password');
-console.log('🔐 Click on locked wishes to enter password');
+console.log('💡 Click on a wish to open it like a scroll!');
+console.log('🔐 Password protected wishes need password to open');
       // =====================================================
 // 8. GALLERY - POSTIMAGES URL (FULLY FIXED!)
 // =====================================================

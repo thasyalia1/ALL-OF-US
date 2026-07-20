@@ -412,7 +412,7 @@
         <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
     </div>
     <div style="text-align:center;margin-top:4px;font-size:0.65rem;color:rgba(244,208,104,0.3);">
-        <i class="fas fa-info-circle"></i> You'll be asked if you want to add password protection
+        <i class="fas fa-info-circle"></i> You'll be asked for: Name, Date & optional Password
     </div>
     <div class="wish-count" id="wishCount">0 wishes</div>
 </div>
@@ -826,8 +826,9 @@ console.log('⏳ Timer system started!');
 
         loadBottles();
 
-// =====================================================
-// 7. BIRTHDAY - FLOATING MESSAGES + SCROLL ANIMATION!
+
+   // =====================================================
+// 7. BIRTHDAY - FLOATING MESSAGES + SCROLL ANIMATION + TARIKH!
 // =====================================================
 const wishArchive = document.getElementById('wishArchive');
 const wishInput = document.getElementById('birthdayWishInput');
@@ -836,7 +837,6 @@ const wishCount = document.getElementById('wishCount');
 
 // ===== CREATE SCROLL MODAL =====
 function createScrollModal(text, date, name) {
-    // Remove existing modal if any
     const existing = document.getElementById('scrollModal');
     if (existing) existing.remove();
     
@@ -858,18 +858,12 @@ function createScrollModal(text, date, name) {
         animation: fadeIn 0.3s ease;
     `;
     
-    // Close on click outside
     overlay.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeScrollModal();
-        }
+        if (e.target === this) closeScrollModal();
     });
     
-    // Escape key to close
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeScrollModal();
-        }
+        if (e.key === 'Escape') closeScrollModal();
     });
     
     const modal = document.createElement('div');
@@ -887,7 +881,6 @@ function createScrollModal(text, date, name) {
         animation: unfoldScroll 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     `;
     
-    // Scroll content - will animate
     modal.innerHTML = `
         <button onclick="closeScrollModal()" style="
             position: absolute;
@@ -956,28 +949,15 @@ function createScrollModal(text, date, name) {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
     
-    // Add keyframe animations
     const style = document.createElement('style');
     style.textContent = `
         @keyframes unfoldScroll {
-            0% {
-                transform: scale(0.8) translateY(50px);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
+            0% { transform: scale(0.8) translateY(50px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
         }
         @keyframes scrollReveal {
-            0% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.98);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -1029,7 +1009,7 @@ function loadWishes() {
     } else {
         const defaultWish = { 
             text: 'another trip around the sun — may your heart stay soft & wild.', 
-            date: getCurrentDate(),
+            date: '17 June 2026',
             hasPassword: false,
             password: '',
             name: 'Naziff'
@@ -1042,7 +1022,7 @@ function loadWishes() {
     updateWishCount();
 }
 
-// ===== ADD WISH TO DOM (FLOATING STYLE) =====
+// ===== ADD WISH TO DOM =====
 function addWishToDOM(text, date, hasPassword, password, index, name) {
     const entry = document.createElement('div');
     entry.className = 'wish-entry';
@@ -1059,7 +1039,6 @@ function addWishToDOM(text, date, hasPassword, password, index, name) {
         cursor: pointer;
     `;
     
-    // Store data
     entry.dataset.password = password || '';
     entry.dataset.hasPassword = hasPassword ? 'true' : 'false';
     entry.dataset.index = index;
@@ -1068,7 +1047,6 @@ function addWishToDOM(text, date, hasPassword, password, index, name) {
     entry.dataset.date = date;
     entry.dataset.name = name || 'Naziff';
     
-    // Click to open scroll (if no password or already unlocked)
     entry.addEventListener('click', function() {
         const hasPass = this.dataset.hasPassword === 'true';
         const isUnlocked = this.dataset.isUnlocked === 'true';
@@ -1078,11 +1056,9 @@ function addWishToDOM(text, date, hasPassword, password, index, name) {
             return;
         }
         
-        // Open scroll with wish
         createScrollModal(text, date, name || 'Naziff');
     });
     
-    // If has password, show locked state
     let content = '';
     if (hasPassword) {
         content = `
@@ -1092,7 +1068,7 @@ function addWishToDOM(text, date, hasPassword, password, index, name) {
                 <span style="font-size:0.6rem;color:#a71d31;background:rgba(167,29,49,0.1);padding:2px 10px;border-radius:20px;">password protected</span>
             </div>
             <div style="font-size:0.7rem;color:#a18b7d;margin-top:4px;">
-                💡 Click to enter password
+                📅 ${date || getCurrentDate()}
             </div>
             <div class="wish-meta" style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.7rem;color:#8f7668;">
                 <span>💝 with love</span>
@@ -1100,19 +1076,15 @@ function addWishToDOM(text, date, hasPassword, password, index, name) {
             </div>
         `;
     } else {
-        // Show preview for public wishes
         const preview = text.length > 60 ? text.substring(0, 60) + '...' : text;
         content = `
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
                 <span style="font-size:0.7rem;color:#a67c2e;">💝</span>
                 <span style="font-size:0.6rem;color:#a67c2e;background:rgba(166,124,46,0.1);padding:1px 10px;border-radius:20px;">public</span>
+                <span style="font-size:0.6rem;color:#8f7668;margin-left:auto;">📅 ${date || getCurrentDate()}</span>
             </div>
             <div class="wish-preview" style="font-size:0.85rem;color:#8f7668;font-style:italic;">“${preview}”</div>
             <div style="font-size:0.6rem;color:#a18b7d;margin-top:2px;">👆 Click to read full wish</div>
-            <div class="wish-meta" style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.7rem;color:#8f7668;">
-                <span>💝 with love</span>
-                <span>${date || getCurrentDate()}</span>
-            </div>
         `;
     }
     
@@ -1146,11 +1118,9 @@ window.unlockWish = function(index) {
         
         const passwordInput = prompt('🔐 Enter password for this wish:');
         if (passwordInput === wish.password) {
-            // Mark as unlocked
             const entry = wishArchive.querySelectorAll('.wish-entry')[index];
             if (entry) {
                 entry.dataset.isUnlocked = 'true';
-                // Open the wish with scroll animation
                 createScrollModal(wish.text, wish.date, wish.name || 'Naziff');
                 showToast('🔓 Wish unlocked!');
             }
@@ -1193,6 +1163,10 @@ wishBtn.addEventListener('click', function() {
     // Ask for name (optional)
     const name = prompt('👤 Who is this wish for?', 'Naziff') || 'Naziff';
     
+    // Ask for date
+    const dateInput = prompt('📅 Enter date for this wish (e.g. 17 June 2026):', getCurrentDate());
+    const date = dateInput && dateInput.trim() !== '' ? dateInput.trim() : getCurrentDate();
+    
     // Ask if user wants to add password
     const addPassword = confirm('🔐 Do you want to add a password to this wish?\n\nClick OK to add password\nClick Cancel for no password');
     
@@ -1210,7 +1184,6 @@ wishBtn.addEventListener('click', function() {
         }
     }
     
-    const date = getCurrentDate();
     const saved = localStorage.getItem('wishArchive');
     const wishes = saved ? JSON.parse(saved) : [];
     
@@ -1242,8 +1215,8 @@ wishInput.addEventListener('keypress', function(e) {
 loadWishes();
 
 console.log('🎂 Birthday system initialized');
+console.log('📅 You can set custom date for each wish');
 console.log('💡 Click on a wish to open it like a scroll!');
-console.log('🔐 Password protected wishes need password to open');
       // =====================================================
 // 8. GALLERY - POSTIMAGES URL (FULLY FIXED!)
 // =====================================================

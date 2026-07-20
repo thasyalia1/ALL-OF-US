@@ -467,4 +467,277 @@ function addLetterToDOM(text, sign, date, index) {
         </div>
         <button class="delete-letter" onclick="deleteLetter(${index})"><i class="fas fa-times"></i></button>
     `;
-    letterArchive
+    letterArchive.appendChild(entry);
+}
+
+function updateLetterCount() {
+    const count = letterArchive.querySelectorAll('.letter-entry').length;
+    letterCount.textContent = `${count} ${count === 1 ? 'letter' : 'letters'}`;
+}
+
+window.deleteLetter = function(index) {
+    const saved = localStorage.getItem('letterArchive');
+    if (!saved) return;
+    const letters = JSON.parse(saved);
+    if (index >= 0 && index < letters.length) {
+        if (confirm('Delete this letter?')) {
+            letters.splice(index, 1);
+            localStorage.setItem('letterArchive', JSON.stringify(letters));
+            loadLetters();
+            showSaved('Letter deleted!');
+        }
+    }
+};
+
+letterForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const text = letterContent.value.trim() || 'some words stay folded, waiting for the right silence.';
+    const sign = letterSign.value.trim() || '— always yours';
+    const date = getCurrentDate();
+    const saved = localStorage.getItem('letterArchive');
+    const letters = saved ? JSON.parse(saved) : [];
+    letters.push({ text, sign, date });
+    localStorage.setItem('letterArchive', JSON.stringify(letters));
+    letterContent.value = '';
+    loadLetters();
+    showSaved('Letter saved! 📝');
+});
+
+loadLetters();
+
+// =====================================================
+// 3. BIRTHDAY WISHES ARCHIVE
+// =====================================================
+const wishArchive = document.getElementById('wishArchive');
+const wishInput = document.getElementById('birthdayWishInput');
+const wishBtn = document.getElementById('updateBirthdayBtn');
+const wishCount = document.getElementById('wishCount');
+
+function loadWishes() {
+    const saved = localStorage.getItem('wishArchive');
+    if (saved) {
+        try {
+            const wishes = JSON.parse(saved);
+            wishArchive.innerHTML = '';
+            if (wishes.length === 0) {
+                wishArchive.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No birthday wishes yet. Send one! 🎂</p>`;
+            } else {
+                wishes.forEach((w, i) => addWishToDOM(w.text, w.date, i));
+            }
+            updateWishCount();
+        } catch(e) { console.error(e); }
+    } else {
+        const defaultWish = { text: 'another trip around the sun — may your heart stay soft & wild.', date: getCurrentDate() };
+        localStorage.setItem('wishArchive', JSON.stringify([defaultWish]));
+        addWishToDOM(defaultWish.text, defaultWish.date, 0);
+        updateWishCount();
+    }
+}
+
+function addWishToDOM(text, date, index) {
+    const entry = document.createElement('div');
+    entry.className = 'wish-entry';
+    entry.innerHTML = `
+        <div class="wish-text">“${text}”</div>
+        <div class="wish-meta">
+            <span>💝 with love</span>
+            <span>${date || getCurrentDate()}</span>
+        </div>
+        <button class="delete-wish" onclick="deleteWish(${index})"><i class="fas fa-times"></i></button>
+    `;
+    wishArchive.appendChild(entry);
+}
+
+function updateWishCount() {
+    const count = wishArchive.querySelectorAll('.wish-entry').length;
+    wishCount.textContent = `${count} ${count === 1 ? 'wish' : 'wishes'}`;
+}
+
+window.deleteWish = function(index) {
+    const saved = localStorage.getItem('wishArchive');
+    if (!saved) return;
+    const wishes = JSON.parse(saved);
+    if (index >= 0 && index < wishes.length) {
+        if (confirm('Delete this wish?')) {
+            wishes.splice(index, 1);
+            localStorage.setItem('wishArchive', JSON.stringify(wishes));
+            loadWishes();
+            showSaved('Wish deleted!');
+        }
+    }
+};
+
+wishBtn.addEventListener('click', function() {
+    const text = wishInput.value.trim();
+    if (!text) { alert('Please write a birthday wish!'); return; }
+    const date = getCurrentDate();
+    const saved = localStorage.getItem('wishArchive');
+    const wishes = saved ? JSON.parse(saved) : [];
+    wishes.push({ text, date });
+    localStorage.setItem('wishArchive', JSON.stringify(wishes));
+    wishInput.value = '';
+    loadWishes();
+    showSaved('Birthday wish saved! 🎂');
+});
+
+wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wishBtn.click(); });
+
+loadWishes();
+
+// =====================================================
+// 4. MUSEUM OF MEMORY
+// =====================================================
+const memoryGallery = document.getElementById('memoryGallery');
+const memName = document.getElementById('newMemoryName');
+const memYear = document.getElementById('newMemoryYear');
+const memBtn = document.getElementById('addMemoryBtn');
+const memCount = document.getElementById('memoryCount');
+
+const icons = ['fas fa-camera-retro','fas fa-map-pin','fas fa-feather-alt','fas fa-book-open','fas fa-tree','fas fa-sun','fas fa-moon','fas fa-compass','fas fa-crown','fas fa-gem'];
+
+function getRandomIcon() { return icons[Math.floor(Math.random() * icons.length)]; }
+
+function loadMemories() {
+    const saved = localStorage.getItem('memories');
+    if (saved) {
+        try {
+            const memories = JSON.parse(saved);
+            memoryGallery.innerHTML = '';
+            if (memories.length === 0) {
+                memoryGallery.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No memories yet. Add your first! 📸</p>`;
+            } else {
+                memories.forEach((m, i) => addMemoryToDOM(m.name, m.year, m.icon, i));
+            }
+            updateMemCount();
+        } catch(e) { console.error(e); }
+    } else {
+        const defaults = [
+            { name: 'first polaroid', year: '2018', icon: 'fas fa-camera-retro' },
+            { name: 'train to nowhere', year: '2021', icon: 'fas fa-map-pin' },
+            { name: 'feather found', year: '2023', icon: 'fas fa-feather-alt' }
+        ];
+        localStorage.setItem('memories', JSON.stringify(defaults));
+        defaults.forEach((m, i) => addMemoryToDOM(m.name, m.year, m.icon, i));
+        updateMemCount();
+    }
+}
+
+function addMemoryToDOM(name, year, icon, index) {
+    const item = document.createElement('div');
+    item.className = 'memory-item';
+    item.innerHTML = `
+        <i class="${icon || getRandomIcon()}"></i>
+        <div class="mem-content"><strong>${name}</strong><small>a small memory</small></div>
+        <span class="mem-year">${year || '✧'}</span>
+        <button class="delete-memory" onclick="deleteMemory(${index})"><i class="fas fa-times"></i></button>
+    `;
+    memoryGallery.appendChild(item);
+}
+
+function updateMemCount() {
+    const count = memoryGallery.querySelectorAll('.memory-item').length;
+    memCount.textContent = `${count} ${count === 1 ? 'memory' : 'memories'}`;
+}
+
+window.deleteMemory = function(index) {
+    const saved = localStorage.getItem('memories');
+    if (!saved) return;
+    const memories = JSON.parse(saved);
+    if (index >= 0 && index < memories.length) {
+        if (confirm('Delete this memory?')) {
+            memories.splice(index, 1);
+            localStorage.setItem('memories', JSON.stringify(memories));
+            loadMemories();
+            showSaved('Memory deleted!');
+        }
+    }
+};
+
+memBtn.addEventListener('click', function() {
+    const name = memName.value.trim();
+    if (!name) { alert('Please enter a memory name!'); return; }
+    const year = memYear.value.trim() || '✧';
+    const saved = localStorage.getItem('memories');
+    const memories = saved ? JSON.parse(saved) : [];
+    memories.push({ name, year, icon: getRandomIcon() });
+    localStorage.setItem('memories', JSON.stringify(memories));
+    memName.value = '';
+    memYear.value = '';
+    loadMemories();
+    showSaved('Memory added! 📸');
+});
+
+memName.addEventListener('keypress', function(e) { if (e.key === 'Enter') memBtn.click(); });
+
+loadMemories();
+
+// =====================================================
+// 5. DATA MANAGEMENT TOOLS
+// =====================================================
+window.viewAllData = function() {
+    const data = {
+        '📝 Letters': JSON.parse(localStorage.getItem('letterArchive') || '[]'),
+        '🎂 Birthday Wishes': JSON.parse(localStorage.getItem('wishArchive') || '[]'),
+        '🏛️ Memories': JSON.parse(localStorage.getItem('memories') || '[]'),
+        '⏳ Timer Date': localStorage.getItem('timerStartDate') || '(not set)'
+    };
+    console.log('=== YOUR SAVED DATA ===');
+    console.table(data);
+    alert('✅ Data logged to console (F12 → Console tab)');
+};
+
+window.exportData = function() {
+    const data = {
+        letterArchive: JSON.parse(localStorage.getItem('letterArchive') || '[]'),
+        wishArchive: JSON.parse(localStorage.getItem('wishArchive') || '[]'),
+        memories: JSON.parse(localStorage.getItem('memories') || '[]'),
+        timerStartDate: localStorage.getItem('timerStartDate') || ''
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `memory-data-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showSaved('Data exported! 📥');
+};
+
+window.importData = function() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (data.letterArchive) localStorage.setItem('letterArchive', JSON.stringify(data.letterArchive));
+                if (data.wishArchive) localStorage.setItem('wishArchive', JSON.stringify(data.wishArchive));
+                if (data.memories) localStorage.setItem('memories', JSON.stringify(data.memories));
+                if (data.timerStartDate) localStorage.setItem('timerStartDate', data.timerStartDate);
+                showSaved('Data imported! 🔄');
+                location.reload();
+            } catch(err) {
+                alert('Error importing data. Please check the file format.');
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+};
+
+window.clearAllData = function() {
+    if (confirm('⚠️ Delete ALL your saved data? This cannot be undone!')) {
+        if (confirm('🔄 Really? All letters, wishes, and memories will be gone.')) {
+            localStorage.clear();
+            showSaved('All data cleared!');
+            setTimeout(() => location.reload(), 500);
+        }
+    }
+};
+</script>
+</body>
+</html>

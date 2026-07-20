@@ -402,10 +402,10 @@
             </div>
         </div>
 
-       <!-- PAGE 3: BIRTHDAY -->
+<!-- PAGE 3: BIRTHDAY -->
 <div class="page" id="page-birthday">
     <h2 class="page-title">🎂 To Live It All</h2>
-    <p class="page-subtitle">Birthday wishes saved with love</p>
+    <p class="page-subtitle">💝 Birthday messages with love</p>
     <div class="wish-archive" id="wishArchive"></div>
     <div class="birthday-input-area">
         <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
@@ -824,143 +824,189 @@ console.log('⏳ Timer system started!');
 
         loadBottles();
 
-       // =====================================================
-// 7. BIRTHDAY - COUNTDOWN TO 22!
+// =====================================================
+// 7. BIRTHDAY - FLOATING MESSAGES + PASSWORD!
 // =====================================================
 const wishArchive = document.getElementById('wishArchive');
 const wishInput = document.getElementById('birthdayWishInput');
 const wishBtn = document.getElementById('updateBirthdayBtn');
 const wishCount = document.getElementById('wishCount');
 
-// ===== NAZIFF'S BIRTHDAY CONFIG =====
-const NAZIFF_BIRTHDAY = new Date(2026, 5, 17); // 17 June 2026 (Month: 5 = June)
-const NAZIFF_CURRENT_AGE = 21;
-const NAZIFF_NEW_AGE = 22;
+// ===== PASSWORD CONFIG =====
+const BIRTHDAY_PASSWORD = 'naziff22'; // << TUKAR PASSWORD DI SINI!
 
-// ===== CHECK IF BIRTHDAY HAS PASSED =====
-function isBirthdayUnlocked() {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const birthdayThisYear = new Date(now.getFullYear(), 5, 17); // 17 June this year
-    
-    // If today is on or after June 17
-    return today >= birthdayThisYear;
+let isUnlocked = false;
+
+// ===== CHECK PASSWORD =====
+function checkPassword() {
+    const saved = localStorage.getItem('birthdayUnlocked');
+    if (saved === 'true') {
+        isUnlocked = true;
+        return true;
+    }
+    return false;
 }
 
-// ===== GET DAYS UNTIL BIRTHDAY =====
-function getDaysUntilBirthday() {
-    const now = new Date();
-    const birthday = new Date(now.getFullYear(), 5, 17);
-    
-    // If birthday already passed this year, use next year
-    if (now > birthday) {
-        birthday.setFullYear(now.getFullYear() + 1);
+// ===== SHOW PASSWORD PROMPT =====
+function promptPassword() {
+    const input = prompt('🔐 Enter password to unlock birthday messages:');
+    if (input === BIRTHDAY_PASSWORD) {
+        isUnlocked = true;
+        localStorage.setItem('birthdayUnlocked', 'true');
+        loadWishes();
+        showToast('🎂 Birthday messages unlocked!');
+        return true;
+    } else if (input !== null) {
+        alert('❌ Wrong password! Try again.');
+        return false;
     }
-    
-    const diffTime = birthday - now;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return false;
 }
 
 // ===== LOAD WISHES =====
 function loadWishes() {
     const saved = localStorage.getItem('wishArchive');
-    const isUnlocked = isBirthdayUnlocked();
+    const isUnlockedCheck = checkPassword();
+    
+    wishArchive.innerHTML = '';
+    
+    // If not unlocked, show lock screen
+    if (!isUnlockedCheck) {
+        const lockScreen = document.createElement('div');
+        lockScreen.style.cssText = `
+            background: linear-gradient(145deg, rgba(255,248,240,0.95), rgba(235,225,215,0.95));
+            padding: 35px 25px;
+            border-radius: 2rem;
+            border: 2px solid rgba(244,208,104,0.3);
+            text-align: center;
+            color: #3e2c24;
+            font-family: 'Georgia', serif;
+            animation: floatBottle 3s ease-in-out infinite;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        `;
+        lockScreen.innerHTML = `
+            <div style="font-size: 4rem; margin-bottom: 12px;">🔐</div>
+            <div style="font-size: 1.3rem; font-weight: 600; color: #a71d31;">Birthday Messages Locked</div>
+            <div style="font-size: 0.9rem; color: #8f7668; margin: 10px 0;">
+                ✨ Enter password to unlock ✨
+            </div>
+            <div style="font-size: 0.7rem; color: #a67c2e; font-style: italic; margin-top: 5px;">
+                Hint: naziff + age (lowercase)
+            </div>
+            <button onclick="promptPassword()" style="
+                margin-top: 15px;
+                background: #a71d31;
+                border: none;
+                border-radius: 3rem;
+                padding: 10px 30px;
+                color: #fff;
+                cursor: pointer;
+                font-family: 'Georgia', serif;
+                font-size: 0.95rem;
+                transition: 0.2s;
+            " onmouseover="this.style.background='#801322'" onmouseout="this.style.background='#a71d31'">
+                🔑 Unlock Messages
+            </button>
+        `;
+        wishArchive.appendChild(lockScreen);
+        
+        // Disable input
+        wishInput.disabled = true;
+        wishInput.placeholder = '🔒 Locked - enter password above';
+        wishInput.style.opacity = '0.5';
+        wishBtn.disabled = true;
+        wishBtn.style.opacity = '0.5';
+        wishBtn.style.cursor = 'not-allowed';
+        wishCount.textContent = '🔒 Locked';
+        return;
+    }
+    
+    // ===== UNLOCKED - SHOW WISHES =====
+    wishInput.disabled = false;
+    wishInput.placeholder = '✍️ Write a birthday wish...';
+    wishInput.style.opacity = '1';
+    wishBtn.disabled = false;
+    wishBtn.style.opacity = '1';
+    wishBtn.style.cursor = 'pointer';
+    
+    // Show unlocked banner
+    const banner = document.createElement('div');
+    banner.style.cssText = `
+        background: linear-gradient(135deg, #f4d068, #e8c84a);
+        padding: 12px 20px;
+        border-radius: 1.5rem;
+        text-align: center;
+        color: #2c1810;
+        font-family: 'Georgia', serif;
+        margin-bottom: 12px;
+        animation: fadeIn 0.5s ease;
+    `;
+    banner.innerHTML = `
+        <div style="font-size: 1.5rem;">🎂✨</div>
+        <div style="font-size: 1rem; font-weight: 600;">Birthday Messages Unlocked!</div>
+        <div style="font-size: 0.8rem; opacity: 0.7;">💝 Send your birthday wishes below</div>
+    `;
+    wishArchive.appendChild(banner);
     
     if (saved) {
         try {
             const wishes = JSON.parse(saved);
-            wishArchive.innerHTML = '';
-            
-            // SHOW LOCKED MESSAGE IF NOT UNLOCKED
-            if (!isUnlocked) {
-                const daysLeft = getDaysUntilBirthday();
-                const lockMsg = document.createElement('div');
-                lockMsg.style.cssText = `
-                    background: rgba(255,248,240,0.9);
-                    padding: 25px 20px;
-                    border-radius: 1.5rem;
-                    border-left: 4px solid #f4d068;
-                    text-align: center;
-                    color: #3e2c24;
-                    font-family: 'Georgia', serif;
-                `;
-                lockMsg.innerHTML = `
-                    <div style="font-size: 3rem; margin-bottom: 10px;">🔒</div>
-                    <div style="font-size: 1.1rem; font-weight: 600; color: #a71d31;">Naziff is ${NAZIFF_CURRENT_AGE} years old</div>
-                    <div style="font-size: 0.9rem; color: #8f7668; margin: 8px 0;">
-                        ⏳ ${daysLeft} days until ${NAZIFF_NEW_AGE}th birthday
-                    </div>
-                    <div style="font-size: 0.8rem; color: #a67c2e; font-style: italic; margin-top: 5px;">
-                        ✨ Unlocks on 17 June 2026 ✨
-                    </div>
-                `;
-                wishArchive.appendChild(lockMsg);
-                
-                // Disable input if locked
-                wishInput.disabled = true;
-                wishInput.placeholder = '🔒 Locked until 17 June';
-                wishInput.style.opacity = '0.5';
-                wishBtn.disabled = true;
-                wishBtn.style.opacity = '0.5';
-                wishBtn.style.cursor = 'not-allowed';
-                
+            if (wishes.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.style.cssText = 'text-align:center;color:#a18b7d;padding:20px;font-style:italic;';
+                emptyMsg.textContent = 'No birthday wishes yet. Send one! 🎂';
+                wishArchive.appendChild(emptyMsg);
             } else {
-                // UNLOCKED - Show wishes normally
-                wishInput.disabled = false;
-                wishInput.placeholder = '✍️ Write a birthday wish...';
-                wishInput.style.opacity = '1';
-                wishBtn.disabled = false;
-                wishBtn.style.opacity = '1';
-                wishBtn.style.cursor = 'pointer';
-                
-                // Show unlock celebration banner
-                const banner = document.createElement('div');
-                banner.style.cssText = `
-                    background: linear-gradient(135deg, #f4d068, #e8c84a);
-                    padding: 15px 20px;
-                    border-radius: 1.5rem;
-                    text-align: center;
-                    color: #2c1810;
-                    font-family: 'Georgia', serif;
-                    margin-bottom: 10px;
-                    animation: fadeIn 0.5s ease;
-                `;
-                banner.innerHTML = `
-                    <div style="font-size: 2.5rem;">🎉🎂</div>
-                    <div style="font-size: 1.2rem; font-weight: 600;">Happy ${NAZIFF_NEW_AGE}nd Birthday Naziff!</div>
-                    <div style="font-size: 0.9rem; opacity: 0.8;">🎁 Send your birthday wishes below!</div>
-                `;
-                wishArchive.appendChild(banner);
-                
-                if (wishes.length === 0) {
-                    const emptyMsg = document.createElement('p');
-                    emptyMsg.style.cssText = 'text-align:center;color:#a18b7d;padding:20px;font-style:italic;';
-                    emptyMsg.textContent = 'No birthday wishes yet. Send one! 🎂';
-                    wishArchive.appendChild(emptyMsg);
-                } else {
-                    wishes.forEach((w, i) => addWishToDOM(w.text, w.date, i));
-                }
+                wishes.forEach((w, i) => addWishToDOM(w.text, w.date, i));
             }
-            updateWishCount();
         } catch (e) { console.error(e); }
     } else {
-        // No wishes saved yet
         const defaultWish = { text: 'another trip around the sun — may your heart stay soft & wild.', date: getCurrentDate() };
         localStorage.setItem('wishArchive', JSON.stringify([defaultWish]));
-        loadWishes();
         syncAllToCloud();
+        loadWishes();
     }
+    
+    updateWishCount();
 }
 
-// ===== ADD WISH TO DOM =====
+// ===== ADD WISH TO DOM (FLOATING STYLE) =====
 function addWishToDOM(text, date, index) {
     const entry = document.createElement('div');
     entry.className = 'wish-entry';
+    entry.style.cssText = `
+        background: rgba(255,248,240,0.9);
+        padding: 14px 18px;
+        border-radius: 1.5rem;
+        border-left: 4px solid #f4d068;
+        animation: floatBottle 3s ease-in-out infinite;
+        position: relative;
+        color: #3e2c24;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    `;
+    entry.onmouseover = function() {
+        this.style.transform = 'scale(1.02) translateY(-3px)';
+        this.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+    };
+    entry.onmouseout = function() {
+        this.style.transform = 'scale(1) translateY(0)';
+        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+    };
     entry.innerHTML = `
-        <div class="wish-text">“${text}”</div>
-        <div class="wish-meta"><span>💝 with love</span><span>${date || getCurrentDate()}</span></div>
-        <button class="delete-wish" onclick="deleteWish(${index})"><i class="fas fa-times"></i></button>
+        <div class="wish-text" style="font-size:0.95rem;line-height:1.5;font-style:italic;">“${text}”</div>
+        <div class="wish-meta" style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.7rem;color:#8f7668;">
+            <span>💝 with love</span>
+            <span>${date || getCurrentDate()}</span>
+        </div>
+        <button class="delete-wish" onclick="deleteWish(${index})" style="
+            position:absolute;top:8px;right:12px;
+            background:none;border:none;color:#b48b7a;
+            cursor:pointer;font-size:0.9rem;opacity:0.4;
+            transition:0.2s;
+        " onmouseover="this.style.opacity='1';this.style.color='#c0392b'" onmouseout="this.style.opacity='0.4';this.style.color='#b48b7a'">
+            <i class="fas fa-times"></i>
+        </button>
     `;
     wishArchive.appendChild(entry);
 }
@@ -973,8 +1019,8 @@ function updateWishCount() {
 
 // ===== DELETE WISH =====
 window.deleteWish = function(index) {
-    if (!isBirthdayUnlocked()) {
-        alert('🔒 Birthday wishes are locked until 17 June!');
+    if (!checkPassword()) {
+        alert('🔒 Please unlock birthday messages first!');
         return;
     }
     const saved = localStorage.getItem('wishArchive');
@@ -993,8 +1039,8 @@ window.deleteWish = function(index) {
 
 // ===== SEND WISH =====
 wishBtn.addEventListener('click', function() {
-    if (!isBirthdayUnlocked()) {
-        alert('🔒 Birthday wishes are locked until 17 June!');
+    if (!checkPassword()) {
+        alert('🔒 Please unlock birthday messages first!');
         return;
     }
     
@@ -1015,18 +1061,24 @@ wishInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') wishBtn.click(); 
 });
 
-// ===== CHECK UNLOCK STATUS EVERY MINUTE =====
-setInterval(() => {
+// ===== RESET PASSWORD (FOR TESTING) =====
+window.resetBirthdayLock = function() {
+    localStorage.removeItem('birthdayUnlocked');
+    isUnlocked = false;
     loadWishes();
-}, 60000);
+    showToast('🔒 Birthday messages locked again');
+};
 
 // ===== INITIAL LOAD =====
+// Check if already unlocked from previous session
+if (localStorage.getItem('birthdayUnlocked') === 'true') {
+    isUnlocked = true;
+}
 loadWishes();
 
 console.log('🎂 Birthday system initialized');
-console.log(`📅 Naziff's birthday: ${NAZIFF_BIRTHDAY.toDateString()}`);
-console.log(`🔒 Locked: ${!isBirthdayUnlocked()}`);
-console.log(`📆 Days until birthday: ${getDaysUntilBirthday()}`);
+console.log('🔑 Password hint: naziff + age');
+console.log('🔓 Unlocked:', isUnlocked);
 
       // =====================================================
 // 8. GALLERY - POSTIMAGES URL (FULLY FIXED!)

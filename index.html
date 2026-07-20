@@ -2087,167 +2087,212 @@
 
         loadWishes();
 
-        // =====================================================
-        // 9. GALLERY
-        // =====================================================
-        const galleryGrid = document.getElementById('galleryGrid');
-        const newPhotoName = document.getElementById('newPhotoName');
-        const newPhotoDate = document.getElementById('newPhotoDate');
-        const addPhotoBtn = document.getElementById('addPhotoBtn');
-        const uploadImageBtn = document.getElementById('uploadImageBtn');
-        const imageUploadInput = document.getElementById('imageUploadInput');
+       // =====================================================
+// 9. GALLERY - DENGAN COMPRESS UNTUK SYNC!
+// =====================================================
+const galleryGrid = document.getElementById('galleryGrid');
+const newPhotoName = document.getElementById('newPhotoName');
+const newPhotoDate = document.getElementById('newPhotoDate');
+const addPhotoBtn = document.getElementById('addPhotoBtn');
+const uploadImageBtn = document.getElementById('uploadImageBtn');
+const imageUploadInput = document.getElementById('imageUploadInput');
 
-        let tempImageData = null;
+let tempImageData = null;
 
-        const photoEmojis = ['🌅', '🌄', '🌺', '🌻', '🌹', '🌸', '💐', '🌿', '🍃', '☀️', '🌙', '⭐', '🌈', '💫', '✨'];
+const photoEmojis = ['🌅', '🌄', '🌺', '🌻', '🌹', '🌸', '💐', '🌿', '🍃', '☀️', '🌙', '⭐', '🌈', '💫', '✨'];
 
-        function getRandomEmoji() {
-            return photoEmojis[Math.floor(Math.random() * photoEmojis.length)];
-        }
+function getRandomEmoji() {
+    return photoEmojis[Math.floor(Math.random() * photoEmojis.length)];
+}
 
-        function loadGallery() {
-            const saved = localStorage.getItem('galleryPhotos');
-            if (saved) {
-                try {
-                    const photos = JSON.parse(saved);
-                    galleryGrid.innerHTML = '';
-                    if (photos.length === 0) {
-                        galleryGrid.innerHTML =
-                            `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
-                    } else {
-                        photos.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
-                    }
-                } catch (e) { console.error(e); }
-            } else {
-                const defaults = [
-                    { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
-                    { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
-                    { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
-                ];
-                localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
-                defaults.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
-                syncAllToCloud();
+// ===== COMPRESS IMAGE FUNCTION =====
+function compressImage(imageData, maxWidth = 600, maxHeight = 600, quality = 0.5) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = function() {
+            let width = img.width;
+            let height = img.height;
+
+            // Kira saiz baru
+            if (width > maxWidth) {
+                height = (maxWidth / width) * height;
+                width = maxWidth;
             }
-        }
+            if (height > maxHeight) {
+                width = (maxHeight / height) * width;
+                height = maxHeight;
+            }
 
-        function addPhotoToDOM(name, date, emoji, image, index) {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-
-            const hasImage = image && image.trim() !== '';
-
-            item.innerHTML = `
-                <div class="photo-placeholder" onclick="uploadImage(${index})">
-                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">click to upload</span>`}
-                </div>
-                <div class="photo-label">${name}</div>
-                <div class="photo-date">${date || '✧'}</div>
-                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${index})"><i class="fas fa-times"></i></button>
-            `;
-
-            galleryGrid.appendChild(item);
-        }
-
-        window.uploadImage = function(index) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('⚠️ Gambar terlalu besar! Sila pilih gambar bawah 5MB.');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    const imageData = ev.target.result;
-                    const saved = localStorage.getItem('galleryPhotos');
-                    if (saved) {
-                        const photos = JSON.parse(saved);
-                        if (index >= 0 && index < photos.length) {
-                            photos[index].image = imageData;
-                            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-                            syncAllToCloud();
-                            loadGallery();
-                            showToast('📸 Photo uploaded & synced!');
-                        }
-                    }
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convert ke JPEG dengan quality rendah
+            resolve(canvas.toDataURL('image/jpeg', quality));
         };
+        img.src = imageData;
+    });
+}
 
-        uploadImageBtn.addEventListener('click', function() {
-            imageUploadInput.click();
-        });
-
-        imageUploadInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-                alert('⚠️ Gambar terlalu besar! Sila pilih gambar bawah 5MB.');
-                imageUploadInput.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                tempImageData = ev.target.result;
-                showToast('📸 Image uploaded! Ready to add.');
-                uploadImageBtn.textContent = '✅ Image Ready';
-                uploadImageBtn.style.background = '#4caf50';
-            };
-            reader.readAsDataURL(file);
-        });
-
-        addPhotoBtn.addEventListener('click', function() {
-            const name = newPhotoName.value.trim();
-            if (!name) { alert('Please enter a photo title!'); return; }
-            const date = newPhotoDate.value.trim() || '✧';
-
-            const saved = localStorage.getItem('galleryPhotos');
-            const photos = saved ? JSON.parse(saved) : [];
-
-            const imageData = tempImageData || '';
-            const emoji = imageData ? '' : getRandomEmoji();
-
-            photos.push({ name, date, emoji, image: imageData });
-            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-            syncAllToCloud();
-
-            newPhotoName.value = '';
-            newPhotoDate.value = '';
-            tempImageData = null;
-
-            uploadImageBtn.textContent = '📤 Upload Image';
-            uploadImageBtn.style.background = '#a71d31';
-            imageUploadInput.value = '';
-
-            loadGallery();
-            showToast('📸 Photo added & synced!');
-        });
-
-        window.deletePhoto = function(index) {
-            const saved = localStorage.getItem('galleryPhotos');
-            if (!saved) return;
+// ===== LOAD GALLERY =====
+function loadGallery() {
+    const saved = localStorage.getItem('galleryPhotos');
+    if (saved) {
+        try {
             const photos = JSON.parse(saved);
-            if (index >= 0 && index < photos.length) {
-                if (confirm('Delete this photo?')) {
-                    photos.splice(index, 1);
-                    localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-                    syncAllToCloud();
-                    loadGallery();
-                    showToast('🗑️ Photo deleted!');
+            galleryGrid.innerHTML = '';
+            if (photos.length === 0) {
+                galleryGrid.innerHTML =
+                    `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
+            } else {
+                photos.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
+            }
+        } catch (e) { console.error(e); }
+    } else {
+        const defaults = [
+            { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
+            { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
+            { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
+        ];
+        localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
+        defaults.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
+        syncAllToCloud();
+    }
+}
+
+// ===== ADD PHOTO TO DOM =====
+function addPhotoToDOM(name, date, emoji, image, index) {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+
+    const hasImage = image && image.trim() !== '';
+
+    item.innerHTML = `
+        <div class="photo-placeholder" onclick="uploadImage(${index})">
+            ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">click to upload</span>`}
+        </div>
+        <div class="photo-label">${name}</div>
+        <div class="photo-date">${date || '✧'}</div>
+        <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${index})"><i class="fas fa-times"></i></button>
+    `;
+
+    galleryGrid.appendChild(item);
+}
+
+// ===== UPLOAD IMAGE - DENGAN COMPRESS! =====
+window.uploadImage = function(index) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        showToast('🔄 Compressing image...');
+
+        const reader = new FileReader();
+        reader.onload = async function(ev) {
+            try {
+                // COMPRESS GAMBAR!
+                const compressedImage = await compressImage(ev.target.result, 500, 500, 0.5);
+                
+                const saved = localStorage.getItem('galleryPhotos');
+                if (saved) {
+                    const photos = JSON.parse(saved);
+                    if (index >= 0 && index < photos.length) {
+                        photos[index].image = compressedImage;
+                        localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+                        syncAllToCloud(); // SYNC KE CLOUD!
+                        loadGallery();
+                        showToast('📸 Photo uploaded & synced!');
+                    }
                 }
+            } catch(err) {
+                console.error('Compression error:', err);
+                showToast('⚠️ Error compressing image');
             }
         };
+        reader.readAsDataURL(file);
+    };
+    input.click();
+};
 
-        loadGallery();
+// ===== UPLOAD IMAGE SEBELUM TAMBAH PHOTO =====
+uploadImageBtn.addEventListener('click', function() {
+    imageUploadInput.click();
+});
+
+imageUploadInput.addEventListener('change', async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    showToast('🔄 Compressing image...');
+
+    const reader = new FileReader();
+    reader.onload = async function(ev) {
+        try {
+            // COMPRESS GAMBAR!
+            const compressedImage = await compressImage(ev.target.result, 500, 500, 0.5);
+            tempImageData = compressedImage;
+            showToast('📸 Image compressed & ready!');
+            uploadImageBtn.textContent = '✅ Image Ready';
+            uploadImageBtn.style.background = '#4caf50';
+        } catch(err) {
+            console.error('Compression error:', err);
+            showToast('⚠️ Error compressing image');
+        }
+    };
+    reader.readAsDataURL(file);
+});
+
+// ===== ADD PHOTO WITH COMPRESSED IMAGE =====
+addPhotoBtn.addEventListener('click', function() {
+    const name = newPhotoName.value.trim();
+    if (!name) { alert('Please enter a photo title!'); return; }
+    const date = newPhotoDate.value.trim() || '✧';
+
+    const saved = localStorage.getItem('galleryPhotos');
+    const photos = saved ? JSON.parse(saved) : [];
+
+    const imageData = tempImageData || '';
+    const emoji = imageData ? '' : getRandomEmoji();
+
+    photos.push({ name, date, emoji, image: imageData });
+    localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+    syncAllToCloud(); // SYNC KE CLOUD!
+
+    newPhotoName.value = '';
+    newPhotoDate.value = '';
+    tempImageData = null;
+
+    uploadImageBtn.textContent = '📤 Upload Image';
+    uploadImageBtn.style.background = '#a71d31';
+    imageUploadInput.value = '';
+
+    loadGallery();
+    showToast('📸 Photo added & synced!');
+});
+
+// ===== DELETE PHOTO =====
+window.deletePhoto = function(index) {
+    const saved = localStorage.getItem('galleryPhotos');
+    if (!saved) return;
+    const photos = JSON.parse(saved);
+    if (index >= 0 && index < photos.length) {
+        if (confirm('Delete this photo?')) {
+            photos.splice(index, 1);
+            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+            syncAllToCloud(); // SYNC KE CLOUD!
+            loadGallery();
+            showToast('🗑️ Photo deleted!');
+        }
+    }
+};
+
+// START
+loadGallery();
 
         // =====================================================
         // 10. DATA MANAGEMENT

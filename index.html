@@ -9,116 +9,87 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Georgia', serif; background-color: #1a0f0a; overflow-x: hidden; min-height: 100vh; }
 
-        #intro-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at center, #2c1810 0%, #1a0f0a 60%, #0d0805 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 1000; transition: opacity 1.5s ease-out, visibility 1.5s ease-out; overflow: hidden;
-        }
-        #intro-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-        .book-wrapper { perspective: 1500px; cursor: pointer; display: flex; justify-content: center; align-items: center; position: relative; }
-        .book-wrapper::after {
-            content: ''; position: absolute; bottom: -40px; left: 5%; width: 90%; height: 30px;
-            background: radial-gradient(ellipse, rgba(0,0,0,0.7) 0%, transparent 70%);
-            border-radius: 50%; filter: blur(10px); transition: all 0.5s ease;
-        }
-        .book-wrapper:hover::after { width: 95%; height: 40px; filter: blur(15px); opacity: 0.8; }
-
-        .book {
-            position: relative; width: 280px; height: 400px; transform-style: preserve-3d;
-            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: rotateY(0deg) rotateX(0deg);
-        }
-        .book.open { transform: rotateY(-175deg) rotateX(0deg); }
-
-        .book-cover {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(160deg, #3d1f16 0%, #1f0e08 60%, #0d0603 100%);
-            border-radius: 4px 10px 10px 4px; backface-visibility: hidden;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 35px 30px;
-            box-shadow: inset -12px 0 30px rgba(0,0,0,0.8), inset 0 -8px 20px rgba(0,0,0,0.4), inset 0 8px 20px rgba(0,0,0,0.2), 8px 8px 30px rgba(0,0,0,0.6);
-            border: 1px solid #8B6914; border-left: 10px solid #a67c2e; border-right: 1px solid #5a4010;
+        #main-content {
+            max-width: 1200px;
+            width: 95%;
+            margin: 40px auto;
+            background: rgba(44,24,16,0.95);
+            border: 12px double #f4d068;
+            border-radius: 10px;
+            padding: 40px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             position: relative;
-        }
-        .book-cover::before {
-            content: ''; position: absolute; inset: 0; border-radius: 4px 10px 10px 4px;
-            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px), repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(255,255,255,0.005) 5px, rgba(255,255,255,0.005) 6px);
-            pointer-events: none; opacity: 0.3;
-        }
-        .book-cover .gold-frame { position: absolute; inset: 18px; border: 1.5px solid rgba(198,154,58,0.2); border-radius: 2px; pointer-events: none; }
-        .book-cover .main-title { font-family: 'Georgia', 'Times New Roman', serif; font-size: 2.4rem; font-weight: 700; color: #f4d068; text-align: center; line-height: 1.2; text-shadow: 0 0 30px rgba(244,208,104,0.15), 0 2px 4px rgba(0,0,0,0.5); letter-spacing: 2px; position: relative; z-index: 1; }
-        .book-cover .main-title .highlight { color: #e8c84a; font-style: italic; }
-        .book-cover .divider { width: 50%; height: 1px; background: linear-gradient(90deg, transparent, #a67c2e, transparent); margin: 12px 0; position: relative; z-index: 1; }
-        .book-cover .divider::after { content: '✦'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #a67c2e; font-size: 0.7rem; background: #2a130c; padding: 0 12px; }
-        .book-cover .subtitle-bottom { font-family: 'Georgia', serif; font-size: 0.75rem; color: rgba(244,208,104,0.4); letter-spacing: 4px; text-transform: uppercase; font-weight: 300; position: relative; z-index: 1; margin-top: 6px; }
-        .book-cover .click-hint { position: absolute; bottom: 20px; font-size: 0.6rem; color: rgba(244,208,104,0.2); letter-spacing: 3px; animation: pulseHint 2.5s infinite; font-family: 'Georgia', serif; z-index: 1; }
-
-        .book-spine {
-            position: absolute; top: 0; left: -10px; width: 10px; height: 100%;
-            background: linear-gradient(180deg, #4a2518 0%, #1a0a06 50%, #0d0603 100%);
-            border-radius: 2px 0 0 2px; transform: rotateY(0deg) translateZ(-1px);
-            border: 1px solid #8B6914; border-right: none;
-            box-shadow: inset -2px 0 10px rgba(0,0,0,0.5);
-        }
-        .book-spine::before {
-            content: ''; position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 2px; height: 70%;
-            background: repeating-linear-gradient(180deg, transparent, transparent 15px, rgba(198,154,58,0.05) 15px, rgba(198,154,58,0.05) 16px);
+            z-index: 1;
+            min-height: 500px;
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
-        .book-pages { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); border-radius: 4px 10px 10px 4px; overflow: hidden; }
-        .book-pages .page-block { position: absolute; top: 5px; left: 5px; width: calc(100% - 10px); height: calc(100% - 10px); background: linear-gradient(180deg, #f5efe6 0%, #ede5d8 30%, #e5dccd 60%, #ddd4c4 100%); border-radius: 2px 8px 8px 2px; box-shadow: inset 0 0 30px rgba(0,0,0,0.05); transform: translateZ(-1px); }
-        .book-pages .page-block::before { content: ''; position: absolute; inset: 5px; background: repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(139,69,19,0.03) 8px, rgba(139,69,19,0.03) 9px); border-radius: 2px; }
-
-        .book-inside {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(160deg, #f5efe6 0%, #e5dccd 60%, #d5cbbe 100%);
-            border-radius: 4px 10px 10px 4px; backface-visibility: hidden; transform: rotateY(180deg);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px 25px;
-            box-shadow: inset 8px 0 30px rgba(0,0,0,0.08), inset 0 0 50px rgba(200,180,160,0.2);
-            border: 1px solid #a67c2e; border-right: 10px solid #c49a3a; border-left: 1px solid #6b4f1a;
-            position: relative;
+        .site-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed rgba(244,208,104,0.3);
+            padding-bottom: 1.5rem;
         }
-        .book-inside::before {
-            content: ''; position: absolute; inset: 12px; border: 1px solid rgba(139,69,19,0.06); border-radius: 2px;
-            background: repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(139,69,19,0.02) 20px, rgba(139,69,19,0.02) 21px), repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(139,69,19,0.02) 20px, rgba(139,69,19,0.02) 21px);
-            pointer-events: none;
+
+        .site-title h1 {
+            font-size: 2.6rem;
+            font-weight: 300;
+            color: #f4d068;
+            font-family: 'Brush Script MT', cursive;
         }
-        .book-inside .sunflower-icon { font-size: 4rem; margin-bottom: 12px; animation: spinSunflower 8s linear infinite; filter: drop-shadow(0 4px 15px rgba(255,215,0,0.15)); position: relative; z-index: 1; }
-        .book-inside .page-text { font-family: 'Georgia', 'Times New Roman', serif; font-size: 2rem; font-weight: 400; color: #3d1f16; text-align: center; line-height: 1.3; position: relative; z-index: 1; font-style: italic; }
-        .book-inside .page-text .highlight { color: #8B6914; font-weight: 700; }
-        .book-inside .gold-line { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, #a67c2e, transparent); margin: 8px 0; position: relative; z-index: 1; }
-        .book-inside .page-sub { font-family: 'Georgia', serif; font-size: 0.75rem; color: #8a6d5a; margin-top: 6px; letter-spacing: 3px; font-style: italic; position: relative; z-index: 1; }
-
-        .sunflower-particle { position: fixed; pointer-events: none; z-index: 9999; font-size: 4rem; animation: flyOutBook 2.5s forwards ease-out; }
-        @keyframes flyOutBook { 0% { opacity: 1; transform: translate(0,0) scale(0.1) rotate(0deg); } 100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(2.5) rotate(var(--mr)); } }
-        @keyframes spinSunflower { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.05); } 100% { transform: rotate(360deg) scale(1); } }
-        @keyframes pulseHint { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
-
-        .save-toast { position: fixed; bottom: 30px; right: 30px; background: #2b2b2b; color: #f4d068; padding: 14px 28px; border-radius: 3rem; font-size: 0.9rem; box-shadow: 0 8px 25px rgba(0,0,0,0.3); opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none; z-index: 5000; border: 1px solid #f4d068; font-family: 'Georgia', serif; max-width: 90%; }
-        .save-toast.show { opacity: 1; transform: translateY(0); }
-        .save-toast i { margin-right: 8px; }
-
-        #main-content { max-width: 1200px; width: 95%; margin: 40px auto; background: rgba(44,24,16,0.95); border: 12px double #f4d068; border-radius: 10px; padding: 40px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); opacity: 0; transform: translateY(30px) scale(0.98); transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s; position: relative; z-index: 1; min-height: 500px; }
-        #main-content.visible { opacity: 1; transform: translateY(0) scale(1); }
-
-        .site-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; border-bottom: 2px dashed rgba(244,208,104,0.3); padding-bottom: 1.5rem; }
-        .site-title h1 { font-size: 2.6rem; font-weight: 300; color: #f4d068; font-family: 'Brush Script MT', cursive; }
         .site-title h1 i { color: #f4d068; margin-right: 10px; }
-        .site-title small { display: block; font-size: 0.9rem; color: rgba(244,208,104,0.6); letter-spacing: 3px; margin-top: 4px; font-family: 'Georgia', serif; }
-        .nav-icons { display: flex; gap: 1.8rem; font-size: 1.4rem; color: rgba(244,208,104,0.6); }
+        .site-title small {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(244,208,104,0.6);
+            letter-spacing: 3px;
+            margin-top: 4px;
+            font-family: 'Georgia', serif;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 1.4rem;
+            color: rgba(244,208,104,0.6);
+        }
         .nav-icons i { transition: 0.2s; cursor: default; }
         .nav-icons i:hover { color: #f4d068; transform: scale(1.1); }
 
-        .nav-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; justify-content: center; border-bottom: 1px solid rgba(244,208,104,0.2); padding-bottom: 1rem; }
-        .nav-tab { background: rgba(255,255,255,0.05); border: 1px solid rgba(244,208,104,0.2); border-radius: 30px; padding: 8px 22px; color: rgba(244,208,104,0.6); cursor: pointer; transition: 0.3s; font-family: 'Georgia', serif; font-size: 0.9rem; }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            justify-content: center;
+            border-bottom: 1px solid rgba(244,208,104,0.2);
+            padding-bottom: 1rem;
+        }
+        .nav-tab {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(244,208,104,0.2);
+            border-radius: 30px;
+            padding: 8px 22px;
+            color: rgba(244,208,104,0.6);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+        }
         .nav-tab:hover { background: rgba(244,208,104,0.1); color: #f4d068; transform: translateY(-2px); }
         .nav-tab.active { background: rgba(244,208,104,0.15); color: #f4d068; border-color: #f4d068; }
 
-        .sync-status { text-align: center; font-size: 0.7rem; color: rgba(244,208,104,0.3); margin-bottom: 1rem; padding: 4px; }
+        .sync-status {
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(244,208,104,0.3);
+            margin-bottom: 1rem;
+            padding: 4px;
+        }
         .sync-status i { margin-right: 4px; }
         .sync-status .synced { color: #4caf50; }
         .sync-status .syncing { color: #f4d068; animation: pulseText 1s infinite; }
@@ -131,12 +102,56 @@
         .page-title { font-family: 'Brush Script MT', cursive; font-size: 2.5rem; color: #f4d068; text-align: center; margin-bottom: 1.5rem; }
         .page-subtitle { text-align: center; color: rgba(244,208,104,0.5); font-style: italic; margin-bottom: 2rem; font-size: 0.95rem; }
 
-        .bottle-feed { display: flex; flex-direction: column; gap: 18px; max-height: 350px; overflow-y: auto; padding-right: 8px; margin-bottom: 20px; }
+        .save-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2b2b2b;
+            color: #f4d068;
+            padding: 14px 28px;
+            border-radius: 3rem;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 5000;
+            border: 1px solid #f4d068;
+            font-family: 'Georgia', serif;
+            max-width: 90%;
+        }
+        .save-toast.show { opacity: 1; transform: translateY(0); }
+        .save-toast i { margin-right: 8px; }
+
+        /* BOTTLES */
+        .bottle-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-bottom: 20px;
+        }
         .bottle-feed::-webkit-scrollbar { width: 4px; }
         .bottle-feed::-webkit-scrollbar-track { background: #2a130c; border-radius: 10px; }
         .bottle-feed::-webkit-scrollbar-thumb { background: #f4d068; border-radius: 10px; }
 
-        .bottle-card { display: flex; align-items: center; gap: 18px; background: linear-gradient(145deg, rgba(255,248,240,0.9), rgba(235,225,215,0.9)); padding: 14px 20px; border-radius: 2rem; border: 2px solid rgba(139,69,19,0.12); cursor: pointer; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); animation: floatBottle 3s ease-in-out infinite; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; }
+        .bottle-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: linear-gradient(145deg, rgba(255,248,240,0.9), rgba(235,225,215,0.9));
+            padding: 14px 20px;
+            border-radius: 2rem;
+            border: 2px solid rgba(139,69,19,0.12);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            animation: floatBottle 3s ease-in-out infinite;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+        }
         .bottle-card:nth-child(even) { animation-delay: 1.5s; }
         .bottle-card:nth-child(3n) { animation-delay: 0.7s; }
         @keyframes floatBottle { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(1deg); } }
@@ -163,7 +178,18 @@
         .letter-form button:hover { background: #801322; }
         .letter-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
 
-        .timer-display { background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%); border-radius: 2.5rem; padding: 2rem 1.5rem; border: 2px solid #ebd6c8; text-align: center; position: relative; overflow: hidden; max-width: 500px; margin: 0 auto; }
+        /* TIMER */
+        .timer-display {
+            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
+            border-radius: 2.5rem;
+            padding: 2rem 1.5rem;
+            border: 2px solid #ebd6c8;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            max-width: 500px;
+            margin: 0 auto;
+        }
         .timer-display::before { content: '⏳'; position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1; transform: rotate(15deg); }
         .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 8px; }
         .timer-block { background: rgba(255,248,240,0.6); border-radius: 1.5rem; padding: 12px 4px; border: 1px solid #ebd6c8; }
@@ -176,7 +202,16 @@
         .timer-controls button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-family: 'Georgia', serif; }
         .timer-controls button:hover { background: #801322; transform: scale(1.02); }
 
-        .wish-archive { display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; padding-right: 4px; margin-bottom: 15px; }
+        /* BIRTHDAY */
+        .wish-archive {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
         .wish-archive::-webkit-scrollbar { width: 4px; }
         .wish-archive::-webkit-scrollbar-track { background: #2a130c; border-radius: 10px; }
         .wish-archive::-webkit-scrollbar-thumb { background: #f4d068; border-radius: 10px; }
@@ -194,6 +229,7 @@
         .birthday-input-area button:hover { background: #801322; }
         .wish-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
 
+        /* GALLERY */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 15px; }
         .gallery-item { background: rgba(255,248,240,0.92); border-radius: 1.5rem; padding: 15px; border: 2px solid rgba(244,208,104,0.2); transition: all 0.4s ease; text-align: center; position: relative; overflow: hidden; }
         .gallery-item:hover { transform: translateY(-8px) scale(1.02); border-color: #f4d068; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
@@ -213,9 +249,38 @@
         .add-photo-area .btn-add { background: #a71d31; border: none; border-radius: 3rem; padding: 10px 24px; color: #fff; cursor: pointer; font-family: 'Georgia', serif; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .add-photo-area .btn-add:hover { background: #801322; transform: scale(1.02); }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; z-index: 3000; padding: 20px; }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 3000;
+            padding: 20px;
+        }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .letter-paper { background: linear-gradient(160deg, #fbf7ee 0%, #f5efe6 60%, #ede5d8 100%); width: 100%; max-width: 420px; padding: 35px 30px 30px 30px; border-radius: 8px; box-shadow: 0 30px 50px rgba(0,0,0,0.4); position: relative; transform: scale(0.7) translateY(50px); transition: all 0.5s cubic-bezier(0.175,0.885,0.32,1.275); border: 1px solid #e0d8c3; max-height: 90vh; overflow-y: auto; }
+        .letter-paper {
+            background: linear-gradient(160deg, #fbf7ee 0%, #f5efe6 60%, #ede5d8 100%);
+            width: 100%;
+            max-width: 420px;
+            padding: 35px 30px 30px 30px;
+            border-radius: 8px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+            position: relative;
+            transform: scale(0.7) translateY(50px);
+            transition: all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+            border: 1px solid #e0d8c3;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
         .modal-overlay.active .letter-paper { transform: scale(1) translateY(0); }
         .letter-paper .close-btn { position: absolute; top: 12px; right: 18px; background: none; border: none; font-size: 1.6rem; color: #888; cursor: pointer; transition: 0.2s; z-index: 5; }
         .letter-paper .close-btn:hover { color: #333; transform: rotate(90deg); }
@@ -241,10 +306,6 @@
             .site-header { flex-direction: column; align-items: start; gap: 10px; }
             .nav-icons { gap: 1.2rem; font-size: 1.2rem; }
             .site-title h1 { font-size: 2rem; }
-            .book { width: 220px; height: 320px; }
-            .book-cover .main-title { font-size: 1.8rem; }
-            .book-inside .page-text { font-size: 1.6rem; }
-            .book-inside .sunflower-icon { font-size: 3rem; }
             .timer-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .timer-block .number { font-size: 2rem; }
             .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
@@ -253,10 +314,7 @@
             .bottle-glass { width: 45px; height: 65px; }
         }
         @media (max-width: 400px) {
-            .book { width: 180px; height: 260px; }
-            .book-cover .main-title { font-size: 1.4rem; }
-            .book-inside .page-text { font-size: 1.2rem; }
-            .book-inside .sunflower-icon { font-size: 2.5rem; }
+            .timer-grid { grid-template-columns: repeat(2, 1fr); }
             .timer-block .number { font-size: 1.6rem; }
             .gallery-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .gallery-item .photo-placeholder { height: 120px; font-size: 2.5rem; }
@@ -264,30 +322,6 @@
     </style>
 </head>
 <body>
-
-    <!-- INTRO SCREEN -->
-    <div id="intro-screen">
-        <div class="book-wrapper" onclick="openBook()">
-            <div class="book" id="book">
-                <div class="book-spine"></div>
-                <div class="book-cover">
-                    <div class="gold-frame"></div>
-                    <div class="main-title">I Keep U<br><span class="highlight">Forever</span></div>
-                    <div class="divider"></div>
-                    <div class="subtitle-bottom">I Love U Naziff</div>
-                    <div class="click-hint">✦ click to open ✦</div>
-                </div>
-                <div class="book-pages"><div class="page-block"></div></div>
-                <div class="book-inside">
-                    <div class="sunflower-icon">🌻</div>
-                    <div class="gold-line"></div>
-                    <div class="page-text">for you, <span class="highlight">always</span></div>
-                    <div class="gold-line"></div>
-                    <div class="page-sub">every moment, a memory</div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- TOAST -->
     <div class="save-toast" id="saveToast">
@@ -415,40 +449,7 @@
     <!-- ========================================== -->
     <script>
         // =====================================================
-        // 1. OPEN BOOK
-        // =====================================================
-        function openBook() {
-            const book = document.getElementById('book');
-            const introScreen = document.getElementById('intro-screen');
-            const mainContent = document.getElementById('main-content');
-            book.classList.add('open');
-            setTimeout(() => {
-                const sunflowers = ['🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻'];
-                for (let i = 0; i < 250; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('sunflower-particle');
-                    particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = 200 + Math.random() * 800;
-                    particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
-                    particle.style.setProperty('--my', Math.sin(angle) * distance - 100 + 'px');
-                    particle.style.setProperty('--mr', (Math.random() * 720 - 360) + 'deg');
-                    particle.style.left = window.innerWidth / 2 + 'px';
-                    particle.style.top = window.innerHeight / 2 + 'px';
-                    particle.style.fontSize = (2 + Math.random() * 3.5) + 'rem';
-                    document.body.appendChild(particle);
-                    setTimeout(() => particle.remove(), 3000);
-                }
-                setTimeout(() => {
-                    introScreen.classList.add('hidden');
-                    mainContent.classList.add('visible');
-                    showToast('🌻 Welcome!');
-                }, 1200);
-            }, 1500);
-        }
-
-        // =====================================================
-        // 2. TOAST
+        // 1. TOAST
         // =====================================================
         const toast = document.getElementById('saveToast');
         const toastMessage = document.getElementById('toastMessage');
@@ -461,7 +462,7 @@
         }
 
         // =====================================================
-        // 3. GET DATE
+        // 2. GET DATE
         // =====================================================
         function getCurrentDate() {
             const now = new Date();
@@ -469,7 +470,7 @@
         }
 
         // =====================================================
-        // 4. TAB NAVIGATION
+        // 3. TAB NAVIGATION
         // =====================================================
         const tabs = document.querySelectorAll('.nav-tab');
         const pages = {
@@ -489,7 +490,7 @@
         });
 
         // =====================================================
-        // 5. CLOUD SYNC
+        // 4. CLOUD SYNC
         // =====================================================
         // 🔴 TUNAI KEDUA-DUA INI DENGAN DATA JSONBIN ANDA!
         const BIN_ID = '6a5e1473f5f4af5e29a78528';
@@ -579,7 +580,7 @@
         setInterval(saveToCloud, 30000);
 
         // =====================================================
-        // 6. TIMER
+        // 5. TIMER
         // =====================================================
         const daysEl = document.getElementById('daysDisplay');
         const hoursEl = document.getElementById('hoursDisplay');
@@ -647,7 +648,7 @@
         updateTimer();
 
         // =====================================================
-        // 7. BOTTLES (LETTERS)
+        // 6. BOTTLES (LETTERS)
         // =====================================================
         const bottleFeed = document.getElementById('bottleFeed');
         const letterForm = document.getElementById('letterForm');
@@ -774,7 +775,7 @@
         loadBottles();
 
         // =====================================================
-        // 8. BIRTHDAY WISHES
+        // 7. BIRTHDAY WISHES
         // =====================================================
         const wishArchive = document.getElementById('wishArchive');
         const wishInput = document.getElementById('birthdayWishInput');
@@ -852,7 +853,7 @@
         loadWishes();
 
         // =====================================================
-        // 9. GALLERY - POSTIMAGES URL
+        // 8. GALLERY - POSTIMAGES URL (FIXED!)
         // =====================================================
         const galleryGrid = document.getElementById('galleryGrid');
         const newPhotoName = document.getElementById('newPhotoName');
@@ -866,25 +867,46 @@
             return photoEmojis[Math.floor(Math.random() * photoEmojis.length)]; 
         }
 
-function loadGallery() {
-    const saved = localStorage.getItem('galleryPhotos');
-    if (saved) {
-        try {
-            const photos = JSON.parse(saved);
-            galleryGrid.innerHTML = '';
-            if (photos.length === 0) {
-                galleryGrid.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
+        function loadGallery() {
+            const saved = localStorage.getItem('galleryPhotos');
+            if (saved) {
+                try {
+                    const photos = JSON.parse(saved);
+                    galleryGrid.innerHTML = '';
+                    if (photos.length === 0) {
+                        galleryGrid.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
+                    } else {
+                        photos.forEach((p, i) => {
+                            const imageSrc = p.image || '';
+                            const hasImage = imageSrc && imageSrc.trim() !== '';
+                            
+                            const item = document.createElement('div');
+                            item.className = 'gallery-item';
+                            item.innerHTML = `
+                                <div class="photo-placeholder">
+                                    ${hasImage ? `<img src="${imageSrc}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='${p.emoji || '📸'}<span class=\\'upload-hint\\'>Image not found</span>'">` : `${p.emoji || '📸'}<span class="upload-hint">No image</span>`}
+                                </div>
+                                <div class="photo-label">${p.name}</div>
+                                <div class="photo-date">${p.date || '✧'}</div>
+                                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${i})"><i class="fas fa-times"></i></button>
+                            `;
+                            galleryGrid.appendChild(item);
+                        });
+                    }
+                } catch (e) { console.error('Load gallery error:', e); }
             } else {
-                photos.forEach((p, i) => {
-                    // Check if image is a URL (Postimages) or Base64
-                    const isUrl = p.image && (p.image.startsWith('http') || p.image.startsWith('https'));
-                    const imageSrc = p.image || '';
-                    
+                const defaults = [
+                    { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
+                    { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
+                    { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
+                ];
+                localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
+                defaults.forEach((p, i) => {
                     const item = document.createElement('div');
                     item.className = 'gallery-item';
                     item.innerHTML = `
                         <div class="photo-placeholder">
-                            ${imageSrc ? `<img src="${imageSrc}" alt="${p.name}" loading="lazy">` : `${p.emoji || '📸'}<span class="upload-hint">No image</span>`}
+                            ${p.emoji || '📸'}<span class="upload-hint">No image</span>
                         </div>
                         <div class="photo-label">${p.name}</div>
                         <div class="photo-date">${p.date || '✧'}</div>
@@ -892,49 +914,10 @@ function loadGallery() {
                     `;
                     galleryGrid.appendChild(item);
                 });
+                syncAllToCloud();
             }
-        } catch (e) { console.error('Load gallery error:', e); }
-    } else {
-        // Default photos
-        const defaults = [
-            { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
-            { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
-            { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
-        ];
-        localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
-        defaults.forEach((p, i) => {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.innerHTML = `
-                <div class="photo-placeholder">
-                    ${p.emoji || '📸'}<span class="upload-hint">No image</span>
-                </div>
-                <div class="photo-label">${p.name}</div>
-                <div class="photo-date">${p.date || '✧'}</div>
-                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${i})"><i class="fas fa-times"></i></button>
-            `;
-            galleryGrid.appendChild(item);
-        });
-        syncAllToCloud();
-    }
-}
-
-        function addPhotoToDOM(name, date, emoji, image, index) {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            const hasImage = image && image.trim() !== '';
-            item.innerHTML = `
-                <div class="photo-placeholder">
-                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">No image</span>`}
-                </div>
-                <div class="photo-label">${name}</div>
-                <div class="photo-date">${date || '✧'}</div>
-                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${index})"><i class="fas fa-times"></i></button>
-            `;
-            galleryGrid.appendChild(item);
         }
 
-        // ===== ADD PHOTO WITH URL =====
         addPhotoBtn.addEventListener('click', function() {
             const name = newPhotoName.value.trim();
             if (!name) { 
@@ -958,7 +941,6 @@ function loadGallery() {
             localStorage.setItem('galleryPhotos', JSON.stringify(photos));
             syncAllToCloud();
 
-            // Clear inputs
             newPhotoName.value = '';
             newPhotoDate.value = '';
             newPhotoUrl.value = '';
@@ -967,7 +949,6 @@ function loadGallery() {
             showToast('📸 Photo added & synced!');
         });
 
-        // ===== DELETE PHOTO =====
         window.deletePhoto = function(index) {
             const saved = localStorage.getItem('galleryPhotos');
             if (!saved) return;
@@ -986,7 +967,7 @@ function loadGallery() {
         loadGallery();
 
         // =====================================================
-        // 10. DATA MANAGEMENT
+        // 9. DATA MANAGEMENT
         // =====================================================
         window.viewAllData = function() {
             const data = {
@@ -1059,23 +1040,22 @@ function loadGallery() {
         };
 
         // =====================================================
-        // 11. KEYBOARD SHORTCUT
+        // 10. KEYBOARD SHORTCUT
         // =====================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') { closeModal(); }
         });
 
         // =====================================================
-        // 12. START - LOAD FROM CLOUD
+        // 11. START - LOAD FROM CLOUD
         // =====================================================
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => { loadFromCloud(); }, 1000);
+            setTimeout(() => { loadFromCloud(); }, 500);
         });
 
         console.log('📖 I Keep U Forever');
         console.log('💾 Data auto-saves to localStorage and cloud');
         console.log('✅ All sections sync: Letters, Wishes, Photos, Timer');
-        console.log('🔑 BIN_ID:', BIN_ID);
         console.log('📸 Use Postimages for photos: https://postimages.org');
     </script>
 </body>

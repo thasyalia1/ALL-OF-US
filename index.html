@@ -3,280 +3,991 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You</title>
+    <title>🌻 For You · Museum of Memory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* --- General Styling --- */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: 'Georgia', serif;
-            background-color: #a71d31; /* Deep rich red from the video */
+            background-color: #a71d31;
             overflow-x: hidden;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        /* --- Intro Screen (Gift Box) --- */
+        /* ===== INTRO SCREEN ===== */
         #intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #a71d31;
+            background: linear-gradient(135deg, #a71d31 0%, #7a1525 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            transition: opacity 1s ease-out, visibility 1s;
+            z-index: 1000;
+            transition: opacity 1.5s ease-out, visibility 1.5s ease-out;
         }
-        .gift-box {
-            font-size: 100px;
+
+        #intro-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-sunflower {
+            font-size: 120px;
             cursor: pointer;
             transition: transform 0.3s ease;
             animation: bounce 2s infinite;
-        }
-        .gift-box:hover {
-            transform: scale(1.1);
-        }
-        .intro-text {
-            color: #fff;
-            font-size: 2rem;
-            margin-top: 20px;
-            font-style: italic;
-            opacity: 0.8;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
         }
 
-        /* --- Flower Explosion Particles --- */
-        .flower-particle {
+        .intro-sunflower:hover {
+            transform: scale(1.15) rotate(10deg);
+        }
+
+        .intro-title {
+            color: #f4d068;
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 3.5rem;
+            margin-top: 20px;
+            text-shadow: 3px 3px 0px #4a0710;
+            letter-spacing: 3px;
+        }
+
+        .intro-sub {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-style: italic;
+            letter-spacing: 5px;
+        }
+
+        /* ===== SUNFLOWER PARTICLES ===== */
+        .sunflower-particle {
             position: fixed;
             pointer-events: none;
-            z-index: 9;
-            font-size: 2.5rem;
-            animation: flyOut 1.5s forwards ease-out;
+            z-index: 999;
+            font-size: 2.8rem;
+            animation: flyOut 1.8s forwards ease-out;
         }
 
-        /* --- Main Scrapbook Container --- */
+        @keyframes flyOut {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.3) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--mx), var(--my)) scale(1.8) rotate(var(--mr));
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* ===== SCRAPBOOK ===== */
         #scrapbook {
-            max-width: 1200px;
+            max-width: 1280px;
             width: 95%;
             margin: 40px auto;
-            background-color: #801322; /* Slightly darker board background */
+            background: rgba(128, 19, 34, 0.95);
             border: 12px double #f4d068;
             border-radius: 10px;
             padding: 40px 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out 0.5s, transform 1s ease-out 0.5s;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
         }
+
         #scrapbook.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed rgba(244, 208, 104, 0.3);
+            padding-bottom: 1.5rem;
+        }
+
+        .site-title h1 {
+            font-size: 2.6rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #f4d068;
+            font-family: 'Brush Script MT', cursive, sans-serif;
+        }
+        .site-title h1 i {
+            color: #f4d068;
+            margin-right: 10px;
+        }
+        .site-title small {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(244, 208, 104, 0.6);
+            letter-spacing: 3px;
+            margin-top: 4px;
+            font-family: 'Georgia', serif;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 1.4rem;
+            color: rgba(244, 208, 104, 0.6);
+        }
+        .nav-icons i {
+            transition: 0.2s;
+            cursor: default;
+        }
+        .nav-icons i:hover {
+            color: #f4d068;
+            transform: scale(1.1);
+        }
+
+        /* ===== GRID ===== */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 1rem;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: rgba(255, 248, 240, 0.92);
+            backdrop-filter: blur(4px);
+            border-radius: 2.5rem;
+            padding: 1.8rem 1.5rem 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(244, 208, 104, 0.2);
+            transition: 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 252, 248, 0.95);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e7d7cb;
+            padding-bottom: 0.8rem;
+        }
+        .card-header i {
+            font-size: 2rem;
+            color: #a71d31;
+            width: 2.6rem;
+            text-align: center;
+        }
+        .card-header h2 {
+            font-weight: 400;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: #3e2c24;
+        }
+        .card-header .badge {
+            margin-left: auto;
+            font-size: 0.6rem;
+            background: #dccfc4;
+            padding: 2px 12px;
+            border-radius: 3rem;
+            color: #5a4a3e;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .save-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2b2b2b;
+            color: #f4d068;
+            padding: 14px 28px;
+            border-radius: 3rem;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 2000;
+            border: 1px solid #f4d068;
+        }
+        .save-notification.show {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* --- Scrapbook Elements --- */
-        .card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 3px 5px 15px rgba(0,0,0,0.3);
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: scale(1.02) rotate(1deg);
-        }
-
-        /* Polaroid Photo Style */
-        .polaroid {
-            background: #fff;
-            padding: 15px 15px 40px 15px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
-            transform: rotate(-2deg);
+        /* ===== TIMER ===== */
+        .timer-display {
+            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
+            border-radius: 2.5rem;
+            padding: 1.8rem 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #ebd6c8;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        .polaroid img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border: 1px solid #ddd;
-        }
-        .polaroid .caption {
-            margin-top: 15px;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            font-size: 1.8rem;
-            color: #333;
-        }
-
-        /* Letter Section */
-        .letter-card {
-            grid-column: span 2;
-            background: #2b2b2b; /* Dark charcoal letter paper from video */
-            color: #f4eade;
-            border-left: 5px solid #bd9244;
-            padding: 30px;
-            border-radius: 5px;
-        }
-        @media (max-width: 768px) {
-            .letter-card { grid-column: span 1; }
-        }
-        .letter-header {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            border-bottom: 1px dashed #666;
-            padding-bottom: 10px;
-            color: #bd9244;
-        }
-        .letter-body {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            white-space: pre-line;
+        .timer-display::before {
+            content: '⏳';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 4rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
         }
 
-        /* Sticker/Decoration Layouts */
-        .decorations {
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px 0 8px;
+        }
+        .timer-block {
+            background: rgba(255, 248, 240, 0.6);
+            border-radius: 1.5rem;
+            padding: 10px 4px;
+            border: 1px solid #ebd6c8;
+        }
+        .timer-block .number {
+            font-size: 2.4rem;
+            font-weight: 300;
+            color: #633f2e;
+            font-family: 'Georgia', serif;
+            line-height: 1.2;
+            display: block;
+        }
+        .timer-block .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8a7567;
+            font-weight: 400;
+        }
+
+        .timer-sub {
+            font-size: 0.85rem;
+            color: #a68b7a;
+            margin-top: 10px;
+            font-style: italic;
+            border-top: 1px dashed #dccfc4;
+            padding-top: 12px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .timer-controls input {
+            background: rgba(255, 245, 235, 0.7);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            width: 140px;
+        }
+        .timer-controls input:focus {
+            outline: 2px solid #dbbcae;
+            background: #fffbf7;
+        }
+        .timer-controls button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 20px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .timer-controls button:hover {
+            background: #801322;
+            transform: scale(1.02);
+        }
+
+        /* ===== LETTER ARCHIVE ===== */
+        .letter-archive {
             display: flex;
             flex-direction: column;
+            gap: 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
+        .letter-archive::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-archive::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .letter-archive::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
+        .letter-entry {
+            background: #fcf3ea;
+            padding: 14px 16px;
+            border-radius: 1.5rem;
+            border-left: 4px solid #a71d31;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        .letter-entry .letter-text {
+            font-style: italic;
+            color: #3e2c24;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .letter-entry .letter-meta {
+            display: flex;
             justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            color: #8f7668;
+        }
+        .letter-entry .delete-letter {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            transition: 0.2s;
+        }
+        .letter-entry .delete-letter:hover {
+            opacity: 1;
+            color: #c0392b;
+        }
+
+        .letter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .letter-form textarea {
+            background: rgba(255, 245, 235, 0.7);
+            border: 1px solid #decfc2;
+            border-radius: 2rem;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 70px;
+            transition: 0.2s;
+            color: #3e2c24;
+        }
+        .letter-form textarea:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+        .letter-form .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .letter-form input {
+            flex: 1;
+            background: rgba(255, 245, 235, 0.7);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+        .letter-form input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+        .letter-form button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 20px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 6px;
+            font-size: 0.95rem;
         }
-        .sticker {
-            font-size: 4rem;
-            filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.3));
-            animation: float 4s ease-in-out infinite;
+        .letter-form button:hover {
+            background: #801322;
         }
-        .sticker:nth-child(2) { animation-delay: 1.5s; }
 
-        .headline {
-            grid-column: 1 / -1;
+        .letter-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        /* ===== BIRTHDAY WISH ARCHIVE ===== */
+        .wish-archive {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
+        .wish-archive::-webkit-scrollbar {
+            width: 4px;
+        }
+        .wish-archive::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .wish-archive::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
+        .wish-entry {
+            background: #f9efe6;
+            padding: 12px 16px;
+            border-radius: 1.5rem;
+            border-left: 4px solid #f4d068;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        .wish-entry .wish-text {
+            color: #3e2c24;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .wish-entry .wish-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            font-size: 0.7rem;
+            color: #8f7668;
+        }
+        .wish-entry .delete-wish {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            transition: 0.2s;
+        }
+        .wish-entry .delete-wish:hover {
+            opacity: 1;
+            color: #c0392b;
+        }
+
+        .birthday-input-area {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .birthday-input-area input {
+            flex: 1;
+            background: rgba(255, 245, 235, 0.6);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 8px 16px;
+            min-width: 140px;
+        }
+        .birthday-input-area input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+        .birthday-input-area button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 500;
+        }
+        .birthday-input-area button:hover {
+            background: #801322;
+        }
+
+        .wish-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        /* ===== MEMORY GALLERY ===== */
+        .memory-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .memory-gallery::-webkit-scrollbar {
+            width: 4px;
+        }
+        .memory-gallery::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .memory-gallery::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
+        .memory-item {
+            background: #f7eee6;
+            border-radius: 2rem;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid #e3d0c0;
+            transition: 0.15s;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .memory-item:hover {
+            background: #f3e7dc;
+            border-color: #c9b2a0;
+        }
+        .memory-item i {
+            font-size: 1.7rem;
+            color: #a71d31;
+            width: 2.2rem;
             text-align: center;
+        }
+        .memory-item .mem-content {
+            flex: 1;
+        }
+        .memory-item .mem-content strong {
+            display: block;
+            font-weight: 500;
+            color: #3e2c24;
+        }
+        .memory-item .mem-content small {
+            color: #8a7567;
+            font-size: 0.8rem;
+        }
+        .memory-item .mem-year {
+            background: #dccfc4;
+            padding: 4px 14px;
+            border-radius: 3rem;
+            font-size: 0.8rem;
+            color: #3f3229;
+            font-weight: 400;
+        }
+        .memory-item .delete-memory {
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0 4px;
+            transition: 0.2s;
+            opacity: 0.5;
+        }
+        .memory-item .delete-memory:hover {
+            opacity: 1;
+            color: #c0392b;
+        }
+
+        .add-memory {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .add-memory input {
+            flex: 1;
+            background: rgba(255, 245, 235, 0.6);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 10px 16px;
+            min-width: 140px;
+        }
+        .add-memory input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+        .add-memory button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 24px;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+        .add-memory button:hover {
+            background: #801322;
+        }
+
+        .memory-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 6px;
+        }
+
+        /* ===== DATA MANAGEMENT ===== */
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .data-actions button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(244, 208, 104, 0.3);
+            border-radius: 3rem;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
             color: #f4d068;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            font-size: 3.5rem;
-            text-shadow: 3px 3px 0px #4a0710;
-            margin-bottom: 10px;
+            font-family: 'Georgia', serif;
+        }
+        .data-actions button:hover {
+            background: rgba(244, 208, 104, 0.2);
+            transform: scale(1.02);
+        }
+        .data-actions .btn-danger {
+            color: #ff6b6b;
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+        .data-actions .btn-danger:hover {
+            background: rgba(255, 107, 107, 0.15);
         }
 
-        /* --- Animations --- */
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        /* ===== FOOTER ===== */
+        .site-footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(244, 208, 104, 0.2);
+            padding-top: 1.8rem;
+            font-size: 0.9rem;
+            color: rgba(244, 208, 104, 0.5);
+            letter-spacing: 1px;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(3deg); }
-        }
-        @keyframes flyOut {
-            0% { opacity: 1; transform: translate(0, 0) scale(0.3); }
-            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(1.5) rotate(var(--mr)); }
+        .site-footer i {
+            margin: 0 4px;
+            color: #f4d068;
         }
 
-        /* Utility class to hide elements */
-        .hidden {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none;
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 650px) {
+            .site-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 10px;
+            }
+            .nav-icons {
+                gap: 1.2rem;
+                font-size: 1.2rem;
+            }
+            .timer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .timer-block .number {
+                font-size: 1.8rem;
+            }
+            .intro-title {
+                font-size: 2.2rem;
+            }
+            .intro-sunflower {
+                font-size: 80px;
+            }
+            .site-title h1 {
+                font-size: 2rem;
+            }
+        }
+        @media (max-width: 400px) {
+            .timer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .timer-block .number {
+                font-size: 1.4rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Intro Screen: The Gift Box -->
+    <!-- ==========================================
+    INTRO SCREEN - SUNFLOWER OPENING
+    ========================================== -->
     <div id="intro-screen">
-        <div class="gift-box" onclick="openGift(event)">🎁</div>
-        <div class="intro-text">For Jim</div>
+        <div class="intro-sunflower" onclick="openGift()">🌻</div>
+        <div class="intro-title">For You</div>
+        <div class="intro-sub">✦ click the sunflower ✦</div>
     </div>
 
-    <!-- Main Scrapbook content -->
+    <!-- ==========================================
+    SAVE NOTIFICATION
+    ========================================== -->
+    <div class="save-notification" id="saveNotification">
+        <i class="fas fa-check-circle"></i> Saved! 💾
+    </div>
+
+    <!-- ==========================================
+    MAIN SCRAPBOOK
+    ========================================== -->
     <div id="scrapbook">
-        <h1 class="headline">Favorite Person</h1>
 
-        <!-- Photo 1 -->
-        <div class="polaroid">
-            <!-- Replace URL with your own photo -->
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500" alt="Us">
-            <div class="caption">Mementos & Heartbeats</div>
-        </div>
-
-        <!-- The Interactive Letter -->
-        <div class="card letter-card">
-            <div class="letter-header">
-                <strong>From:</strong> Joey <br>
-                <strong>For:</strong> Jim
+        <!-- HEADER -->
+        <header class="site-header">
+            <div class="site-title">
+                <h1><i class="fas fa-feather-alt"></i> unsent · memory</h1>
+                <small>✧ letters · birthday · museum · timer ✧</small>
             </div>
-            <div class="letter-body">
-                My love, I wish I could take whatever is hurting you and carry it for a while so you could rest. Please don't worry about anything else right now. 
-                
-                Your only job is to sleep, drink plenty of water, let yourself be soft, and come back to me when your body is ready. I'm thinking of you every hour, wanting to smooth your hair back and sit quietly beside you. You don't have to be brave or cheerful for me. Just get better slowly, gently, completely. 
-                
-                I love you, and I'll be right here.
+            <div class="nav-icons">
+                <i class="fas fa-hourglass-half" title="days without you"></i>
+                <i class="fas fa-envelope" title="unsent letters"></i>
+                <i class="fas fa-birthday-cake" title="happy birthday"></i>
+                <i class="fas fa-archway" title="museum of memory"></i>
             </div>
+        </header>
+
+        <!-- GRID -->
+        <div class="memory-grid">
+
+            <!-- 1. TIMER -->
+            <section class="card">
+                <div class="card-header">
+                    <i class="fas fa-hourglass-half"></i>
+                    <h2>without you</h2>
+                    <span class="badge"><i class="fas fa-save"></i> saved</span>
+                </div>
+                <div class="timer-display">
+                    <div class="timer-grid">
+                        <div class="timer-block">
+                            <span class="number" id="daysDisplay">0</span>
+                            <span class="label">days</span>
+                        </div>
+                        <div class="timer-block">
+                            <span class="number" id="hoursDisplay">0</span>
+                            <span class="label">hours</span>
+                        </div>
+                        <div class="timer-block">
+                            <span class="number" id="minutesDisplay">0</span>
+                            <span class="label">minutes</span>
+                        </div>
+                        <div class="timer-block">
+                            <span class="number" id="secondsDisplay">0</span>
+                            <span class="label">seconds</span>
+                        </div>
+                    </div>
+                    <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
+                </div>
+                <div class="timer-controls">
+                    <input type="date" id="startDateInput">
+                    <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
+                </div>
+            </section>
+
+            <!-- 2. UNSENT LETTERS -->
+            <section class="card">
+                <div class="card-header">
+                    <i class="fas fa-pen-fancy"></i>
+                    <h2>unsent</h2>
+                    <span class="badge"><i class="fas fa-archive"></i> archive</span>
+                </div>
+                <div class="letter-archive" id="letterArchive"></div>
+                <form class="letter-form" id="letterForm">
+                    <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
+                    <div class="form-row">
+                        <input type="text" id="letterSign" placeholder="Your signature" value="— always yours">
+                        <button type="submit"><i class="fas fa-paper-plane"></i> seal</button>
+                    </div>
+                </form>
+                <div class="letter-count" id="letterCount">0 letters</div>
+            </section>
+
+            <!-- 3. BIRTHDAY WISHES -->
+            <section class="card">
+                <div class="card-header">
+                    <i class="fas fa-birthday-cake"></i>
+                    <h2>birthday</h2>
+                    <span class="badge"><i class="fas fa-archive"></i> archive</span>
+                </div>
+                <div class="wish-archive" id="wishArchive"></div>
+                <div class="birthday-input-area">
+                    <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
+                    <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
+                </div>
+                <div class="wish-count" id="wishCount">0 wishes</div>
+            </section>
+
+            <!-- 4. MUSEUM OF MEMORY -->
+            <section class="card">
+                <div class="card-header">
+                    <i class="fas fa-landmark"></i>
+                    <h2>museum</h2>
+                    <span class="badge"><i class="fas fa-archive"></i> archive</span>
+                </div>
+                <div class="memory-gallery" id="memoryGallery"></div>
+                <div class="add-memory">
+                    <input type="text" id="newMemoryName" placeholder="📸 Memory name...">
+                    <input type="text" id="newMemoryYear" placeholder="Year" style="max-width:80px;">
+                    <button id="addMemoryBtn"><i class="fas fa-plus-circle"></i> add</button>
+                </div>
+                <div class="memory-count" id="memoryCount">0 memories</div>
+            </section>
         </div>
 
-        <!-- Stickers & Fun Stuff Section -->
-        <div class="decorations">
-            <div class="sticker">🧸</div>
-            <div class="sticker">💐</div>
-            <div class="sticker">🐈‍⬛ 🐈</div>
+        <!-- DATA MANAGEMENT -->
+        <div style="margin-top: 2.5rem; text-align: center; border-top: 1px solid rgba(244, 208, 104, 0.2); padding-top: 1.5rem;">
+            <div class="data-actions">
+                <button onclick="viewAllData()"><i class="fas fa-eye"></i> View All Data</button>
+                <button onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
+                <button onclick="importData()"><i class="fas fa-upload"></i> Import Data</button>
+                <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
+            </div>
+            <p style="font-size: 0.7rem; color: rgba(244, 208, 104, 0.4); margin-top: 10px;">
+                <i class="fas fa-database"></i> All data stored in your browser. Nothing is lost on refresh!
+            </p>
         </div>
 
-        <!-- Photo 2 -->
-        <div class="polaroid" style="transform: rotate(3deg);">
-            <!-- Replace URL with your own photo -->
-            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500" alt="Memories">
-            <div class="caption">Grow your own garden ✨</div>
-        </div>
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <i class="fas fa-heart"></i>  for the ones we keep close  <i class="fas fa-heart"></i>
+            <br><small style="font-size: 0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
+        </footer>
     </div>
 
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT                                -->
+    <!-- ========================================== -->
     <script>
-        function openGift(event) {
+        // =====================================================
+        // OPENING - SUNFLOWER EXPLOSION
+        // =====================================================
+        function openGift() {
             const introScreen = document.getElementById('intro-screen');
             const scrapbook = document.getElementById('scrapbook');
-            
-            // Flower bouquet emojis to simulate the video burst effect
-            const flowers = ['🌸', '🌹', '🌺', '🌻', '🌼', '🌷', '💐', '💝'];
-            
-            // Create particle explosion based on click position
-            for (let i = 0; i < 40; i++) {
+
+            const sunflowers = ['🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻'];
+
+            for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
-                particle.classList.add('flower-particle');
-                particle.textContent = flowers[Math.floor(Math.random() * flowers.length)];
-                
-                // Random vector trajectories for explosion look
+                particle.classList.add('sunflower-particle');
+                particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
+
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 100 + Math.random() * 300;
-                const mx = Math.cos(angle) * distance + 'px';
-                const my = Math.sin(angle) * distance + 'px';
-                const mr = Math.random() * 360 + 'deg';
-                
-                particle.style.setProperty('--mx', mx);
-                particle.style.setProperty('--my', my);
-                particle.style.setProperty('--mr', mr);
-                
-                particle.style.left = event.clientX + 'px';
-                particle.style.top = event.clientY + 'px';
-                
+                const distance = 150 + Math.random() * 350;
+                particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--my', Math.sin(angle) * distance - 100 + 'px');
+                particle.style.setProperty('--mr', Math.random() * 360 + 'deg');
+                particle.style.left = window.innerWidth / 2 + 'px';
+                particle.style.top = window.innerHeight / 2 + 'px';
+
                 document.body.appendChild(particle);
-                
-                // Remove particle from DOM after animation completes
-                setTimeout(() => particle.remove(), 1500);
+                setTimeout(() => particle.remove(), 1800);
             }
 
-            // Hide the gift intro screen and fade in the scrapbook layout
             introScreen.classList.add('hidden');
             scrapbook.classList.add('visible');
+            setTimeout(() => showSaved('🌻 Welcome! Everything you write is saved forever!'), 1000);
         }
-    </script>
-</body>
-</html>
+
+        // =====================================================
+        // NOTIFICATION
+        // =====================================================
+        const notification = document.getElementById('saveNotification');
+        let notificationTimeout;
+
+        function showSaved(message = 'Saved! 💾') {
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            notification.classList.add('show');
+            clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => notification.classList.remove('show'), 2000);
+        }
+
+        function getCurrentDate() {
+            const now = new Date();
+            return now.toLocaleString('en-US', { 
+                month: 'short', day: 'numeric', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        // =====================================================
+        // 1. TIMER
+        // =====================================================
+        const daysDisplay = document.getElementById('daysDisplay');
+        const hoursDisplay = document.getElementById('hoursDisplay');
+        const minutesDisplay = document.getElementById('minutesDisplay');
+        const secondsDisplay = document.getElementById('secondsDisplay');
+        const timerSubMessage = document.getElementById('timerSubMessage');
+        const startDateInput = document.getElementById('startDateInput');
+        const updateTimerBtn = document.getElementById('updateTimerBtn');
+
+        function loadTimerDate() {
+            const saved = localStorage.getItem('timerStartDate');
+            if (saved) {
+                startDateInput.value = saved;
+            } else {
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+                const year = thirtyDaysAgo.getFullYear();
+                const month = String(thirtyDaysAgo.getMonth() + 1).padStart(2, '0');
+                const day = String(thirtyDaysAgo.getDate()).padStart(2, '0');
+                startDateInput.value = `${year}-${month}-${day}`;
+                localStorage.setItem('timerStartDate', startDateInput.value);
+            }
+        }
+        loadTimerDate();
+
+        function getTimeDifference(startDate, endDate) {
+            const diffMs = Math.abs(endDate - startDate);
+            const seconds = Math.floor(diffMs / 1000);
+            const minutes = Math.floor(seconds / 60);
+           

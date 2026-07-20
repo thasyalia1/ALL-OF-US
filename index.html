@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌻 To Love Despite It All</title>
+    <title>📖 Will Always Love You</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Georgia', serif; background-color: #a71d31; overflow-x: hidden; min-height: 100vh; }
+        body { font-family: 'Georgia', serif; background-color: #2c1810; overflow-x: hidden; min-height: 100vh; }
 
-        /* ===== INTRO SCREEN - FULL SUNFLOWER CURTAIN ===== */
+        /* ===== INTRO SCREEN - AESTHETIC BOOK ===== */
         #intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #a71d31 0%, #7a1525 100%);
+            background: linear-gradient(135deg, #1a0f0a 0%, #2c1810 50%, #1a0f0a 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            overflow: hidden;
             transition: opacity 1.5s ease-out, visibility 1.5s ease-out;
         }
         #intro-screen.hidden {
@@ -31,93 +30,170 @@
             pointer-events: none;
         }
 
-        /* Full screen sunflower curtain */
-        .sunflower-curtain {
+        /* Book container */
+        .book-container {
+            perspective: 1500px;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+        .book-container:hover {
+            transform: scale(1.02);
+        }
+
+        .book {
+            position: relative;
+            width: 320px;
+            height: 450px;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .book.open {
+            transform: rotateY(-180deg);
+        }
+
+        /* Book cover */
+        .book-cover {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: linear-gradient(145deg, #3d1f16, #2a130c);
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: 
+                inset -5px 0 20px rgba(0,0,0,0.5),
+                8px 8px 30px rgba(0,0,0,0.6),
+                0 0 50px rgba(139, 69, 19, 0.1);
+            backface-visibility: hidden;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 0;
-            overflow: hidden;
-            z-index: 1;
+            padding: 30px;
+            border: 2px solid #8B6914;
+            border-left: 8px solid #a67c2e;
         }
 
-        .curtain-flower {
-            font-size: 4rem;
-            opacity: 0.9;
-            animation: curtainFloat 3s ease-in-out infinite;
-            flex: 0 0 auto;
-            margin: -5px;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
-            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .curtain-flower:nth-child(odd) { animation-delay: 0.5s; }
-        .curtain-flower:nth-child(3n) { animation-delay: 1s; }
-        .curtain-flower:nth-child(5n+2) { animation-delay: 1.5s; }
-        .curtain-flower:nth-child(7n+4) { animation-delay: 2s; }
-
-        @keyframes curtainFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            50% { transform: translateY(-15px) rotate(5deg) scale(1.05); }
-        }
-
-        /* Curtain parting animation - flowers move outward */
-        .curtain-flower.part-left {
-            transform: translateX(-200vw) rotate(-20deg) scale(0.5) !important;
-            opacity: 0 !important;
-            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1), opacity 2s ease !important;
-        }
-        .curtain-flower.part-right {
-            transform: translateX(200vw) rotate(20deg) scale(0.5) !important;
-            opacity: 0 !important;
-            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1), opacity 2s ease !important;
-        }
-        .curtain-flower.part-center {
-            transform: translateY(-200vh) scale(0.3) !important;
-            opacity: 0 !important;
-            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1), opacity 2s ease !important;
-        }
-
-        /* Center text on intro */
-        .intro-center {
-            position: relative;
-            z-index: 2;
-            text-align: center;
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            border-radius: 2px;
             pointer-events: none;
         }
-        .intro-center .click-hint {
-            font-size: 1.2rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: 20px;
-            letter-spacing: 5px;
-            animation: pulse 2s infinite;
-            cursor: pointer;
-            pointer-events: auto;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+
+        .book-cover .title {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 3.2rem;
+            color: #f4d068;
+            text-shadow: 0 2px 10px rgba(244, 208, 104, 0.3);
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 10px;
         }
 
-        /* Clickable sunflower in center */
-        .intro-sunflower-btn {
-            font-size: 100px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            animation: bounce 2s infinite;
-            filter: drop-shadow(0 10px 40px rgba(255, 215, 0, 0.5));
-            pointer-events: auto;
-            position: relative;
-            z-index: 3;
+        .book-cover .subtitle {
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            color: rgba(244, 208, 104, 0.6);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            font-weight: 300;
         }
-        .intro-sunflower-btn:hover {
-            transform: scale(1.15) rotate(10deg);
+
+        .book-cover .ornament {
+            font-size: 2rem;
+            color: #8B6914;
+            margin: 15px 0;
+            opacity: 0.5;
+        }
+
+        .book-cover .click-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.8rem;
+            color: rgba(244, 208, 104, 0.3);
+            letter-spacing: 3px;
+            animation: pulseHint 2s infinite;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Book inside (back cover) */
+        .book-inside {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5e6d3, #e8d5c0);
+            border-radius: 4px 12px 12px 4px;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            border: 2px solid #8B6914;
+            border-right: 8px solid #a67c2e;
+            box-shadow: inset 5px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .book-inside .page-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2.5rem;
+            color: #3d1f16;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .book-inside .page-sub {
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            color: #8a6d5a;
+            margin-top: 15px;
+            letter-spacing: 3px;
+            font-style: italic;
+        }
+
+        .book-inside .sunflower-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: spinSunflower 4s linear infinite;
+        }
+
+        @keyframes spinSunflower {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== SUNFLOWER PARTICLES AFTER BOOK OPENS ===== */
+        .sunflower-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            font-size: 2.8rem;
+            animation: flyOutBook 2s forwards ease-out;
+        }
+
+        @keyframes flyOutBook {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.3) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--mx), var(--my)) scale(1.8) rotate(var(--mr));
+            }
         }
 
         /* ===== SCRAPBOOK ===== */
@@ -125,7 +201,7 @@
             max-width: 1280px;
             width: 95%;
             margin: 40px auto;
-            background: rgba(128, 19, 34, 0.95);
+            background: rgba(44, 24, 16, 0.95);
             border: 12px double #f4d068;
             border-radius: 10px;
             padding: 40px 20px;
@@ -184,7 +260,7 @@
             margin-top: 1rem;
         }
 
-        /* CARDS - No badges! */
+        /* CARDS */
         .card {
             background: rgba(255,248,240,0.92);
             backdrop-filter: blur(4px);
@@ -243,6 +319,289 @@
         }
         .save-notification.show { opacity: 1; transform: translateY(0); }
 
+        /* ============================================
+           LETTER IN A BOTTLE - SPECIAL ANIMATION
+           ============================================ */
+        .letter-bottle-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
+        .letter-bottle-container::-webkit-scrollbar { width: 4px; }
+        .letter-bottle-container::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
+        .letter-bottle-container::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+
+        /* Bottle entry - like a glass bottle with letter inside */
+        .bottle-entry {
+            background: linear-gradient(145deg, rgba(255,248,240,0.9), rgba(235,225,215,0.9));
+            padding: 14px 16px;
+            border-radius: 2rem 2rem 2rem 2rem;
+            border: 2px solid rgba(139, 69, 19, 0.2);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: floatBottle 3s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1), inset 0 0 30px rgba(255,255,255,0.1);
+        }
+
+        .bottle-entry:nth-child(odd) { animation-delay: 0.5s; }
+        .bottle-entry:nth-child(3n) { animation-delay: 1s; }
+
+        @keyframes floatBottle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+        }
+
+        .bottle-entry:hover {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            border-color: #a67c2e;
+        }
+
+        /* Bottle icon and letter inside */
+        .bottle-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .bottle-icon {
+            font-size: 2.5rem;
+            transition: transform 0.5s ease;
+            flex-shrink: 0;
+        }
+
+        .bottle-entry:hover .bottle-icon {
+            transform: rotate(-15deg) scale(1.1);
+        }
+
+        .bottle-text {
+            flex: 1;
+        }
+        .bottle-text .letter-preview {
+            font-style: italic;
+            color: #3e2c24;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .bottle-text .letter-signature {
+            font-size: 0.7rem;
+            color: #8f7668;
+            margin-top: 2px;
+        }
+
+        .bottle-date {
+            font-size: 0.65rem;
+            color: #a68b7a;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* When bottle is clicked - open to reveal full letter */
+        .bottle-entry.open-bottle {
+            background: linear-gradient(145deg, #fcf3ea, #f5e6da);
+            border-color: #a71d31;
+            transform: scale(1.03);
+            box-shadow: 0 10px 40px rgba(167, 29, 49, 0.15);
+            padding: 20px 20px;
+        }
+
+        .bottle-entry.open-bottle .bottle-icon {
+            transform: rotate(0deg) scale(1.2);
+            animation: shakeBottle 0.5s ease;
+        }
+
+        @keyframes shakeBottle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-20deg); }
+            75% { transform: rotate(20deg); }
+        }
+
+        .bottle-entry.open-bottle .letter-preview {
+            white-space: normal;
+            font-size: 0.95rem;
+            color: #3e2c24;
+            font-style: italic;
+            line-height: 1.6;
+            padding: 8px 0;
+            border-top: 1px dashed #dccfc4;
+            margin-top: 6px;
+        }
+
+        .bottle-entry .delete-letter {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.3;
+            transition: 0.2s;
+            z-index: 5;
+        }
+        .bottle-entry .delete-letter:hover {
+            opacity: 1;
+            color: #c0392b;
+        }
+
+        /* Letter form */
+        .letter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .letter-form textarea {
+            background: rgba(255,245,235,0.7);
+            border: 1px solid #decfc2;
+            border-radius: 2rem;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 70px;
+            transition: 0.2s;
+            color: #3e2c24;
+        }
+        .letter-form textarea:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+        .letter-form .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .letter-form input {
+            flex: 1;
+            background: rgba(255,245,235,0.7);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+        .letter-form input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+        .letter-form button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 20px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+        }
+        .letter-form button:hover { background: #801322; }
+
+        .letter-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        /* ===== BIRTHDAY WISHES ===== */
+        .wish-archive {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
+        .wish-archive::-webkit-scrollbar { width: 4px; }
+        .wish-archive::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
+        .wish-archive::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+
+        .wish-entry {
+            background: #f9efe6;
+            padding: 12px 16px;
+            border-radius: 1.5rem;
+            border-left: 4px solid #f4d068;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        .wish-entry .wish-text { color: #3e2c24; font-size: 0.9rem; line-height: 1.5; }
+        .wish-entry .wish-meta { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.7rem; color: #8f7668; }
+        .wish-entry .delete-wish { position: absolute; top: 4px; right: 10px; background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 0.9rem; opacity: 0.4; transition: 0.2s; }
+        .wish-entry .delete-wish:hover { opacity: 1; color: #c0392b; }
+
+        .birthday-input-area { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .birthday-input-area input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 8px 16px; min-width: 140px; }
+        .birthday-input-area input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
+        .birthday-input-area button { background: #a71d31; border: none; border-radius: 3rem; padding: 6px 18px; cursor: pointer; color: #fff; font-weight: 500; }
+        .birthday-input-area button:hover { background: #801322; }
+        .wish-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
+
+        /* ===== MUSEUM ===== */
+        .memory-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .memory-gallery::-webkit-scrollbar { width: 4px; }
+        .memory-gallery::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
+        .memory-gallery::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+
+        .memory-item {
+            background: #f7eee6;
+            border-radius: 2rem;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid #e3d0c0;
+            transition: 0.15s;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .memory-item:hover { background: #f3e7dc; border-color: #c9b2a0; }
+        .memory-item i { font-size: 1.7rem; color: #a71d31; width: 2.2rem; text-align: center; }
+        .memory-item .mem-content { flex: 1; }
+        .memory-item .mem-content strong { display: block; font-weight: 500; color: #3e2c24; }
+        .memory-item .mem-content small { color: #8a7567; font-size: 0.8rem; }
+        .memory-item .mem-year { background: #dccfc4; padding: 4px 14px; border-radius: 3rem; font-size: 0.8rem; color: #3f3229; font-weight: 400; }
+        .memory-item .delete-memory { background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 1.1rem; padding: 0 4px; transition: 0.2s; opacity: 0.5; }
+        .memory-item .delete-memory:hover { opacity: 1; color: #c0392b; }
+
+        .add-memory { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .add-memory input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 16px; min-width: 140px; }
+        .add-memory input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
+        .add-memory button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 24px; color: #fff; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .add-memory button:hover { background: #801322; }
+        .memory-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 6px; }
+
+        /* ===== DATA MANAGEMENT ===== */
+        .data-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+        .data-actions button { background: rgba(255,255,255,0.1); border: 1px solid rgba(244,208,104,0.3); border-radius: 3rem; padding: 8px 20px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; color: #f4d068; font-family: 'Georgia', serif; }
+        .data-actions button:hover { background: rgba(244,208,104,0.2); transform: scale(1.02); }
+        .data-actions .btn-danger { color: #ff6b6b; border-color: rgba(255,107,107,0.3); }
+        .data-actions .btn-danger:hover { background: rgba(255,107,107,0.15); }
+
+        /* FOOTER */
+        .site-footer { margin-top: 3rem; text-align: center; border-top: 1px solid rgba(244,208,104,0.2); padding-top: 1.8rem; font-size: 0.9rem; color: rgba(244,208,104,0.5); letter-spacing: 1px; }
+        .site-footer i { margin: 0 4px; color: #f4d068; }
+
         /* TIMER */
         .timer-display {
             background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
@@ -266,79 +625,6 @@
         .timer-controls button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .timer-controls button:hover { background: #801322; transform: scale(1.02); }
 
-        /* LETTER ARCHIVE */
-        .letter-archive { display: flex; flex-direction: column; gap: 12px; max-height: 320px; overflow-y: auto; padding-right: 4px; margin-bottom: 15px; }
-        .letter-archive::-webkit-scrollbar { width: 4px; }
-        .letter-archive::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .letter-archive::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
-        .letter-entry { background: #fcf3ea; padding: 14px 16px; border-radius: 1.5rem; border-left: 4px solid #a71d31; animation: fadeIn 0.3s ease; position: relative; }
-        .letter-entry .letter-text { font-style: italic; color: #3e2c24; font-size: 0.9rem; line-height: 1.5; white-space: pre-wrap; }
-        .letter-entry .letter-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: #8f7668; }
-        .letter-entry .delete-letter { position: absolute; top: 6px; right: 10px; background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 0.9rem; opacity: 0.4; transition: 0.2s; }
-        .letter-entry .delete-letter:hover { opacity: 1; color: #c0392b; }
-
-        .letter-form { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
-        .letter-form textarea { background: rgba(255,245,235,0.7); border: 1px solid #decfc2; border-radius: 2rem; padding: 14px 16px; font-size: 0.95rem; resize: vertical; min-height: 70px; transition: 0.2s; color: #3e2c24; }
-        .letter-form textarea:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .letter-form .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .letter-form input { flex: 1; background: rgba(255,245,235,0.7); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 16px; font-size: 0.9rem; min-width: 120px; }
-        .letter-form input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .letter-form button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; font-size: 0.95rem; }
-        .letter-form button:hover { background: #801322; }
-        .letter-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
-
-        /* WISH ARCHIVE */
-        .wish-archive { display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto; padding-right: 4px; margin-bottom: 15px; }
-        .wish-archive::-webkit-scrollbar { width: 4px; }
-        .wish-archive::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .wish-archive::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
-        .wish-entry { background: #f9efe6; padding: 12px 16px; border-radius: 1.5rem; border-left: 4px solid #f4d068; animation: fadeIn 0.3s ease; position: relative; }
-        .wish-entry .wish-text { color: #3e2c24; font-size: 0.9rem; line-height: 1.5; }
-        .wish-entry .wish-meta { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.7rem; color: #8f7668; }
-        .wish-entry .delete-wish { position: absolute; top: 4px; right: 10px; background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 0.9rem; opacity: 0.4; transition: 0.2s; }
-        .wish-entry .delete-wish:hover { opacity: 1; color: #c0392b; }
-
-        .birthday-input-area { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-        .birthday-input-area input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 8px 16px; min-width: 140px; }
-        .birthday-input-area input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .birthday-input-area button { background: #a71d31; border: none; border-radius: 3rem; padding: 6px 18px; cursor: pointer; color: #fff; font-weight: 500; }
-        .birthday-input-area button:hover { background: #801322; }
-        .wish-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
-
-        /* MEMORY GALLERY */
-        .memory-gallery { display: flex; flex-direction: column; gap: 12px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
-        .memory-gallery::-webkit-scrollbar { width: 4px; }
-        .memory-gallery::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .memory-gallery::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
-        .memory-item { background: #f7eee6; border-radius: 2rem; padding: 12px 18px; display: flex; align-items: center; gap: 14px; border: 1px solid #e3d0c0; transition: 0.15s; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .memory-item:hover { background: #f3e7dc; border-color: #c9b2a0; }
-        .memory-item i { font-size: 1.7rem; color: #a71d31; width: 2.2rem; text-align: center; }
-        .memory-item .mem-content { flex: 1; }
-        .memory-item .mem-content strong { display: block; font-weight: 500; color: #3e2c24; }
-        .memory-item .mem-content small { color: #8a7567; font-size: 0.8rem; }
-        .memory-item .mem-year { background: #dccfc4; padding: 4px 14px; border-radius: 3rem; font-size: 0.8rem; color: #3f3229; font-weight: 400; }
-        .memory-item .delete-memory { background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 1.1rem; padding: 0 4px; transition: 0.2s; opacity: 0.5; }
-        .memory-item .delete-memory:hover { opacity: 1; color: #c0392b; }
-
-        .add-memory { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-        .add-memory input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 16px; min-width: 140px; }
-        .add-memory input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .add-memory button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 24px; color: #fff; cursor: pointer; transition: 0.2s; font-weight: 500; }
-        .add-memory button:hover { background: #801322; }
-        .memory-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 6px; }
-
-        /* DATA MANAGEMENT */
-        .data-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
-        .data-actions button { background: rgba(255,255,255,0.1); border: 1px solid rgba(244,208,104,0.3); border-radius: 3rem; padding: 8px 20px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; color: #f4d068; font-family: 'Georgia', serif; }
-        .data-actions button:hover { background: rgba(244,208,104,0.2); transform: scale(1.02); }
-        .data-actions .btn-danger { color: #ff6b6b; border-color: rgba(255,107,107,0.3); }
-        .data-actions .btn-danger:hover { background: rgba(255,107,107,0.15); }
-
-        /* FOOTER */
-        .site-footer { margin-top: 3rem; text-align: center; border-top: 1px solid rgba(244,208,104,0.2); padding-top: 1.8rem; font-size: 0.9rem; color: rgba(244,208,104,0.5); letter-spacing: 1px; }
-        .site-footer i { margin: 0 4px; color: #f4d068; }
-
         /* RESPONSIVE */
         @media (max-width: 650px) {
             .site-header { flex-direction: column; align-items: start; gap: 10px; }
@@ -346,31 +632,41 @@
             .timer-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
             .timer-block .number { font-size: 1.8rem; }
             .site-title h1 { font-size: 2rem; }
-            .curtain-flower { font-size: 2.5rem; }
-            .intro-sunflower-btn { font-size: 70px; }
+            .book { width: 250px; height: 350px; }
+            .book-cover .title { font-size: 2.5rem; }
+            .book-inside .page-text { font-size: 2rem; }
         }
         @media (max-width: 400px) {
             .timer-grid { grid-template-columns: repeat(2, 1fr); }
             .timer-block .number { font-size: 1.4rem; }
-            .curtain-flower { font-size: 2rem; }
+            .book { width: 200px; height: 280px; }
+            .book-cover .title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
 <!-- ==========================================
-INTRO SCREEN - FULL SUNFLOWER CURTAIN
+INTRO SCREEN - AESTHETIC BOOK
 ========================================== -->
 <div id="intro-screen">
-    <!-- Full screen sunflower curtain -->
-    <div class="sunflower-curtain" id="sunflowerCurtain">
-        <!-- Generated by JavaScript -->
-    </div>
-
-    <!-- Center content -->
-    <div class="intro-center">
-        <div class="intro-sunflower-btn" onclick="openCurtain()">🌻</div>
-        <div class="click-hint">✦ click to open ✦</div>
+    <div class="book-container" onclick="openBook()">
+        <div class="book" id="book">
+            <!-- Cover -->
+            <div class="book-cover">
+                <div class="ornament">✦</div>
+                <div class="title">Will Always<br>Love You</div>
+                <div class="ornament">✦</div>
+                <div class="subtitle">a collection of memories</div>
+                <div class="click-hint">✦ click to open ✦</div>
+            </div>
+            <!-- Inside -->
+            <div class="book-inside">
+                <div class="sunflower-icon">🌻</div>
+                <div class="page-text">for you, always</div>
+                <div class="page-sub">every moment, a memory</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -418,18 +714,20 @@ INTRO SCREEN - FULL SUNFLOWER CURTAIN
             </div>
         </section>
 
-        <!-- LETTERS -->
+        <!-- LETTERS - BOTTLE STYLE -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-pen-fancy"></i>
                 <h2>to hope</h2>
             </div>
-            <div class="letter-archive" id="letterArchive"></div>
+            <div class="letter-bottle-container" id="letterArchive">
+                <!-- Letters in bottles loaded here -->
+            </div>
             <form class="letter-form" id="letterForm">
                 <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
                 <div class="form-row">
                     <input type="text" id="letterSign" placeholder="Your signature" value="— always yours">
-                    <button type="submit"><i class="fas fa-paper-plane"></i> seal</button>
+                    <button type="submit"><i class="fas fa-paper-plane"></i> put in bottle</button>
                 </div>
             </form>
             <div class="letter-count" id="letterCount">0 letters</div>
@@ -489,62 +787,45 @@ INTRO SCREEN - FULL SUNFLOWER CURTAIN
 <!-- ========================================== -->
 <script>
 // =====================================================
-// 1. CREATE SUNFLOWER CURTAIN
+// 1. OPEN BOOK - WITH SUNFLOWER EXPLOSION
 // =====================================================
-function createCurtain() {
-    const curtain = document.getElementById('sunflowerCurtain');
-    const sunflowers = ['🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻'];
-    const total = 200; // Lots of flowers to fill screen
-
-    for (let i = 0; i < total; i++) {
-        const flower = document.createElement('span');
-        flower.className = 'curtain-flower';
-        flower.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
-        flower.style.fontSize = (2 + Math.random() * 3) + 'rem';
-        flower.style.setProperty('--delay', Math.random() * 3 + 's');
-        flower.dataset.index = i;
-        curtain.appendChild(flower);
-    }
-}
-createCurtain();
-
-// =====================================================
-// 2. OPEN CURTAIN - LIKE THEATER CURTAINS PARTING
-// =====================================================
-function openCurtain() {
+function openBook() {
+    const book = document.getElementById('book');
     const introScreen = document.getElementById('intro-screen');
     const scrapbook = document.getElementById('scrapbook');
-    const flowers = document.querySelectorAll('.curtain-flower');
 
-    const total = flowers.length;
+    // Open the book
+    book.classList.add('open');
 
-    flowers.forEach((flower, i) => {
-        // Determine which direction based on position
-        const position = i / total; // 0 to 1
-        const delay = Math.random() * 0.3;
-
-        if (position < 0.33) {
-            // Left third - move left
-            setTimeout(() => flower.classList.add('part-left'), delay * 1000);
-        } else if (position < 0.66) {
-            // Middle third - move up
-            setTimeout(() => flower.classList.add('part-center'), delay * 1000);
-        } else {
-            // Right third - move right
-            setTimeout(() => flower.classList.add('part-right'), delay * 1000);
-        }
-    });
-
-    // Hide intro and show scrapbook after curtain opens
+    // Sunflower explosion after book opens
     setTimeout(() => {
-        introScreen.classList.add('hidden');
-        scrapbook.classList.add('visible');
-        showSaved('🌻 Welcome! Everything you write is saved forever!');
-    }, 2500);
+        const sunflowers = ['🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻'];
+        for (let i = 0; i < 60; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('sunflower-particle');
+            particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 100 + Math.random() * 400;
+            particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
+            particle.style.setProperty('--my', Math.sin(angle) * distance - 200 + 'px');
+            particle.style.setProperty('--mr', Math.random() * 360 + 'deg');
+            particle.style.left = window.innerWidth / 2 + 'px';
+            particle.style.top = window.innerHeight / 2 + 'px';
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 2000);
+        }
+
+        // After explosion, show scrapbook
+        setTimeout(() => {
+            introScreen.classList.add('hidden');
+            scrapbook.classList.add('visible');
+            showSaved('🌻 Welcome! Everything you write is saved forever!');
+        }, 1000);
+    }, 1200);
 }
 
 // =====================================================
-// 3. NOTIFICATION
+// 2. NOTIFICATION
 // =====================================================
 const notification = document.getElementById('saveNotification');
 let notifTimeout;
@@ -562,7 +843,7 @@ function getCurrentDate() {
 }
 
 // =====================================================
-// 4. TIMER
+// 3. TIMER
 // =====================================================
 const daysEl = document.getElementById('daysDisplay');
 const hoursEl = document.getElementById('hoursDisplay');
@@ -628,13 +909,16 @@ setInterval(updateTimer, 1000);
 updateTimer();
 
 // =====================================================
-// 5. LETTERS
+// 4. LETTERS IN BOTTLES
 // =====================================================
 const letterArchive = document.getElementById('letterArchive');
 const letterForm = document.getElementById('letterForm');
 const letterContent = document.getElementById('letterContent');
 const letterSign = document.getElementById('letterSign');
 const letterCount = document.getElementById('letterCount');
+
+// Track which bottle is open
+let openBottleIndex = -1;
 
 function loadLetters() {
     const saved = localStorage.getItem('letterArchive');
@@ -643,45 +927,90 @@ function loadLetters() {
             const letters = JSON.parse(saved);
             letterArchive.innerHTML = '';
             if (letters.length === 0) {
-                letterArchive.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No letters yet. Write your first one! ✨</p>`;
+                letterArchive.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No letters in bottles yet. Write one! 🍾</p>`;
             } else {
-                letters.forEach((l, i) => addLetterToDOM(l.text, l.sign, l.date, i));
+                letters.forEach((l, i) => addBottleToDOM(l.text, l.sign, l.date, i));
             }
             updateLetterCount();
         } catch(e) { console.error(e); }
     } else {
         const defaultLetter = { text: 'some words stay folded, waiting for the right silence.', sign: '— always yours', date: getCurrentDate() };
         localStorage.setItem('letterArchive', JSON.stringify([defaultLetter]));
-        addLetterToDOM(defaultLetter.text, defaultLetter.sign, defaultLetter.date, 0);
+        addBottleToDOM(defaultLetter.text, defaultLetter.sign, defaultLetter.date, 0);
         updateLetterCount();
     }
 }
 
-function addLetterToDOM(text, sign, date, index) {
+function addBottleToDOM(text, sign, date, index) {
     const entry = document.createElement('div');
-    entry.className = 'letter-entry';
+    entry.className = 'bottle-entry';
+    entry.dataset.index = index;
+
+    // Truncate preview text
+    const preview = text.length > 60 ? text.substring(0, 60) + '...' : text;
+
     entry.innerHTML = `
-        <div class="letter-text">“${text}”</div>
-        <div class="letter-meta">
-            <span class="letter-sign">${sign || '— always yours'}</span>
-            <span class="letter-date">${date || getCurrentDate()}</span>
+        <button class="delete-letter" onclick="event.stopPropagation(); deleteLetter(${index})"><i class="fas fa-times"></i></button>
+        <div class="bottle-content" onclick="toggleBottle(${index})">
+            <div class="bottle-icon">🍾</div>
+            <div class="bottle-text">
+                <div class="letter-preview">“${preview}”</div>
+                <div class="letter-signature">${sign || '— always yours'}</div>
+            </div>
+            <div class="bottle-date">${date || getCurrentDate()}</div>
         </div>
-        <button class="delete-letter" onclick="deleteLetter(${index})"><i class="fas fa-times"></i></button>
     `;
     letterArchive.appendChild(entry);
 }
 
 function updateLetterCount() {
-    const count = letterArchive.querySelectorAll('.letter-entry').length;
-    letterCount.textContent = `${count} ${count === 1 ? 'letter' : 'letters'}`;
+    const count = letterArchive.querySelectorAll('.bottle-entry').length;
+    letterCount.textContent = `${count} ${count === 1 ? 'bottle' : 'bottles'}`;
 }
+
+// Toggle bottle open/close to reveal full letter
+window.toggleBottle = function(index) {
+    const bottles = letterArchive.querySelectorAll('.bottle-entry');
+    const saved = localStorage.getItem('letterArchive');
+    if (!saved) return;
+    const letters = JSON.parse(saved);
+
+    bottles.forEach((bottle, i) => {
+        if (i === index) {
+            bottle.classList.toggle('open-bottle');
+            if (bottle.classList.contains('open-bottle')) {
+                // Show full letter
+                const textPreview = bottle.querySelector('.letter-preview');
+                textPreview.textContent = `“${letters[index].text}”`;
+                textPreview.style.whiteSpace = 'normal';
+                // Change icon to opened bottle
+                bottle.querySelector('.bottle-icon').textContent = '📩';
+            } else {
+                // Reset to preview
+                const textPreview = bottle.querySelector('.letter-preview');
+                const fullText = letters[index].text;
+                const preview = fullText.length > 60 ? fullText.substring(0, 60) + '...' : fullText;
+                textPreview.textContent = `“${preview}”`;
+                bottle.querySelector('.bottle-icon').textContent = '🍾';
+            }
+        } else {
+            // Close other bottles
+            bottle.classList.remove('open-bottle');
+            const textPreview = bottle.querySelector('.letter-preview');
+            const fullText = letters[i].text;
+            const preview = fullText.length > 60 ? fullText.substring(0, 60) + '...' : fullText;
+            textPreview.textContent = `“${preview}”`;
+            bottle.querySelector('.bottle-icon').textContent = '🍾';
+        }
+    });
+};
 
 window.deleteLetter = function(index) {
     const saved = localStorage.getItem('letterArchive');
     if (!saved) return;
     const letters = JSON.parse(saved);
     if (index >= 0 && index < letters.length) {
-        if (confirm('Delete this letter?')) {
+        if (confirm('Delete this letter from the bottle?')) {
             letters.splice(index, 1);
             localStorage.setItem('letterArchive', JSON.stringify(letters));
             loadLetters();
@@ -701,13 +1030,18 @@ letterForm.addEventListener('submit', function(e) {
     localStorage.setItem('letterArchive', JSON.stringify(letters));
     letterContent.value = '';
     loadLetters();
-    showSaved('Letter saved! 📝');
+    showSaved('Letter saved in a bottle! 🍾');
+    // Auto-scroll to show new bottle
+    const bottles = letterArchive.querySelectorAll('.bottle-entry');
+    if (bottles.length > 0) {
+        bottles[bottles.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 });
 
 loadLetters();
 
 // =====================================================
-// 6. BIRTHDAY WISHES
+// 5. BIRTHDAY WISHES
 // =====================================================
 const wishArchive = document.getElementById('wishArchive');
 const wishInput = document.getElementById('birthdayWishInput');
@@ -786,7 +1120,7 @@ wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wish
 loadWishes();
 
 // =====================================================
-// 7. MEMORY MUSEUM
+// 6. MEMORY MUSEUM
 // =====================================================
 const memoryGallery = document.getElementById('memoryGallery');
 const memName = document.getElementById('newMemoryName');
@@ -873,7 +1207,7 @@ memName.addEventListener('keypress', function(e) { if (e.key === 'Enter') memBtn
 loadMemories();
 
 // =====================================================
-// 8. DATA MANAGEMENT
+// 7. DATA MANAGEMENT
 // =====================================================
 window.viewAllData = function() {
     const data = {

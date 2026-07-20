@@ -825,7 +825,7 @@ console.log('⏳ Timer system started!');
         loadBottles();
 
 // =====================================================
-// 7. BIRTHDAY - FLOATING MESSAGES + PASSWORD!
+// 7. BIRTHDAY - FLOATING MESSAGES + CUSTOM PASSWORD!
 // =====================================================
 const wishArchive = document.getElementById('wishArchive');
 const wishInput = document.getElementById('birthdayWishInput');
@@ -833,21 +833,144 @@ const wishBtn = document.getElementById('updateBirthdayBtn');
 const wishCount = document.getElementById('wishCount');
 
 // ===== PASSWORD CONFIG =====
-const BIRTHDAY_PASSWORD = 'naziff22'; // << TUKAR PASSWORD DI SINI!
+let BIRTHDAY_PASSWORD = localStorage.getItem('birthdayPassword') || '';
+let isUnlocked = localStorage.getItem('birthdayUnlocked') === 'true';
 
-let isUnlocked = false;
+// ===== SHOW PASSWORD SETUP =====
+function showPasswordSetup() {
+    const overlay = document.createElement('div');
+    overlay.id = 'passwordSetupOverlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        padding: 20px;
+    `;
+    
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        background: linear-gradient(160deg, #fbf7ee, #f5efe6);
+        max-width: 400px;
+        width: 100%;
+        padding: 35px 30px;
+        border-radius: 2rem;
+        box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+        border: 1px solid #e0d8c3;
+        text-align: center;
+        font-family: 'Georgia', serif;
+        animation: fadeIn 0.3s ease;
+    `;
+    modal.innerHTML = `
+        <div style="font-size: 3rem; margin-bottom: 10px;">🔐</div>
+        <h3 style="color: #2c1810; margin-bottom: 8px;">Set Birthday Password</h3>
+        <p style="color: #8f7668; font-size: 0.9rem; margin-bottom: 20px;">
+            Set a password to protect your birthday messages
+        </p>
+        <input type="text" id="newPasswordInput" placeholder="Enter new password..." style="
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 3rem;
+            border: 1px solid #decfc2;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            outline: none;
+            background: rgba(255,245,235,0.7);
+            transition: 0.2s;
+        " onfocus="this.style.outline='2px solid #a71d31';this.style.background='#fffbf7'" onblur="this.style.outline='none';this.style.background='rgba(255,245,235,0.7)'">
+        <div style="display: flex; gap: 10px;">
+            <button onclick="savePassword()" style="
+                flex: 1;
+                background: #a71d31;
+                border: none;
+                border-radius: 3rem;
+                padding: 10px 20px;
+                color: #fff;
+                cursor: pointer;
+                font-family: 'Georgia', serif;
+                font-size: 0.95rem;
+                transition: 0.2s;
+            " onmouseover="this.style.background='#801322'" onmouseout="this.style.background='#a71d31'">
+                ✅ Set Password
+            </button>
+            <button onclick="skipPassword()" style="
+                flex: 1;
+                background: transparent;
+                border: 1px solid #decfc2;
+                border-radius: 3rem;
+                padding: 10px 20px;
+                color: #8f7668;
+                cursor: pointer;
+                font-family: 'Georgia', serif;
+                font-size: 0.95rem;
+                transition: 0.2s;
+            " onmouseover="this.style.background='#f0e6de'" onmouseout="this.style.background='transparent'">
+                ⏭️ Skip
+            </button>
+        </div>
+        <p style="color: #a18b7d; font-size: 0.7rem; margin-top: 12px;">
+            💡 You can change password anytime
+        </p>
+    `;
+    
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+}
 
-// ===== CHECK PASSWORD =====
-function checkPassword() {
-    const saved = localStorage.getItem('birthdayUnlocked');
-    if (saved === 'true') {
+// ===== SAVE PASSWORD =====
+function savePassword() {
+    const input = document.getElementById('newPasswordInput');
+    const password = input.value.trim();
+    
+    if (!password) {
+        alert('⚠️ Please enter a password!');
+        return;
+    }
+    
+    BIRTHDAY_PASSWORD = password;
+    localStorage.setItem('birthdayPassword', password);
+    localStorage.setItem('birthdayUnlocked', 'false');
+    isUnlocked = false;
+    
+    document.getElementById('passwordSetupOverlay').remove();
+    loadWishes();
+    showToast('🔐 Password set successfully!');
+}
+
+// ===== SKIP PASSWORD =====
+function skipPassword() {
+    BIRTHDAY_PASSWORD = '';
+    localStorage.removeItem('birthdayPassword');
+    localStorage.setItem('birthdayUnlocked', 'true');
+    isUnlocked = true;
+    
+    document.getElementById('passwordSetupOverlay').remove();
+    loadWishes();
+    showToast('💝 Birthday messages unlocked! (No password)');
+}
+
+// ===== CHECK IF PASSWORD NEEDED =====
+function checkPasswordNeeded() {
+    // If password already set and unlocked, return true
+    if (BIRTHDAY_PASSWORD && isUnlocked) return true;
+    // If no password set, auto-unlock
+    if (!BIRTHDAY_PASSWORD) {
+        localStorage.setItem('birthdayUnlocked', 'true');
         isUnlocked = true;
         return true;
     }
     return false;
 }
 
-// ===== SHOW PASSWORD PROMPT =====
+// ===== PROMPT PASSWORD =====
 function promptPassword() {
     const input = prompt('🔐 Enter password to unlock birthday messages:');
     if (input === BIRTHDAY_PASSWORD) {
@@ -863,15 +986,115 @@ function promptPassword() {
     return false;
 }
 
+// ===== CHANGE PASSWORD =====
+function changePassword() {
+    const current = prompt('🔐 Enter current password:');
+    if (current !== BIRTHDAY_PASSWORD) {
+        alert('❌ Wrong password!');
+        return;
+    }
+    
+    const newPass = prompt('🔐 Enter new password:');
+    if (!newPass || newPass.trim() === '') {
+        alert('⚠️ Password cannot be empty!');
+        return;
+    }
+    
+    BIRTHDAY_PASSWORD = newPass.trim();
+    localStorage.setItem('birthdayPassword', BIRTHDAY_PASSWORD);
+    localStorage.setItem('birthdayUnlocked', 'false');
+    isUnlocked = false;
+    loadWishes();
+    showToast('🔐 Password changed successfully!');
+}
+
+// ===== REMOVE PASSWORD =====
+function removePassword() {
+    if (!BIRTHDAY_PASSWORD) {
+        alert('No password set!');
+        return;
+    }
+    
+    const current = prompt('🔐 Enter current password to remove:');
+    if (current !== BIRTHDAY_PASSWORD) {
+        alert('❌ Wrong password!');
+        return;
+    }
+    
+    BIRTHDAY_PASSWORD = '';
+    localStorage.removeItem('birthdayPassword');
+    localStorage.setItem('birthdayUnlocked', 'true');
+    isUnlocked = true;
+    loadWishes();
+    showToast('🔓 Password removed!');
+}
+
 // ===== LOAD WISHES =====
 function loadWishes() {
     const saved = localStorage.getItem('wishArchive');
-    const isUnlockedCheck = checkPassword();
     
-    wishArchive.innerHTML = '';
+    // If no password set, show setup
+    if (!BIRTHDAY_PASSWORD && !localStorage.getItem('birthdayPassword')) {
+        wishArchive.innerHTML = '';
+        const setupScreen = document.createElement('div');
+        setupScreen.style.cssText = `
+            background: linear-gradient(145deg, rgba(255,248,240,0.95), rgba(235,225,215,0.95));
+            padding: 35px 25px;
+            border-radius: 2rem;
+            border: 2px solid rgba(244,208,104,0.3);
+            text-align: center;
+            color: #3e2c24;
+            font-family: 'Georgia', serif;
+            animation: floatBottle 3s ease-in-out infinite;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        `;
+        setupScreen.innerHTML = `
+            <div style="font-size: 4rem; margin-bottom: 12px;">🔐</div>
+            <div style="font-size: 1.3rem; font-weight: 600; color: #a71d31;">Setup Password Protection</div>
+            <div style="font-size: 0.9rem; color: #8f7668; margin: 10px 0;">
+                ✨ Set a password to protect your birthday messages ✨
+            </div>
+            <button onclick="showPasswordSetup()" style="
+                margin-top: 15px;
+                background: #a71d31;
+                border: none;
+                border-radius: 3rem;
+                padding: 10px 30px;
+                color: #fff;
+                cursor: pointer;
+                font-family: 'Georgia', serif;
+                font-size: 0.95rem;
+                transition: 0.2s;
+            " onmouseover="this.style.background='#801322'" onmouseout="this.style.background='#a71d31'">
+                🔑 Set Password
+            </button>
+            <div style="margin-top: 10px;">
+                <button onclick="skipPassword()" style="
+                    background: transparent;
+                    border: none;
+                    color: #8f7668;
+                    cursor: pointer;
+                    font-family: 'Georgia', serif;
+                    font-size: 0.8rem;
+                    text-decoration: underline;
+                ">Skip (no password)</button>
+            </div>
+        `;
+        wishArchive.appendChild(setupScreen);
+        
+        wishInput.disabled = true;
+        wishInput.placeholder = '🔒 Setup password first';
+        wishInput.style.opacity = '0.5';
+        wishBtn.disabled = true;
+        wishBtn.style.opacity = '0.5';
+        wishBtn.style.cursor = 'not-allowed';
+        wishCount.textContent = '🔒 Setup required';
+        return;
+    }
     
-    // If not unlocked, show lock screen
-    if (!isUnlockedCheck) {
+    // Check if locked
+    if (BIRTHDAY_PASSWORD && !isUnlocked) {
+        // Show lock screen
         const lockScreen = document.createElement('div');
         lockScreen.style.cssText = `
             background: linear-gradient(145deg, rgba(255,248,240,0.95), rgba(235,225,215,0.95));
@@ -890,9 +1113,6 @@ function loadWishes() {
             <div style="font-size: 0.9rem; color: #8f7668; margin: 10px 0;">
                 ✨ Enter password to unlock ✨
             </div>
-            <div style="font-size: 0.7rem; color: #a67c2e; font-style: italic; margin-top: 5px;">
-                Hint: naziff + age (lowercase)
-            </div>
             <button onclick="promptPassword()" style="
                 margin-top: 15px;
                 background: #a71d31;
@@ -907,12 +1127,15 @@ function loadWishes() {
             " onmouseover="this.style.background='#801322'" onmouseout="this.style.background='#a71d31'">
                 🔑 Unlock Messages
             </button>
+            <div style="margin-top: 10px; font-size: 0.7rem; color: #a67c2e; font-style: italic;">
+                💡 Password hint: ask the owner
+            </div>
         `;
+        wishArchive.innerHTML = '';
         wishArchive.appendChild(lockScreen);
         
-        // Disable input
         wishInput.disabled = true;
-        wishInput.placeholder = '🔒 Locked - enter password above';
+        wishInput.placeholder = '🔒 Locked - enter password';
         wishInput.style.opacity = '0.5';
         wishBtn.disabled = true;
         wishBtn.style.opacity = '0.5';
@@ -921,7 +1144,7 @@ function loadWishes() {
         return;
     }
     
-    // ===== UNLOCKED - SHOW WISHES =====
+    // ===== UNLOCKED =====
     wishInput.disabled = false;
     wishInput.placeholder = '✍️ Write a birthday wish...';
     wishInput.style.opacity = '1';
@@ -929,7 +1152,9 @@ function loadWishes() {
     wishBtn.style.opacity = '1';
     wishBtn.style.cursor = 'pointer';
     
-    // Show unlocked banner
+    wishArchive.innerHTML = '';
+    
+    // Show unlocked banner with settings
     const banner = document.createElement('div');
     banner.style.cssText = `
         background: linear-gradient(135deg, #f4d068, #e8c84a);
@@ -944,7 +1169,12 @@ function loadWishes() {
     banner.innerHTML = `
         <div style="font-size: 1.5rem;">🎂✨</div>
         <div style="font-size: 1rem; font-weight: 600;">Birthday Messages Unlocked!</div>
-        <div style="font-size: 0.8rem; opacity: 0.7;">💝 Send your birthday wishes below</div>
+        <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 4px;">
+            ${BIRTHDAY_PASSWORD ? '🔐 Password protected' : '💝 No password'}
+            ${BIRTHDAY_PASSWORD ? `<button onclick="changePassword()" style="background:transparent;border:none;color:#2c1810;cursor:pointer;text-decoration:underline;font-size:0.7rem;font-family:'Georgia',serif;margin-left:8px;">Change</button>` : ''}
+            ${BIRTHDAY_PASSWORD ? `<button onclick="removePassword()" style="background:transparent;border:none;color:#2c1810;cursor:pointer;text-decoration:underline;font-size:0.7rem;font-family:'Georgia',serif;margin-left:8px;">Remove</button>` : ''}
+            ${!BIRTHDAY_PASSWORD ? `<button onclick="showPasswordSetup()" style="background:transparent;border:none;color:#2c1810;cursor:pointer;text-decoration:underline;font-size:0.7rem;font-family:'Georgia',serif;margin-left:8px;">Add Password</button>` : ''}
+        </div>
     `;
     wishArchive.appendChild(banner);
     
@@ -1019,7 +1249,7 @@ function updateWishCount() {
 
 // ===== DELETE WISH =====
 window.deleteWish = function(index) {
-    if (!checkPassword()) {
+    if (BIRTHDAY_PASSWORD && !isUnlocked) {
         alert('🔒 Please unlock birthday messages first!');
         return;
     }
@@ -1039,7 +1269,7 @@ window.deleteWish = function(index) {
 
 // ===== SEND WISH =====
 wishBtn.addEventListener('click', function() {
-    if (!checkPassword()) {
+    if (BIRTHDAY_PASSWORD && !isUnlocked) {
         alert('🔒 Please unlock birthday messages first!');
         return;
     }
@@ -1061,25 +1291,27 @@ wishInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') wishBtn.click(); 
 });
 
-// ===== RESET PASSWORD (FOR TESTING) =====
-window.resetBirthdayLock = function() {
+// ===== RESET ALL BIRTHDAY SETTINGS =====
+window.resetBirthdaySettings = function() {
+    localStorage.removeItem('birthdayPassword');
     localStorage.removeItem('birthdayUnlocked');
+    BIRTHDAY_PASSWORD = '';
     isUnlocked = false;
     loadWishes();
-    showToast('🔒 Birthday messages locked again');
+    showToast('🔄 Birthday settings reset');
 };
 
 // ===== INITIAL LOAD =====
 // Check if already unlocked from previous session
-if (localStorage.getItem('birthdayUnlocked') === 'true') {
+if (localStorage.getItem('birthdayUnlocked') === 'true' && BIRTHDAY_PASSWORD) {
     isUnlocked = true;
 }
 loadWishes();
 
 console.log('🎂 Birthday system initialized');
-console.log('🔑 Password hint: naziff + age');
+console.log('🔑 Password set:', BIRTHDAY_PASSWORD ? 'Yes' : 'No');
 console.log('🔓 Unlocked:', isUnlocked);
-
+console.log('💡 Type resetBirthdaySettings() to reset');
       // =====================================================
 // 8. GALLERY - POSTIMAGES URL (FULLY FIXED!)
 // =====================================================

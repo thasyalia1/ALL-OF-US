@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 Will Always Love You</title>
+    <title>📖 I Keep U Forever</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -14,13 +14,13 @@
 
         body {
             font-family: 'Georgia', serif;
-            background-color: #2c1810;
+            background-color: #1a0f0a;
             overflow-x: hidden;
             min-height: 100vh;
         }
 
         /* ============================================
-           INTRO SCREEN - REAL 3D BOOK
+           INTRO SCREEN - 3D BOOK
            ============================================ */
         #intro-screen {
             position: fixed;
@@ -35,6 +35,7 @@
             align-items: center;
             z-index: 1000;
             transition: opacity 1.5s ease-out, visibility 1.5s ease-out;
+            overflow: hidden;
         }
         #intro-screen.hidden {
             opacity: 0;
@@ -44,7 +45,7 @@
 
         /* Book wrapper */
         .book-wrapper {
-            perspective: 1200px;
+            perspective: 1500px;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -55,29 +56,29 @@
         .book-wrapper::after {
             content: '';
             position: absolute;
-            bottom: -30px;
+            bottom: -40px;
             left: 5%;
             width: 90%;
-            height: 25px;
-            background: radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, transparent 70%);
+            height: 30px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.7) 0%, transparent 70%);
             border-radius: 50%;
-            filter: blur(8px);
+            filter: blur(10px);
             transition: all 0.5s ease;
         }
 
         .book-wrapper:hover::after {
             width: 95%;
-            height: 35px;
-            filter: blur(12px);
+            height: 40px;
+            filter: blur(15px);
             opacity: 0.8;
         }
 
         .book {
             position: relative;
-            width: 300px;
-            height: 430px;
+            width: 340px;
+            height: 470px;
             transform-style: preserve-3d;
-            transition: transform 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
             transform: rotateY(-10deg) rotateX(2deg);
         }
 
@@ -85,7 +86,7 @@
             transform: rotateY(-175deg) rotateX(0deg);
         }
 
-        /* Book Cover */
+        /* ===== BOOK COVER ===== */
         .book-cover {
             position: absolute;
             top: 0;
@@ -99,14 +100,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px 25px;
+            padding: 35px 30px;
             box-shadow: 
                 inset -12px 0 30px rgba(0,0,0,0.8),
                 inset 0 -8px 20px rgba(0,0,0,0.4),
                 inset 0 8px 20px rgba(0,0,0,0.2),
                 8px 8px 30px rgba(0,0,0,0.6);
             border: 1px solid #8B6914;
-            border-left: 8px solid #a67c2e;
+            border-left: 10px solid #a67c2e;
             border-right: 1px solid #5a4010;
             position: relative;
         }
@@ -125,35 +126,35 @@
 
         .book-cover .gold-frame {
             position: absolute;
-            inset: 15px;
-            border: 1.5px solid rgba(198, 154, 58, 0.25);
+            inset: 18px;
+            border: 1.5px solid rgba(198, 154, 58, 0.2);
             border-radius: 2px;
             pointer-events: none;
         }
 
-        .book-cover .title {
+        .book-cover .main-title {
             font-family: 'Georgia', 'Times New Roman', serif;
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 700;
             color: #f4d068;
             text-align: center;
             line-height: 1.2;
-            text-shadow: 0 0 20px rgba(244, 208, 104, 0.1), 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 0 30px rgba(244, 208, 104, 0.15), 0 2px 4px rgba(0,0,0,0.5);
             letter-spacing: 2px;
             position: relative;
             z-index: 1;
         }
 
-        .book-cover .title .love {
+        .book-cover .main-title .highlight {
             color: #e8c84a;
             font-style: italic;
         }
 
         .book-cover .divider {
-            width: 60%;
+            width: 50%;
             height: 1px;
             background: linear-gradient(90deg, transparent, #a67c2e, transparent);
-            margin: 12px 0;
+            margin: 15px 0;
             position: relative;
             z-index: 1;
         }
@@ -167,23 +168,24 @@
             color: #a67c2e;
             font-size: 0.7rem;
             background: #2a130c;
-            padding: 0 10px;
+            padding: 0 12px;
         }
 
-        .book-cover .subtitle {
+        .book-cover .subtitle-bottom {
             font-family: 'Georgia', serif;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             color: rgba(244, 208, 104, 0.4);
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             font-weight: 300;
             position: relative;
             z-index: 1;
+            margin-top: 8px;
         }
 
         .book-cover .click-hint {
             position: absolute;
-            bottom: 20px;
+            bottom: 22px;
             font-size: 0.65rem;
             color: rgba(244, 208, 104, 0.2);
             letter-spacing: 3px;
@@ -192,12 +194,12 @@
             z-index: 1;
         }
 
-        /* Book Spine */
+        /* ===== BOOK SPINE ===== */
         .book-spine {
             position: absolute;
             top: 0;
-            left: -8px;
-            width: 8px;
+            left: -10px;
+            width: 10px;
             height: 100%;
             background: linear-gradient(180deg, #4a2518 0%, #1a0a06 50%, #0d0603 100%);
             border-radius: 2px 0 0 2px;
@@ -218,7 +220,7 @@
             background: repeating-linear-gradient(180deg, transparent, transparent 15px, rgba(198, 154, 58, 0.05) 15px, rgba(198, 154, 58, 0.05) 16px);
         }
 
-        /* Book Pages */
+        /* ===== BOOK PAGES ===== */
         .book-pages {
             position: absolute;
             top: 0;
@@ -251,7 +253,7 @@
             border-radius: 2px;
         }
 
-        /* Book Inside */
+        /* ===== BOOK INSIDE ===== */
         .book-inside {
             position: absolute;
             top: 0;
@@ -269,7 +271,7 @@
             padding: 30px 25px;
             box-shadow: inset 8px 0 30px rgba(0,0,0,0.08), inset 0 0 50px rgba(200, 180, 160, 0.2);
             border: 1px solid #a67c2e;
-            border-right: 8px solid #c49a3a;
+            border-right: 10px solid #c49a3a;
             border-left: 1px solid #6b4f1a;
             position: relative;
         }
@@ -337,13 +339,13 @@
             position: fixed;
             pointer-events: none;
             z-index: 999;
-            font-size: 2.8rem;
-            animation: flyOutBook 2s forwards ease-out;
+            font-size: 3.5rem;
+            animation: flyOutBook 2.5s forwards ease-out;
         }
 
         @keyframes flyOutBook {
-            0% { opacity: 1; transform: translate(0,0) scale(0.3) rotate(0deg); }
-            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(1.8) rotate(var(--mr)); }
+            0% { opacity: 1; transform: translate(0,0) scale(0.2) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(2) rotate(var(--mr)); }
         }
 
         @keyframes spinSunflower {
@@ -483,13 +485,13 @@
         .save-notification.show { opacity: 1; transform: translateY(0); }
 
         /* ============================================
-           LETTER IN A BOTTLE - BEAUTIFUL DESIGN
+           BOTTLE WITH CSS - Like Shutterstock Image
            ============================================ */
         .bottle-feed {
             display: flex;
             flex-direction: column;
             gap: 20px;
-            max-height: 350px;
+            max-height: 380px;
             overflow-y: auto;
             padding-right: 8px;
             margin-bottom: 15px;
@@ -498,20 +500,23 @@
         .bottle-feed::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
         .bottle-feed::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
 
-        /* Bottle Card */
+        /* Beautiful Bottle Card */
         .bottle-card {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: linear-gradient(145deg, rgba(255,248,240,0.9), rgba(235,225,215,0.9));
-            padding: 12px 18px;
-            border-radius: 2rem 2rem 2rem 2rem;
-            border: 2px solid rgba(139, 69, 19, 0.15);
+            gap: 18px;
+            background: linear-gradient(145deg, rgba(255,248,240,0.92), rgba(235,225,215,0.92));
+            padding: 14px 20px;
+            border-radius: 2rem;
+            border: 2px solid rgba(139, 69, 19, 0.12);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: floatBottle 3s ease-in-out infinite;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08), inset 0 0 30px rgba(255,255,255,0.1);
+            box-shadow: 
+                0 4px 20px rgba(0,0,0,0.08),
+                inset 0 0 40px rgba(255,255,255,0.15);
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         .bottle-card:nth-child(even) { animation-delay: 1.5s; }
@@ -519,39 +524,49 @@
 
         @keyframes floatBottle {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-4px) rotate(1deg); }
+            50% { transform: translateY(-6px) rotate(1.5deg); }
         }
 
         .bottle-card:hover {
-            transform: scale(1.02) translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            transform: scale(1.03) translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
             border-color: #a67c2e;
             background: linear-gradient(145deg, #fcf3ea, #f5e6da);
         }
 
-        .bottle-card .bottle-icon {
-            font-size: 2.8rem;
+        /* ===== CSS BOTTLE GLASS ===== */
+        .bottle-glass {
+            width: 70px;
+            height: 100px;
             flex-shrink: 0;
+            position: relative;
+        }
+
+        .bottle-glass svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.1));
             transition: transform 0.5s ease;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
         }
 
-        .bottle-card:hover .bottle-icon {
-            transform: rotate(-15deg) scale(1.1);
+        .bottle-card:hover .bottle-glass svg {
+            transform: rotate(-8deg) scale(1.05);
         }
 
-        .bottle-card .bottle-info {
+        /* Bottle info */
+        .bottle-info {
             flex: 1;
             min-width: 0;
         }
 
-        .bottle-card .bottle-info .recipient-name {
-            font-size: 1.05rem;
+        .bottle-info .recipient-name {
+            font-size: 1.1rem;
             font-weight: 700;
             color: #2c1810;
+            font-family: 'Georgia', serif;
         }
 
-        .bottle-card .bottle-info .message-preview {
+        .bottle-info .message-preview {
             font-size: 0.8rem;
             color: #8f7668;
             white-space: nowrap;
@@ -561,13 +576,19 @@
             margin-top: 2px;
         }
 
-        .bottle-card .bottle-info .message-count {
-            font-size: 0.65rem;
+        .bottle-info .message-date {
+            font-size: 0.6rem;
             color: #a67c2e;
             font-weight: 500;
             letter-spacing: 0.5px;
+            margin-top: 2px;
+            display: inline-block;
+            background: rgba(166, 124, 46, 0.08);
+            padding: 2px 12px;
+            border-radius: 20px;
         }
 
+        /* Delete button */
         .bottle-card .delete-bottle {
             background: none;
             border: none;
@@ -577,10 +598,20 @@
             opacity: 0.3;
             transition: 0.2s;
             padding: 4px;
+            flex-shrink: 0;
         }
         .bottle-card .delete-bottle:hover {
             opacity: 1;
             color: #c0392b;
+        }
+
+        /* Empty state */
+        .empty-bottles {
+            text-align: center;
+            color: #a18b7d;
+            padding: 30px 20px;
+            font-style: italic;
+            font-family: 'Georgia', serif;
         }
 
         /* ============================================
@@ -690,7 +721,7 @@
             font-family: 'Georgia', serif;
         }
 
-        /* Letter form */
+        /* ===== LETTER FORM ===== */
         .letter-form {
             display: flex;
             flex-direction: column;
@@ -873,50 +904,47 @@
             .timer-block .number { font-size: 1.8rem; }
             .site-title h1 { font-size: 2rem; }
             .book { width: 220px; height: 320px; }
-            .book-cover .title { font-size: 2rem; }
+            .book-cover .main-title { font-size: 1.8rem; }
             .book-inside .page-text { font-size: 1.6rem; }
             .book-inside .sunflower-icon { font-size: 3rem; }
+            .bottle-glass { width: 50px; height: 75px; }
         }
         @media (max-width: 400px) {
             .timer-grid { grid-template-columns: repeat(2, 1fr); }
             .timer-block .number { font-size: 1.4rem; }
             .book { width: 180px; height: 260px; }
-            .book-cover .title { font-size: 1.5rem; }
+            .book-cover .main-title { font-size: 1.4rem; }
             .book-inside .page-text { font-size: 1.2rem; }
             .book-inside .sunflower-icon { font-size: 2.5rem; }
-            .bottle-card .bottle-icon { font-size: 2rem; }
+            .bottle-glass { width: 40px; height: 60px; }
         }
     </style>
 </head>
 <body>
 
     <!-- ==========================================
-    INTRO SCREEN - REAL 3D BOOK
+    INTRO SCREEN - 3D BOOK
     ========================================== -->
     <div id="intro-screen">
         <div class="book-wrapper" onclick="openBook()">
             <div class="book" id="book">
-                <!-- SPINE -->
                 <div class="book-spine"></div>
 
-                <!-- COVER (FRONT) -->
                 <div class="book-cover">
                     <div class="gold-frame"></div>
-                    <div class="title">
-                        Will Always<br>
-                        <span class="love">Love You</span>
+                    <div class="main-title">
+                        I Keep U<br>
+                        <span class="highlight">Forever</span>
                     </div>
                     <div class="divider"></div>
-                    <div class="subtitle">a collection of memories</div>
+                    <div class="subtitle-bottom">I Love U Naziff</div>
                     <div class="click-hint">✦ click to open ✦</div>
                 </div>
 
-                <!-- PAGES (side view) -->
                 <div class="book-pages">
                     <div class="page-block"></div>
                 </div>
 
-                <!-- INSIDE (BACK COVER) -->
                 <div class="book-inside">
                     <div class="sunflower-icon">🌻</div>
                     <div class="gold-line"></div>
@@ -928,16 +956,12 @@
         </div>
     </div>
 
-    <!-- ==========================================
-    NOTIFICATION
-    ========================================== -->
+    <!-- NOTIFICATION -->
     <div class="save-notification" id="saveNotification">
         <i class="fas fa-check-circle"></i> Saved! 💾
     </div>
 
-    <!-- ==========================================
-    MODAL - LETTER POPUP
-    ========================================== -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="letterModal">
         <div class="letter-paper">
             <button class="close-btn" id="closeBtn">&times;</button>
@@ -954,9 +978,7 @@
         </div>
     </div>
 
-    <!-- ==========================================
-    SCRAPBOOK
-    ========================================== -->
+    <!-- SCRAPBOOK -->
     <div id="scrapbook">
 
         <header class="site-header">
@@ -1068,7 +1090,7 @@
     <!-- ========================================== -->
     <script>
         // =====================================================
-        // 1. OPEN BOOK - WITH SUNFLOWER EXPLOSION
+        // 1. OPEN BOOK - WITH MASSIVE SUNFLOWER EXPLOSION
         // =====================================================
         function openBook() {
             const book = document.getElementById('book');
@@ -1079,27 +1101,31 @@
 
             setTimeout(() => {
                 const sunflowers = ['🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻'];
-                for (let i = 0; i < 60; i++) {
+                for (let i = 0; i < 250; i++) {
                     const particle = document.createElement('div');
                     particle.classList.add('sunflower-particle');
                     particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
                     const angle = Math.random() * Math.PI * 2;
-                    const distance = 100 + Math.random() * 400;
-                    particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
-                    particle.style.setProperty('--my', Math.sin(angle) * distance - 200 + 'px');
-                    particle.style.setProperty('--mr', Math.random() * 360 + 'deg');
+                    const distance = 200 + Math.random() * 800;
+                    const x = Math.cos(angle) * distance;
+                    const y = Math.sin(angle) * distance - 100;
+                    particle.style.setProperty('--mx', x + 'px');
+                    particle.style.setProperty('--my', y + 'px');
+                    particle.style.setProperty('--mr', (Math.random() * 720 - 360) + 'deg');
                     particle.style.left = window.innerWidth / 2 + 'px';
                     particle.style.top = window.innerHeight / 2 + 'px';
+                    const size = 2 + Math.random() * 3;
+                    particle.style.fontSize = size + 'rem';
                     document.body.appendChild(particle);
-                    setTimeout(() => particle.remove(), 2000);
+                    setTimeout(() => particle.remove(), 3000);
                 }
 
                 setTimeout(() => {
                     introScreen.classList.add('hidden');
                     scrapbook.classList.add('visible');
                     showSaved('🌻 Welcome! Everything you write is saved forever!');
-                }, 1000);
-            }, 1200);
+                }, 1200);
+            }, 1500);
         }
 
         // =====================================================
@@ -1187,7 +1213,7 @@
         updateTimer();
 
         // =====================================================
-        // 4. LETTERS IN BOTTLES
+        // 4. LETTERS IN BOTTLES - WITH SVG BOTTLE
         // =====================================================
         const bottleFeed = document.getElementById('bottleFeed');
         const letterForm = document.getElementById('letterForm');
@@ -1195,11 +1221,45 @@
         const letterSign = document.getElementById('letterSign');
         const letterCount = document.getElementById('letterCount');
 
-        // Modal elements
         const modal = document.getElementById('letterModal');
         const closeBtn = document.getElementById('closeBtn');
         const modalName = document.getElementById('modalName');
         const modalContent = document.getElementById('modalContent');
+
+        // SVG Bottle SVG - Beautiful glass bottle with letter inside
+        function getBottleSVG() {
+            return `
+            <svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bottle cap -->
+                <rect x="28" y="2" width="24" height="12" rx="3" fill="#b08968" stroke="#7f5539" stroke-width="1.5"/>
+                <rect x="30" y="0" width="20" height="4" rx="2" fill="#7f5539"/>
+                
+                <!-- Bottle neck -->
+                <path d="M32 14 L32 22 L48 22 L48 14 Z" fill="rgba(255,255,255,0.3)" stroke="#b0c4de" stroke-width="1.5"/>
+                
+                <!-- Bottle body - glass -->
+                <path d="M30 22 C30 22 22 30 22 45 L22 95 C22 105 30 112 40 112 C50 112 58 105 58 95 L58 45 C58 30 50 22 50 22 Z" 
+                      fill="rgba(255,255,255,0.25)" stroke="#b0c4de" stroke-width="2"/>
+                
+                <!-- Glass shine effect -->
+                <path d="M28 40 L26 90 C26 98 30 102 35 104" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+                <path d="M32 30 L30 60" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                
+                <!-- Glass reflection on body -->
+                <ellipse cx="45" cy="65" rx="12" ry="25" fill="white" opacity="0.08" transform="rotate(10 45 65)"/>
+                
+                <!-- Letter inside the bottle -->
+                <rect x="30" y="42" width="22" height="35" rx="2" fill="#f4e1d2" stroke="#d3b8ae" stroke-width="1" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="50" x2="48" y2="49" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="55" x2="46" y2="54" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="60" x2="44" y2="59" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="65" x2="42" y2="64" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="70" x2="40" y2="69" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                
+                <!-- Small cork detail -->
+                <ellipse cx="40" cy="16" rx="6" ry="3" fill="#b08968" opacity="0.3"/>
+            </svg>`;
+        }
 
         function loadBottles() {
             const saved = localStorage.getItem('letterArchive');
@@ -1208,7 +1268,7 @@
                     const letters = JSON.parse(saved);
                     bottleFeed.innerHTML = '';
                     if (letters.length === 0) {
-                        bottleFeed.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No letters in bottles yet. Write one! 🍾</p>`;
+                        bottleFeed.innerHTML = `<div class="empty-bottles">No letters in bottles yet.<br>Write one below! 🍾</div>`;
                     } else {
                         letters.forEach((l, i) => addBottleToDOM(l.text, l.sign, l.date, i));
                     }
@@ -1230,11 +1290,13 @@
             const preview = text.length > 50 ? text.substring(0, 50) + '...' : text;
 
             card.innerHTML = `
-                <div class="bottle-icon">🍾</div>
+                <div class="bottle-glass">
+                    ${getBottleSVG()}
+                </div>
                 <div class="bottle-info">
                     <div class="recipient-name">${sign || 'For You'}</div>
                     <div class="message-preview">“${preview}”</div>
-                    <div class="message-count">📩 ${date || getCurrentDate()}</div>
+                    <div class="message-date">📩 ${date || getCurrentDate()}</div>
                 </div>
                 <button class="delete-bottle" onclick="event.stopPropagation(); deleteBottle(${index})"><i class="fas fa-times"></i></button>
             `;
@@ -1251,7 +1313,6 @@
             letterCount.textContent = `${count} ${count === 1 ? 'bottle' : 'bottles'}`;
         }
 
-        // Open modal with letter
         function openLetterModal(index) {
             const saved = localStorage.getItem('letterArchive');
             if (!saved) return;
@@ -1263,7 +1324,6 @@
             }
         }
 
-        // Delete bottle
         window.deleteBottle = function(index) {
             const saved = localStorage.getItem('letterArchive');
             if (!saved) return;
@@ -1278,7 +1338,6 @@
             }
         };
 
-        // Close modal
         function closeModal() {
             modal.classList.remove('active');
         }
@@ -1288,7 +1347,6 @@
             if (e.target === modal) closeModal();
         });
 
-        // Submit new letter
         letterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const text = letterContent.value.trim() || 'some words stay folded, waiting for the right silence.';

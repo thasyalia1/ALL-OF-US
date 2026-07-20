@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 I Keep U Forever · Our Love Gallery</title>
+    <title>📖 I Keep U Forever</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ============================================
-           BASE & RESET
-           ============================================ */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -352,408 +349,188 @@
         }
 
         /* ============================================
-           APP CONTAINER
+           MAIN CONTENT
            ============================================ */
-        .app-container {
-            width: 100%;
-            max-width: 900px;
+        #main-content {
+            max-width: 1200px;
+            width: 95%;
             margin: 40px auto;
-            background: #5d0c16;
-            border: 8px double #f4d068;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            background: rgba(44, 24, 16, 0.95);
+            border: 12px double #f4d068;
+            border-radius: 10px;
+            padding: 40px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(30px) scale(0.98);
             transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
+            position: relative;
+            z-index: 1;
             min-height: 500px;
         }
 
-        .app-container.visible {
+        #main-content.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         /* ============================================
-           SCREEN SYSTEM
+           HEADER
            ============================================ */
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            padding: 25px 20px;
-            overflow-y: auto;
-        }
-
-        .screen.active {
+        .site-header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
             align-items: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed rgba(244,208,104,0.3);
+            padding-bottom: 1.5rem;
         }
 
-        /* Home Button */
-        .home-btn {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(244, 208, 104, 0.2);
-            border: 1px solid #f4d068;
+        .site-title h1 {
+            font-size: 2.6rem;
+            font-weight: 300;
             color: #f4d068;
-            padding: 4px 14px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            z-index: 10;
-            transition: 0.3s;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .site-title h1 i {
+            color: #f4d068;
+            margin-right: 10px;
+        }
+
+        .site-title small {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(244,208,104,0.6);
+            letter-spacing: 3px;
+            margin-top: 4px;
             font-family: 'Georgia', serif;
         }
-        .home-btn:hover {
-            background: #f4d068;
-            color: #4a0710;
+
+        .nav-icons {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 1.4rem;
+            color: rgba(244,208,104,0.6);
+        }
+
+        .nav-icons i {
+            transition: 0.2s;
+            cursor: default;
+        }
+
+        .nav-icons i:hover {
+            color: #f4d068;
+            transform: scale(1.1);
         }
 
         /* ============================================
-           WELCOME SCREEN
+           NAVIGATION TABS
            ============================================ */
-        #welcome-screen {
-            background: linear-gradient(rgba(74,7,16,0.85), rgba(74,7,16,0.85)), url('https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=800') center/cover;
-            text-align: center;
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            justify-content: center;
+            border-bottom: 1px solid rgba(244,208,104,0.2);
+            padding-bottom: 1rem;
         }
 
-        .main-title {
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            font-size: 4rem;
-            color: #f4d068;
-            text-shadow: 3px 3px 0px #000;
-        }
-
-        .subtitle {
-            font-style: italic;
-            margin: 10px 0 25px;
-            color: #dfbda7;
-        }
-
-        .start-btn {
-            background-color: #f4d068;
-            color: #4a0710;
-            border: none;
-            padding: 10px 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 20px;
+        .nav-tab {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(244,208,104,0.2);
+            border-radius: 30px;
+            padding: 8px 22px;
+            color: rgba(244,208,104,0.6);
             cursor: pointer;
             transition: 0.3s;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
         }
 
-        .start-btn:hover {
-            transform: scale(1.05);
-            background-color: #fff;
+        .nav-tab:hover {
+            background: rgba(244,208,104,0.1);
+            color: #f4d068;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: rgba(244,208,104,0.15);
+            color: #f4d068;
+            border-color: #f4d068;
         }
 
         /* ============================================
-           MUSEUM SCREEN
+           PAGE SYSTEM
            ============================================ */
-        #museum-screen {
-            background: #f7f4eb;
-            color: #333;
-            justify-content: flex-start;
-            padding-top: 35px;
+        .page {
+            display: none;
+            animation: fadePage 0.5s ease;
         }
 
-        .wall-title {
-            font-size: 1.4rem;
-            color: #4a0710;
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-align: center;
+        .page.active {
+            display: block;
         }
 
-        .frames-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            width: 100%;
-            padding-bottom: 10px;
+        @keyframes fadePage {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .frame {
-            background: #4a0710;
-            padding: 6px;
-            border: 3px solid #f4d068;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            color: #f4d068;
-        }
-
-        .frame:hover {
-            transform: translateY(-10px) scale(1.05);
-        }
-
-        .f-heart {
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            width: 70px;
-            height: 70px;
-        }
-        .f-oval {
-            border-radius: 50%;
-            width: 65px;
-            height: 85px;
-        }
-        .f-rect {
-            width: 85px;
-            height: 65px;
-        }
-        .f-square {
-            width: 70px;
-            height: 70px;
-        }
-
-        .visitors {
-            display: flex;
-            gap: 30px;
-            margin-top: 12px;
-        }
-        .visitor {
-            font-size: 1.6rem;
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
-        }
-
-        /* ============================================
-           SUB PAGES
-           ============================================ */
-        .split-layout {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            align-items: center;
-            justify-content: space-around;
-            padding: 20px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .split-text {
-            max-width: 45%;
-            text-align: left;
-            line-height: 1.6;
-            color: #f4d068;
-        }
-
-        .split-text h2 {
+        .page-title {
             font-family: 'Brush Script MT', cursive;
-            font-size: 2rem;
-        }
-
-        .chat-mockup {
-            background: #1e1e1e;
-            width: 280px;
-            height: 380px;
-            border-radius: 20px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        .msg {
-            padding: 8px 12px;
-            border-radius: 15px;
-            max-width: 80%;
-            font-size: 0.8rem;
-        }
-
-        .msg.left {
-            background: #333;
-            color: #fff;
-            align-self: flex-start;
-        }
-
-        .msg.right {
-            background: #007aff;
-            color: #fff;
-            align-self: flex-end;
-        }
-
-        .letter-box {
-            background: #fbf7ee;
-            color: #333;
-            padding: 30px;
-            border-radius: 4px;
-            width: 85%;
-            max-height: 80%;
-            overflow-y: auto;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            border-left: 6px solid #f4d068;
-            line-height: 1.6;
-        }
-
-        .letter-box h3 {
-            color: #4a0710;
-            margin-bottom: 10px;
-        }
-
-        .vinyl-container {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .vinyl {
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, #f4d068 15%, #111 16%, #222 30%, #111 45%, #222 60%, #111 75%);
-            border-radius: 50%;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            animation: spin 5s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        .song-list {
-            list-style: none;
-            text-align: left;
-            color: #f4d068;
-        }
-
-        .song-list li {
-            margin: 8px 0;
-            font-size: 1rem;
-        }
-
-        .song-list li span {
-            font-size: 0.8rem;
-            color: #fff;
-        }
-
-        .quote-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 90%;
-        }
-
-        .quote-card {
-            background: rgba(255,255,255,0.1);
-            border: 1px dashed #f4d068;
-            padding: 15px;
-            font-size: 0.8rem;
-            text-align: center;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #f4d068;
-        }
-
-        .clock-gallery {
-            position: relative;
-            width: 300px;
-            height: 300px;
-        }
-
-        .center-time {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            color: #f4d068;
-            font-size: 1.5rem;
-            background: #4a0710;
-            padding: 10px 15px;
-            border-radius: 50%;
-            border: 2px solid #f4d068;
-        }
-
-        .pic-node {
-            position: absolute;
-            width: 55px;
-            height: 55px;
-            background: #fff;
-            padding: 2px;
-            border: 2px solid #f4d068;
-            transform: translate(-50%, -50%);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .pic-node img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .countdown-timer {
             font-size: 2.5rem;
-            font-weight: bold;
             color: #f4d068;
-            letter-spacing: 2px;
-            margin: 20px 0;
             text-align: center;
+            margin-bottom: 1.5rem;
         }
 
-        .sub-page-title {
-            font-family: 'Brush Script MT', cursive;
-            font-size: 2.2rem;
-            color: #f4d068;
-            margin-bottom: 15px;
+        .page-subtitle {
             text-align: center;
+            color: rgba(244,208,104,0.5);
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
         }
 
         /* ============================================
-           BOTTLE SECTION (Inside Museum)
+           PAGE 1: BOTTLES
            ============================================ */
         .bottle-feed {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            max-height: 300px;
+            gap: 18px;
+            max-height: 350px;
             overflow-y: auto;
             padding-right: 8px;
-            width: 100%;
+            margin-bottom: 20px;
         }
 
         .bottle-feed::-webkit-scrollbar {
             width: 4px;
         }
         .bottle-feed::-webkit-scrollbar-track {
-            background: #f0e6de;
+            background: #2a130c;
             border-radius: 10px;
         }
         .bottle-feed::-webkit-scrollbar-thumb {
-            background: #dccfc4;
+            background: #f4d068;
             border-radius: 10px;
         }
 
         .bottle-card {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
             background: linear-gradient(145deg, rgba(255,248,240,0.9), rgba(235,225,215,0.9));
-            padding: 12px 18px;
+            padding: 14px 20px;
             border-radius: 2rem;
-            border: 2px solid rgba(139, 69, 19, 0.15);
+            border: 2px solid rgba(139, 69, 19, 0.12);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: floatBottle 3s ease-in-out infinite;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             position: relative;
         }
 
@@ -766,19 +543,19 @@
 
         @keyframes floatBottle {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-4px) rotate(1deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
         }
 
         .bottle-card:hover {
             transform: scale(1.02) translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             border-color: #a67c2e;
             background: linear-gradient(145deg, #fcf3ea, #f5e6da);
         }
 
         .bottle-glass {
-            width: 60px;
-            height: 90px;
+            width: 65px;
+            height: 95px;
             flex-shrink: 0;
         }
 
@@ -799,14 +576,14 @@
         }
 
         .bottle-info .recipient-name {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #2c1810;
             font-family: 'Georgia', serif;
         }
 
         .bottle-info .message-preview {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #8f7668;
             white-space: nowrap;
             overflow: hidden;
@@ -844,22 +621,24 @@
             color: #c0392b;
         }
 
+        /* ============================================
+           LETTER FORM
+           ============================================ */
         .letter-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-            width: 100%;
+            gap: 12px;
+            margin-top: 6px;
         }
 
         .letter-form textarea {
-            background: rgba(255, 245, 235, 0.7);
+            background: rgba(255,245,235,0.7);
             border: 1px solid #decfc2;
             border-radius: 2rem;
-            padding: 12px 16px;
-            font-size: 0.9rem;
+            padding: 14px 16px;
+            font-size: 0.95rem;
             resize: vertical;
-            min-height: 60px;
+            min-height: 70px;
             transition: 0.2s;
             color: #3e2c24;
             font-family: 'Georgia', serif;
@@ -878,12 +657,12 @@
 
         .letter-form input {
             flex: 1;
-            background: rgba(255, 245, 235, 0.7);
+            background: rgba(255,245,235,0.7);
             border: 1px solid #decfc2;
             border-radius: 3rem;
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            min-width: 100px;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            min-width: 120px;
             font-family: 'Georgia', serif;
         }
 
@@ -896,7 +675,7 @@
             background: #a71d31;
             border: none;
             border-radius: 3rem;
-            padding: 8px 18px;
+            padding: 8px 20px;
             font-weight: 500;
             color: #fff;
             cursor: pointer;
@@ -904,7 +683,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-family: 'Georgia', serif;
         }
 
@@ -913,11 +692,376 @@
         }
 
         .letter-count {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #a18b7d;
             text-align: right;
             margin-top: 4px;
+        }
+
+        /* ============================================
+           PAGE 2: TIMER
+           ============================================ */
+        .timer-display {
+            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
+            border-radius: 2.5rem;
+            padding: 2rem 1.5rem;
+            border: 2px solid #ebd6c8;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .timer-display::before {
+            content: '⏳';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 4rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 10px 0 8px;
+        }
+
+        .timer-block {
+            background: rgba(255,248,240,0.6);
+            border-radius: 1.5rem;
+            padding: 12px 4px;
+            border: 1px solid #ebd6c8;
+        }
+
+        .timer-block .number {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #633f2e;
+            font-family: 'Georgia', serif;
+            line-height: 1.2;
+            display: block;
+        }
+
+        .timer-block .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8a7567;
+            font-weight: 400;
+        }
+
+        .timer-sub {
+            font-size: 0.9rem;
+            color: #a68b7a;
+            margin-top: 12px;
+            font-style: italic;
+            border-top: 1px dashed #dccfc4;
+            padding-top: 12px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-controls input {
+            background: rgba(255,245,235,0.7);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            width: 150px;
+            font-family: 'Georgia', serif;
+        }
+
+        .timer-controls input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+
+        .timer-controls button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 20px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .timer-controls button:hover {
+            background: #801322;
+            transform: scale(1.02);
+        }
+
+        /* ============================================
+           PAGE 3: BIRTHDAY
+           ============================================ */
+        .wish-archive {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
+
+        .wish-archive::-webkit-scrollbar {
+            width: 4px;
+        }
+        .wish-archive::-webkit-scrollbar-track {
+            background: #2a130c;
+            border-radius: 10px;
+        }
+        .wish-archive::-webkit-scrollbar-thumb {
+            background: #f4d068;
+            border-radius: 10px;
+        }
+
+        .wish-entry {
+            background: rgba(255,248,240,0.9);
+            padding: 14px 18px;
+            border-radius: 1.5rem;
+            border-left: 4px solid #f4d068;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+            color: #3e2c24;
+        }
+
+        .wish-entry .wish-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .wish-entry .wish-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            color: #8f7668;
+        }
+
+        .wish-entry .delete-wish {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            transition: 0.2s;
+        }
+
+        .wish-entry .delete-wish:hover {
+            opacity: 1;
+            color: #c0392b;
+        }
+
+        .birthday-input-area {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .birthday-input-area input {
+            flex: 1;
+            background: rgba(255,245,235,0.6);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 10px 16px;
+            min-width: 140px;
+            font-family: 'Georgia', serif;
+        }
+
+        .birthday-input-area input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+
+        .birthday-input-area button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 20px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 500;
+            font-family: 'Georgia', serif;
+            transition: 0.2s;
+        }
+
+        .birthday-input-area button:hover {
+            background: #801322;
+        }
+
+        .wish-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           PAGE 4: GALLERY - PHOTOS WITH NAZIFF
+           ============================================ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .gallery-item {
+            background: rgba(255,248,240,0.92);
+            border-radius: 1.5rem;
+            padding: 15px;
+            border: 2px solid rgba(244,208,104,0.2);
+            transition: all 0.4s ease;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #f4d068;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .gallery-item .photo-placeholder {
             width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f5e6da, #e5dccd);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            color: #a67c2e;
+            border: 2px dashed rgba(166, 124, 46, 0.3);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .gallery-item:hover .photo-placeholder {
+            border-color: #f4d068;
+            background: linear-gradient(135deg, #fcf3ea, #f5e6da);
+        }
+
+        .gallery-item .photo-placeholder .upload-hint {
+            font-size: 0.7rem;
+            color: #8f7668;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .gallery-item .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1rem;
+            position: absolute;
+            inset: 0;
+        }
+
+        .gallery-item .photo-label {
+            margin-top: 12px;
+            font-family: 'Georgia', serif;
+            color: #3e2c24;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .gallery-item .photo-date {
+            font-size: 0.7rem;
+            color: #8f7668;
+            margin-top: 2px;
+        }
+
+        .gallery-item .delete-photo {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: 0.3s;
+            font-size: 0.8rem;
+            z-index: 5;
+        }
+
+        .gallery-item:hover .delete-photo {
+            opacity: 1;
+        }
+
+        .gallery-item .delete-photo:hover {
+            background: #c0392b;
+        }
+
+        .add-photo-area {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .add-photo-area input {
+            flex: 1;
+            min-width: 150px;
+            background: rgba(255,245,235,0.6);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 10px 18px;
+            font-family: 'Georgia', serif;
+            color: #3e2c24;
+        }
+
+        .add-photo-area input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+
+        .add-photo-area button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 10px 24px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Georgia', serif;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-photo-area button:hover {
+            background: #801322;
+            transform: scale(1.02);
         }
 
         /* ============================================
@@ -952,7 +1096,7 @@
             max-width: 420px;
             padding: 35px 30px 30px 30px;
             border-radius: 8px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 69, 19, 0.1);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
             position: relative;
             transform: scale(0.7) translateY(50px);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1007,7 +1151,7 @@
 
         .letter-paper .letter-content {
             font-family: 'Georgia', serif;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             line-height: 1.8;
             color: #333;
             max-height: 300px;
@@ -1040,65 +1184,83 @@
         }
 
         /* ============================================
+           FOOTER
+           ============================================ */
+        .site-footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(244,208,104,0.2);
+            padding-top: 1.8rem;
+            font-size: 0.9rem;
+            color: rgba(244,208,104,0.4);
+            letter-spacing: 1px;
+        }
+
+        .site-footer i {
+            margin: 0 4px;
+            color: #f4d068;
+        }
+
+        /* ============================================
            RESPONSIVE
            ============================================ */
         @media (max-width: 650px) {
+            .site-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 10px;
+            }
+
+            .nav-icons {
+                gap: 1.2rem;
+                font-size: 1.2rem;
+            }
+
+            .site-title h1 {
+                font-size: 2rem;
+            }
+
             .book {
                 width: 220px;
                 height: 320px;
             }
+
             .book-cover .main-title {
                 font-size: 1.8rem;
             }
+
             .book-inside .page-text {
                 font-size: 1.6rem;
             }
+
             .book-inside .sunflower-icon {
                 font-size: 3rem;
             }
-            .main-title {
-                font-size: 2.8rem;
-            }
-            .split-layout {
-                flex-direction: column;
-                padding: 10px;
-            }
-            .split-text {
-                max-width: 100%;
-                text-align: center;
-            }
-            .chat-mockup {
-                width: 100%;
-                max-width: 280px;
-            }
-            .quote-grid {
+
+            .timer-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            .frames-container {
                 gap: 8px;
             }
-            .frame {
-                font-size: 1.2rem;
+
+            .timer-block .number {
+                font-size: 2rem;
             }
-            .f-heart {
-                width: 55px;
-                height: 55px;
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
             }
-            .f-oval {
-                width: 50px;
-                height: 65px;
+
+            .gallery-item .photo-placeholder {
+                height: 150px;
+                font-size: 3rem;
             }
-            .f-rect {
-                width: 65px;
-                height: 50px;
+
+            .nav-tab {
+                font-size: 0.75rem;
+                padding: 6px 14px;
             }
-            .f-square {
-                width: 55px;
-                height: 55px;
-            }
-            .app-container {
-                min-height: 600px;
-            }
+
             .bottle-glass {
                 width: 45px;
                 height: 65px;
@@ -1110,44 +1272,31 @@
                 width: 180px;
                 height: 260px;
             }
+
             .book-cover .main-title {
                 font-size: 1.4rem;
             }
+
             .book-inside .page-text {
                 font-size: 1.2rem;
             }
+
             .book-inside .sunflower-icon {
                 font-size: 2.5rem;
             }
-            .main-title {
-                font-size: 2.2rem;
+
+            .timer-block .number {
+                font-size: 1.6rem;
             }
-            .quote-grid {
+
+            .gallery-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 8px;
+                gap: 10px;
             }
-            .quote-card {
-                font-size: 0.7rem;
-                padding: 10px;
-            }
-            .countdown-timer {
-                font-size: 1.8rem;
-            }
-            .vinyl {
-                width: 100px;
-                height: 100px;
-            }
-            .clock-gallery {
-                width: 220px;
-                height: 220px;
-            }
-            .pic-node {
-                width: 40px;
-                height: 40px;
-            }
-            .center-time {
-                font-size: 1rem;
-                padding: 6px 10px;
+
+            .gallery-item .photo-placeholder {
+                height: 120px;
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -1201,114 +1350,43 @@
     </div>
 
     <!-- ==========================================
-    APP CONTAINER
+    MAIN CONTENT
     ========================================== -->
-    <div class="app-container" id="appContainer">
+    <div id="main-content">
 
-        <!-- HOME BUTTON -->
-        <button class="home-btn" id="globalHomeBtn" style="display:none;" onclick="showScreen('museum-screen')">🏠 Home</button>
-
-        <!-- 1. WELCOME SCREEN -->
-        <div class="screen active" id="welcome-screen">
-            <h1 class="main-title">Our Love Gallery</h1>
-            <p class="subtitle">"Every memory deserves a frame"</p>
-            <button class="start-btn" onclick="showScreen('museum-screen')">continue &rarr;</button>
-        </div>
-
-        <!-- 2. MUSEUM SCREEN -->
-        <div class="screen" id="museum-screen">
-            <div class="wall-title">📸 Tap a frame to explore our memories</div>
-
-            <div class="frames-container">
-                <div class="frame f-heart" onclick="showScreen('page-chat')">💬</div>
-                <div class="frame f-oval" onclick="showScreen('page-letter')">📜</div>
-                <div class="frame f-rect" onclick="showScreen('page-music')">🎵</div>
-                <div class="frame f-square" onclick="showScreen('page-quotes')">⭐</div>
-                <div class="frame f-oval" onclick="showScreen('page-clock')">⏰</div>
-                <div class="frame f-heart" onclick="showScreen('page-countdown')">⏳</div>
-                <div class="frame f-square" onclick="showScreen('page-bottles')">🍾</div>
+        <!-- HEADER -->
+        <header class="site-header">
+            <div class="site-title">
+                <h1><i class="fas fa-feather-alt"></i> to hope</h1>
+                <small>✧ to live it all · to love despite it all ✧</small>
             </div>
-
-            <div class="visitors">
-                <div class="visitor">🚶‍♂️</div>
-                <div class="visitor">🚶‍♀️</div>
-                <div class="visitor">👫</div>
+            <div class="nav-icons">
+                <i class="fas fa-hourglass-half"></i>
+                <i class="fas fa-envelope"></i>
+                <i class="fas fa-birthday-cake"></i>
+                <i class="fas fa-images"></i>
             </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-page="page-bottles">🍾 Letters</div>
+            <div class="nav-tab" data-page="page-timer">⏳ Timer</div>
+            <div class="nav-tab" data-page="page-birthday">🎂 Birthday</div>
+            <div class="nav-tab" data-page="page-gallery">📸 Gallery</div>
         </div>
 
-        <!-- 3. CHAT PAGE -->
-        <div class="screen" id="page-chat">
-            <div class="split-layout">
-                <div class="split-text">
-                    <h2>💬 Remember our first conversation?</h2>
-                    <p style="margin-top:10px; font-size:0.9rem; color:#dfbda7;">It's funny how something so simple turned into something so important. That very moment changed everything.</p>
-                </div>
-                <div class="chat-mockup">
-                    <div class="msg left">Hai! Awak yang join event semalam tu ke?</div>
-                    <div class="msg right">Eh hi! Haah saya la tu. Kenapa ya? Haha</div>
-                    <div class="msg left">Saja jerr, nampak macam best kalau dapat kenal. 😊</div>
-                    <div class="msg right">Boleh je, no problem!</div>
-                </div>
-            </div>
-        </div>
+        <!-- ==========================================
+        PAGE 1: LETTERS IN BOTTLES
+        ========================================== -->
+        <div class="page active" id="page-bottles">
+            <h2 class="page-title">🍾 Letters in Bottles</h2>
+            <p class="page-subtitle">Each bottle holds a message meant for you</p>
 
-        <!-- 4. LETTER PAGE -->
-        <div class="screen" id="page-letter">
-            <div class="letter-box">
-                <h3>My Love,</h3>
-                <p style="font-size:0.95rem;">I don't think I say this enough, but having you in my life is one of the best things that has ever happened to me. You calm my world and make everything feel lighter, warmer, and more meaningful. Even on my hardest days, just knowing that you're there gives me comfort.</p>
-                <p style="margin-top:10px; font-size:0.95rem; text-align:right; font-weight:bold;">Always yours, ❤️</p>
-            </div>
-        </div>
-
-        <!-- 5. MUSIC PAGE -->
-        <div class="screen" id="page-music">
-            <h2 class="sub-page-title">🎵 Songs That Remind Me of You</h2>
-            <div class="vinyl-container">
-                <div class="vinyl"></div>
-                <ul class="song-list">
-                    <li>1. Best Part — <span>Daniel Caesar</span></li>
-                    <li>2. A Piece of You — <span>Nathaniel</span></li>
-                    <li>3. Iris — <span>Goo Goo Dolls</span></li>
-                    <li>4. Those Eyes — <span>New West</span></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 6. QUOTES PAGE -->
-        <div class="screen" id="page-quotes">
-            <h2 class="sub-page-title">⭐ Reasons I Love You</h2>
-            <div class="quote-grid">
-                <div class="quote-card">You make my world brighter & happier.</div>
-                <div class="quote-card">I'll choose you, over and over again.</div>
-                <div class="quote-card">You are the warmth I carry with me.</div>
-                <div class="quote-card">Every moment with you becomes a treasure.</div>
-                <div class="quote-card">With you, the simplest days feel special.</div>
-                <div class="quote-card">You are my favorite person in every version of life.</div>
-            </div>
-        </div>
-
-        <!-- 7. CLOCK PAGE -->
-        <div class="screen" id="page-clock">
-            <h2 class="sub-page-title">⏰ Timeless Memories</h2>
-            <div class="clock-gallery" id="clockGallery">
-                <div class="center-time">12:00</div>
-            </div>
-        </div>
-
-        <!-- 8. COUNTDOWN PAGE -->
-        <div class="screen" id="page-countdown">
-            <h2 class="sub-page-title">⏳ We've been together for</h2>
-            <div class="countdown-timer" id="timerDisplay">00:00:00:000</div>
-            <p style="color:#dfbda7; font-style:italic;">and still counting forever...</p>
-        </div>
-
-        <!-- 9. BOTTLES PAGE -->
-        <div class="screen" id="page-bottles">
-            <h2 class="sub-page-title">🍾 Letters in Bottles</h2>
             <div class="bottle-feed" id="bottleFeed">
                 <!-- Bottles loaded from localStorage -->
             </div>
+
             <form class="letter-form" id="letterForm">
                 <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
                 <div class="form-row">
@@ -1318,6 +1396,86 @@
             </form>
             <div class="letter-count" id="letterCount">0 bottles</div>
         </div>
+
+        <!-- ==========================================
+        PAGE 2: TIMER
+        ========================================== -->
+        <div class="page" id="page-timer">
+            <h2 class="page-title">⏳ Without You</h2>
+            <p class="page-subtitle">Counting every moment since we became us</p>
+
+            <div class="timer-display">
+                <div class="timer-grid">
+                    <div class="timer-block">
+                        <span class="number" id="daysDisplay">0</span>
+                        <span class="label">days</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="number" id="hoursDisplay">00</span>
+                        <span class="label">hours</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="number" id="minutesDisplay">00</span>
+                        <span class="label">minutes</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="number" id="secondsDisplay">00</span>
+                        <span class="label">seconds</span>
+                    </div>
+                </div>
+                <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
+            </div>
+
+            <div class="timer-controls">
+                <input type="date" id="startDateInput">
+                <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+        PAGE 3: BIRTHDAY
+        ========================================== -->
+        <div class="page" id="page-birthday">
+            <h2 class="page-title">🎂 To Live It All</h2>
+            <p class="page-subtitle">Birthday wishes saved with love</p>
+
+            <div class="wish-archive" id="wishArchive">
+                <!-- Wishes loaded from localStorage -->
+            </div>
+
+            <div class="birthday-input-area">
+                <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
+                <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
+            </div>
+            <div class="wish-count" id="wishCount">0 wishes</div>
+        </div>
+
+        <!-- ==========================================
+        PAGE 4: GALLERY - PHOTOS WITH NAZIFF
+        ========================================== -->
+        <div class="page" id="page-gallery">
+            <h2 class="page-title">📸 Our Memories with Naziff</h2>
+            <p class="page-subtitle">Every photo tells a story of us</p>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items loaded from localStorage -->
+            </div>
+
+            <div class="add-photo-area">
+                <input type="text" id="newPhotoName" placeholder="📸 Photo title...">
+                <input type="text" id="newPhotoDate" placeholder="Date (e.g. Jan 2025)" style="max-width:140px;">
+                <button id="addPhotoBtn"><i class="fas fa-plus-circle"></i> Add Photo</button>
+            </div>
+            <div style="text-align:center;margin-top:8px;font-size:0.7rem;color:rgba(244,208,104,0.3);">
+                <i class="fas fa-info-circle"></i> Click the photo placeholder to add your own image URL
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <i class="fas fa-heart"></i> for the ones we keep close <i class="fas fa-heart"></i>
+            <br><small style="font-size:0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
+        </footer>
     </div>
 
     <!-- ========================================== -->
@@ -1330,7 +1488,7 @@
         function openBook() {
             const book = document.getElementById('book');
             const introScreen = document.getElementById('intro-screen');
-            const appContainer = document.getElementById('appContainer');
+            const mainContent = document.getElementById('main-content');
 
             book.classList.add('open');
 
@@ -1355,90 +1513,149 @@
 
                 setTimeout(() => {
                     introScreen.classList.add('hidden');
-                    appContainer.classList.add('visible');
-                    showSaved('🌻 Welcome! Everything you write is saved forever!');
+                    mainContent.classList.add('visible');
                 }, 1200);
             }, 1500);
         }
 
         // =====================================================
-        // 2. SCREEN NAVIGATION
+        // 2. TAB NAVIGATION
         // =====================================================
-        function showScreen(screenId) {
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => screen.classList.remove('active'));
+        const tabs = document.querySelectorAll('.nav-tab');
+        const pages = {
+            'page-bottles': document.getElementById('page-bottles'),
+            'page-timer': document.getElementById('page-timer'),
+            'page-birthday': document.getElementById('page-birthday'),
+            'page-gallery': document.getElementById('page-gallery')
+        };
 
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) targetScreen.classList.add('active');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
 
-            const homeBtn = document.getElementById('globalHomeBtn');
-            if (screenId === 'welcome-screen' || screenId === 'museum-screen') {
-                homeBtn.style.display = 'none';
-            } else {
-                homeBtn.style.display = 'block';
-            }
-        }
+                const pageId = this.dataset.page;
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.remove('active');
+                });
+                pages[pageId].classList.add('active');
+            });
+        });
 
         // =====================================================
         // 3. NOTIFICATION
         // =====================================================
         function showSaved(msg) {
-            // Simple alert for now
-            console.log(msg);
+            console.log('💾', msg);
+            // You can add a toast notification here if you want
         }
 
         function getCurrentDate() {
             const now = new Date();
-            return now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            return now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
         }
 
         // =====================================================
-        // 4. CLOCK GALLERY
+        // 4. TIMER
         // =====================================================
-        const clockGallery = document.getElementById('clockGallery');
-        const totalNodes = 8;
-        const radius = 100;
+        const daysEl = document.getElementById('daysDisplay');
+        const hoursEl = document.getElementById('hoursDisplay');
+        const minutesEl = document.getElementById('minutesDisplay');
+        const secondsEl = document.getElementById('secondsDisplay');
+        const timerMsg = document.getElementById('timerSubMessage');
+        const startDateInput = document.getElementById('startDateInput');
+        const updateBtn = document.getElementById('updateTimerBtn');
 
-        for (let i = 0; i < totalNodes; i++) {
-            const angle = (i * 2 * Math.PI) / totalNodes;
-            const x = 150 + radius * Math.cos(angle);
-            const y = 150 + radius * Math.sin(angle);
-
-            const imgNode = document.createElement('div');
-            imgNode.className = 'pic-node';
-            imgNode.style.left = `${x}px`;
-            imgNode.style.top = `${y}px`;
-            imgNode.innerHTML = `<img src="https://picsum.photos/60?random=${i}" alt="memory">`;
-            clockGallery.appendChild(imgNode);
-        }
-
-        // =====================================================
-        // 5. COUNTDOWN TIMER
-        // =====================================================
-        const startDate = new Date(2025, 0, 22, 0, 0, 0);
-
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            const ms = Math.floor((diff % 1000));
-
-            const display = document.getElementById('timerDisplay');
-            if (display) {
-                display.innerHTML =
-                    `${String(days).padStart(2,'0')}d : ${String(hours).padStart(2,'0')}h : ${String(minutes).padStart(2,'0')}m : ${String(seconds).padStart(2,'0')}s : <span style="font-size:1.5rem;">${String(ms).padStart(3,'0')}</span>`;
+        function loadTimerDate() {
+            const saved = localStorage.getItem('timerStartDate');
+            if (saved) {
+                startDateInput.value = saved;
+            } else {
+                const d = new Date();
+                d.setDate(d.getDate() - 30);
+                const y = d.getFullYear(),
+                    m = String(d.getMonth() + 1).padStart(2, '0'),
+                    day = String(d.getDate()).padStart(2, '0');
+                startDateInput.value = `${y}-${m}-${day}`;
+                localStorage.setItem('timerStartDate', startDateInput.value);
             }
         }
-        setInterval(updateTimer, 41);
+        loadTimerDate();
+
+        function calcDiff(start, end) {
+            const ms = Math.abs(end - start);
+            const s = Math.floor(ms / 1000),
+                m = Math.floor(s / 60),
+                h = Math.floor(m / 60),
+                d = Math.floor(h / 24);
+            return { days: d, hours: h % 24, minutes: m % 60, seconds: s % 60 };
+        }
+
+        function getTimerMsg(days) {
+            const msgs = [
+                { max: 1, text: '"the first day feels like an eternity"' },
+                { max: 7, text: '"a week without you feels like a lifetime"' },
+                { max: 30, text: '"a month without you feels like a year"' },
+                { max: 60, text: '"time moves slow when you\'re not here"' },
+                { max: 90, text: '"three months and the days blur together"' },
+                { max: 365, text: '"a year without you, and i still count"' },
+                { max: Infinity, text: '"every day without you is a day too long"' }
+            ];
+            for (const m of msgs) { if (days <= m.max) return m.text; }
+            return '"time moves slow when you\'re not here"';
+        }
+
+        function updateTimer() {
+            const val = startDateInput.value;
+            if (!val) {
+                daysEl.textContent = '0';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                timerMsg.textContent = 'please set a date';
+                return;
+            }
+            const start = new Date(val + 'T00:00:00');
+            const now = new Date();
+            if (isNaN(start.getTime())) {
+                daysEl.textContent = '0';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                timerMsg.textContent = 'invalid date';
+                return;
+            }
+            const diff = calcDiff(start, now);
+            daysEl.textContent = diff.days;
+            hoursEl.textContent = String(diff.hours).padStart(2, '0');
+            minutesEl.textContent = String(diff.minutes).padStart(2, '0');
+            secondsEl.textContent = String(diff.seconds).padStart(2, '0');
+            timerMsg.textContent = getTimerMsg(diff.days);
+        }
+
+        updateBtn.addEventListener('click', function() {
+            localStorage.setItem('timerStartDate', startDateInput.value);
+            updateTimer();
+        });
+
+        setInterval(updateTimer, 1000);
         updateTimer();
 
         // =====================================================
-        // 6. BOTTLES - SVG BOTTLE
+        // 5. BOTTLES
         // =====================================================
+        const bottleFeed = document.getElementById('bottleFeed');
+        const letterForm = document.getElementById('letterForm');
+        const letterContent = document.getElementById('letterContent');
+        const letterSign = document.getElementById('letterSign');
+        const letterCount = document.getElementById('letterCount');
+
+        const modal = document.getElementById('letterModal');
+        const closeBtn = document.getElementById('closeBtn');
+        const modalName = document.getElementById('modalName');
+        const modalContent = document.getElementById('modalContent');
+
         function getBottleSVG() {
             return `
             <svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1458,20 +1675,6 @@
                 <ellipse cx="40" cy="16" rx="6" ry="3" fill="#b08968" opacity="0.3"/>
             </svg>`;
         }
-
-        // =====================================================
-        // 7. LOAD BOTTLES
-        // =====================================================
-        const bottleFeed = document.getElementById('bottleFeed');
-        const letterForm = document.getElementById('letterForm');
-        const letterContent = document.getElementById('letterContent');
-        const letterSign = document.getElementById('letterSign');
-        const letterCount = document.getElementById('letterCount');
-
-        const modal = document.getElementById('letterModal');
-        const closeBtn = document.getElementById('closeBtn');
-        const modalName = document.getElementById('modalName');
-        const modalContent = document.getElementById('modalContent');
 
         function loadBottles() {
             const saved = localStorage.getItem('letterArchive');
@@ -1576,6 +1779,200 @@
         });
 
         loadBottles();
+
+        // =====================================================
+        // 6. BIRTHDAY WISHES
+        // =====================================================
+        const wishArchive = document.getElementById('wishArchive');
+        const wishInput = document.getElementById('birthdayWishInput');
+        const wishBtn = document.getElementById('updateBirthdayBtn');
+        const wishCount = document.getElementById('wishCount');
+
+        function loadWishes() {
+            const saved = localStorage.getItem('wishArchive');
+            if (saved) {
+                try {
+                    const wishes = JSON.parse(saved);
+                    wishArchive.innerHTML = '';
+                    if (wishes.length === 0) {
+                        wishArchive.innerHTML =
+                            `<p style="text-align:center;color:#a18b7d;padding:20px;font-style:italic;">No birthday wishes yet. Send one! 🎂</p>`;
+                    } else {
+                        wishes.forEach((w, i) => addWishToDOM(w.text, w.date, i));
+                    }
+                    updateWishCount();
+                } catch (e) { console.error(e); }
+            } else {
+                const defaultWish = { text: 'another trip around the sun — may your heart stay soft & wild.',
+                    date: getCurrentDate() };
+                localStorage.setItem('wishArchive', JSON.stringify([defaultWish]));
+                addWishToDOM(defaultWish.text, defaultWish.date, 0);
+                updateWishCount();
+            }
+        }
+
+        function addWishToDOM(text, date, index) {
+            const entry = document.createElement('div');
+            entry.className = 'wish-entry';
+            entry.innerHTML = `
+                <div class="wish-text">“${text}”</div>
+                <div class="wish-meta">
+                    <span>💝 with love</span>
+                    <span>${date || getCurrentDate()}</span>
+                </div>
+                <button class="delete-wish" onclick="deleteWish(${index})"><i class="fas fa-times"></i></button>
+            `;
+            wishArchive.appendChild(entry);
+        }
+
+        function updateWishCount() {
+            const count = wishArchive.querySelectorAll('.wish-entry').length;
+            wishCount.textContent = `${count} ${count === 1 ? 'wish' : 'wishes'}`;
+        }
+
+        window.deleteWish = function(index) {
+            const saved = localStorage.getItem('wishArchive');
+            if (!saved) return;
+            const wishes = JSON.parse(saved);
+            if (index >= 0 && index < wishes.length) {
+                if (confirm('Delete this wish?')) {
+                    wishes.splice(index, 1);
+                    localStorage.setItem('wishArchive', JSON.stringify(wishes));
+                    loadWishes();
+                }
+            }
+        };
+
+        wishBtn.addEventListener('click', function() {
+            const text = wishInput.value.trim();
+            if (!text) { alert('Please write a birthday wish!'); return; }
+            const date = getCurrentDate();
+            const saved = localStorage.getItem('wishArchive');
+            const wishes = saved ? JSON.parse(saved) : [];
+            wishes.push({ text, date });
+            localStorage.setItem('wishArchive', JSON.stringify(wishes));
+            wishInput.value = '';
+            loadWishes();
+        });
+
+        wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wishBtn.click(); });
+
+        loadWishes();
+
+        // =====================================================
+        // 7. GALLERY - PHOTOS WITH NAZIFF
+        // =====================================================
+        const galleryGrid = document.getElementById('galleryGrid');
+        const newPhotoName = document.getElementById('newPhotoName');
+        const newPhotoDate = document.getElementById('newPhotoDate');
+        const addPhotoBtn = document.getElementById('addPhotoBtn');
+
+        const photoEmojis = ['🌅', '🌄', '🌺', '🌻', '🌹', '🌸', '💐', '🌿', '🍃', '☀️', '🌙', '⭐', '🌈', '💫', '✨'];
+
+        function getRandomEmoji() {
+            return photoEmojis[Math.floor(Math.random() * photoEmojis.length)];
+        }
+
+        function loadGallery() {
+            const saved = localStorage.getItem('galleryPhotos');
+            if (saved) {
+                try {
+                    const photos = JSON.parse(saved);
+                    galleryGrid.innerHTML = '';
+                    if (photos.length === 0) {
+                        galleryGrid.innerHTML =
+                            `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
+                    } else {
+                        photos.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
+                    }
+                } catch (e) { console.error(e); }
+            } else {
+                // Default sample photos
+                const defaults = [
+                    { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
+                    { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
+                    { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
+                ];
+                localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
+                defaults.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
+            }
+        }
+
+        function addPhotoToDOM(name, date, emoji, image, index) {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+
+            const hasImage = image && image.trim() !== '';
+
+            item.innerHTML = `
+                <div class="photo-placeholder" onclick="uploadImage(${index})">
+                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">click to add photo</span>`}
+                </div>
+                <div class="photo-label">${name}</div>
+                <div class="photo-date">${date || '✧'}</div>
+                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${index})"><i class="fas fa-times"></i></button>
+            `;
+
+            galleryGrid.appendChild(item);
+        }
+
+        // Upload image function - opens file picker
+        window.uploadImage = function(index) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const imageData = ev.target.result;
+                    const saved = localStorage.getItem('galleryPhotos');
+                    if (saved) {
+                        const photos = JSON.parse(saved);
+                        if (index >= 0 && index < photos.length) {
+                            photos[index].image = imageData;
+                            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+                            loadGallery();
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        };
+
+        window.deletePhoto = function(index) {
+            const saved = localStorage.getItem('galleryPhotos');
+            if (!saved) return;
+            const photos = JSON.parse(saved);
+            if (index >= 0 && index < photos.length) {
+                if (confirm('Delete this photo?')) {
+                    photos.splice(index, 1);
+                    localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+                    loadGallery();
+                }
+            }
+        };
+
+        addPhotoBtn.addEventListener('click', function() {
+            const name = newPhotoName.value.trim();
+            if (!name) { alert('Please enter a photo title!'); return; }
+            const date = newPhotoDate.value.trim() || '✧';
+            const saved = localStorage.getItem('galleryPhotos');
+            const photos = saved ? JSON.parse(saved) : [];
+            photos.push({ name, date, emoji: getRandomEmoji(), image: '' });
+            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+            newPhotoName.value = '';
+            newPhotoDate.value = '';
+            loadGallery();
+        });
+
+        newPhotoName.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addPhotoBtn.click();
+        });
+
+        loadGallery();
 
         // =====================================================
         // 8. KEYBOARD SHORTCUT: ESC to close modal

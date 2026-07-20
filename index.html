@@ -72,7 +72,6 @@
             opacity: 0.8;
         }
 
-        /* BOOK - VERTICAL POSITION */
         .book {
             position: relative;
             width: 280px;
@@ -323,7 +322,7 @@
         }
 
         /* ============================================
-           SUNFLOWER PARTICLES - FILL ENTIRE SCREEN!
+           SUNFLOWER PARTICLES
            ============================================ */
         .sunflower-particle {
             position: fixed;
@@ -334,14 +333,8 @@
         }
 
         @keyframes flyOutBook {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(0.1) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--mx), var(--my)) scale(2.5) rotate(var(--mr));
-            }
+            0% { opacity: 1; transform: translate(0,0) scale(0.1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(2.5) rotate(var(--mr)); }
         }
 
         @keyframes spinSunflower {
@@ -494,7 +487,6 @@
             border-color: #f4d068;
         }
 
-        /* Cloud sync status */
         .sync-status {
             text-align: center;
             font-size: 0.7rem;
@@ -1072,6 +1064,7 @@
             margin-top: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
 
         .add-photo-area input {
@@ -1090,14 +1083,13 @@
             background: #fffbf7;
         }
 
-        .add-photo-area button {
+        .add-photo-area .btn-upload {
             background: #a71d31;
             border: none;
             border-radius: 3rem;
-            padding: 10px 24px;
+            padding: 10px 20px;
             color: #fff;
             cursor: pointer;
-            font-weight: 500;
             font-family: 'Georgia', serif;
             transition: 0.2s;
             display: flex;
@@ -1105,9 +1097,32 @@
             gap: 8px;
         }
 
-        .add-photo-area button:hover {
+        .add-photo-area .btn-upload:hover {
             background: #801322;
             transform: scale(1.02);
+        }
+
+        .add-photo-area .btn-add {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 10px 24px;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-photo-area .btn-add:hover {
+            background: #801322;
+            transform: scale(1.02);
+        }
+
+        .add-photo-area .btn-ready {
+            background: #4caf50 !important;
         }
 
         /* MODAL */
@@ -1225,6 +1240,41 @@
             border-top: 1px dashed #d4cbb5;
             padding-top: 12px;
             font-family: 'Georgia', serif;
+        }
+
+        /* DATA ACTIONS */
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .data-actions button {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(244,208,104,0.2);
+            border-radius: 30px;
+            padding: 8px 20px;
+            color: rgba(244,208,104,0.6);
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .data-actions button:hover {
+            background: rgba(244,208,104,0.1);
+            color: #f4d068;
+        }
+
+        .data-actions .btn-danger {
+            color: #ff6b6b;
+            border-color: rgba(255,107,107,0.2);
+        }
+
+        .data-actions .btn-danger:hover {
+            background: rgba(255,107,107,0.1);
         }
 
         .site-footer {
@@ -1416,7 +1466,7 @@
 
         <!-- SYNC STATUS -->
         <div class="sync-status" id="syncStatus">
-            <i class="fas fa-cloud"></i> <span id="syncText">Syncing...</span>
+            <i class="fas fa-cloud"></i> <span id="syncText">Loading...</span>
         </div>
 
         <!-- NAVIGATION TABS -->
@@ -1515,11 +1565,21 @@
             <div class="add-photo-area">
                 <input type="text" id="newPhotoName" placeholder="📸 Photo title...">
                 <input type="text" id="newPhotoDate" placeholder="Date (e.g. Jan 2025)" style="max-width:140px;">
-                <button id="addPhotoBtn"><i class="fas fa-plus-circle"></i> Add Photo</button>
+                <input type="file" id="imageUploadInput" accept="image/*" style="display:none;">
+                <button class="btn-upload" id="uploadImageBtn"><i class="fas fa-upload"></i> Upload Image</button>
+                <button class="btn-add" id="addPhotoBtn"><i class="fas fa-plus-circle"></i> Add Photo</button>
             </div>
             <div style="text-align:center;margin-top:8px;font-size:0.7rem;color:rgba(244,208,104,0.3);">
-                <i class="fas fa-info-circle"></i> Paste an image URL (Imgur, Google Drive, etc.)
+                <i class="fas fa-info-circle"></i> Upload gambar terus dari device anda
             </div>
+        </div>
+
+        <!-- DATA ACTIONS -->
+        <div class="data-actions">
+            <button onclick="viewAllData()"><i class="fas fa-eye"></i> View All Data</button>
+            <button onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
+            <button onclick="importData()"><i class="fas fa-upload"></i> Import Data</button>
+            <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
         </div>
 
         <!-- FOOTER -->
@@ -1530,7 +1590,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- JAVASCRIPT - FULL WITH CLOUD SYNC         -->
+    <!-- JAVASCRIPT - FULL WITH MASTER KEY SYNC    -->
     <!-- ========================================== -->
     <script>
         // =====================================================
@@ -1585,7 +1645,16 @@
         }
 
         // =====================================================
-        // 3. TAB NAVIGATION
+        // 3. GET DATE
+        // =====================================================
+        function getCurrentDate() {
+            const now = new Date();
+            return now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        // =====================================================
+        // 4. TAB NAVIGATION
         // =====================================================
         const tabs = document.querySelectorAll('.nav-tab');
         const pages = {
@@ -1609,135 +1678,101 @@
         });
 
         // =====================================================
-        // 4. GET CURRENT DATE
+        // 5. CLOUD SYNC - MASTER KEY (STABLE!)
         // =====================================================
-        function getCurrentDate() {
-            const now = new Date();
-            return now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit',
-                minute: '2-digit' });
-        }
+        const BIN_ID = '6a5e1473f5f4af5e29a78528';
+        const MASTER_KEY = '$2a$10$QUcVpm..ytRfR7//DacsA.EADeaEqeN7nNwqXfodON2AMj7XcIPuC';
 
-// =====================================================
-// 5. CLOUD SYNC - JSONBin.io (FULL SETUP)
-// =====================================================
-const BIN_ID = '6a5e1473f5f4af5e29a78528';
-const API_KEY = '$2a$10$f/ngll2/.AbE97TLoljda.TCQcUe76.l8k3A9jpsNw3enm/pxtFAK';
+        const syncText = document.getElementById('syncText');
 
-function saveToCloud(data) {
-    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Access-Key': API_KEY,  // ← Guna Access Key
-            'X-Bin-Versioning': 'false'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('Network error');
-        return res.json();
-    })
-    .then(() => {
-        console.log('✅ Synced to cloud!');
-        showToast('💾 Saved to cloud!');
-    })
-    .catch(err => {
-        console.error('Save error:', err);
-        showToast('⚠️ Save failed, but data saved locally');
-    });
-}
-
-function loadFromCloud(callback) {
-    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: {
-            'X-Access-Key': API_KEY  // ← Guna Access Key
-        }
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('Network error');
-        return res.json();
-    })
-    .then(data => {
-        console.log('✅ Cloud loaded!');
-        callback(data.record);
-    })
-    .catch(err => {
-        console.error('Load error:', err);
-        callback(null);
-    });
-}
-
-// Load all data from cloud
-function loadFromCloud(callback) {
-    setSyncStatus('Loading from cloud...', true);
-
-    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-            headers: {
-                'X-Master-Key': API_KEY
-            }
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('Network response was not ok');
-            return res.json();
-        })
-        .then(data => {
-            setSyncStatus('✅ Cloud loaded');
-            callback(data.record);
-        })
-        .catch(err => {
-            console.error('Load error:', err);
-            setSyncStatus('⚠️ Using local data');
-            callback(null);
-        });
-}
-
-        // =====================================================
-        // 6. MAIN DATA MANAGEMENT - ALL DATA SYNC
-        // =====================================================
-        function getAllData() {
-            return {
+        function saveToCloud() {
+            const data = {
                 letters: JSON.parse(localStorage.getItem('letterArchive') || '[]'),
                 wishes: JSON.parse(localStorage.getItem('wishArchive') || '[]'),
                 photos: JSON.parse(localStorage.getItem('galleryPhotos') || '[]'),
                 timerDate: localStorage.getItem('timerStartDate') || ''
             };
+
+            console.log('📤 Saving to cloud...');
+
+            fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY,
+                        'X-Bin-Versioning': 'false'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.text().then(text => {
+                            throw new Error(`Status ${res.status}: ${text}`);
+                        });
+                    }
+                    return res.json();
+                })
+                .then(() => {
+                    console.log('✅ ALL DATA synced!');
+                    syncText.textContent = '✅ Synced';
+                    syncText.className = 'synced';
+                })
+                .catch(err => {
+                    console.error('❌ Save error:', err);
+                    syncText.textContent = '⚠️ Save failed';
+                    syncText.className = '';
+                });
         }
 
-        function setAllData(data) {
-            if (data.letters) localStorage.setItem('letterArchive', JSON.stringify(data.letters));
-            if (data.wishes) localStorage.setItem('wishArchive', JSON.stringify(data.wishes));
-            if (data.photos) localStorage.setItem('galleryPhotos', JSON.stringify(data.photos));
-            if (data.timerDate) localStorage.setItem('timerStartDate', data.timerDate);
-        }
+        function loadFromCloud() {
+            syncText.textContent = '🔄 Loading...';
+            syncText.className = 'syncing';
 
-        // Sync all data to cloud
-        function syncAllToCloud() {
-            const data = getAllData();
-            saveToCloud(data);
-        }
+            fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Network error');
+                    return res.json();
+                })
+                .then(data => {
+                    const cloudData = data.record;
+                    if (cloudData.letters) localStorage.setItem('letterArchive', JSON.stringify(cloudData.letters));
+                    if (cloudData.wishes) localStorage.setItem('wishArchive', JSON.stringify(cloudData.wishes));
+                    if (cloudData.photos) localStorage.setItem('galleryPhotos', JSON.stringify(cloudData.photos));
+                    if (cloudData.timerDate) localStorage.setItem('timerStartDate', cloudData.timerDate);
 
-        // Load from cloud and apply
-        function loadAndApplyFromCloud() {
-            loadFromCloud(function(cloudData) {
-                if (cloudData) {
-                    setAllData(cloudData);
-                    // Reload all sections
                     loadBottles();
                     loadWishes();
                     loadGallery();
                     loadTimerDate();
-                    showToast('🔄 Data synced from cloud!');
-                }
-                // Always load from localStorage as fallback
-                loadBottles();
-                loadWishes();
-                loadGallery();
-                loadTimerDate();
-            });
+
+                    syncText.textContent = '✅ All data loaded';
+                    syncText.className = 'synced';
+                    showToast('🔄 All data synced from cloud!');
+                })
+                .catch(err => {
+                    console.error('Load error:', err);
+                    syncText.textContent = '📱 Local only';
+                    syncText.className = '';
+                    loadBottles();
+                    loadWishes();
+                    loadGallery();
+                    loadTimerDate();
+                });
         }
 
+        function syncAllToCloud() {
+            saveToCloud();
+        }
+
+        // Auto-sync every 15 seconds
+        setInterval(saveToCloud, 15000);
+
         // =====================================================
-        // 7. TIMER
+        // 6. TIMER
         // =====================================================
         const daysEl = document.getElementById('daysDisplay');
         const hoursEl = document.getElementById('hoursDisplay');
@@ -1822,10 +1857,11 @@ function loadFromCloud(callback) {
         });
 
         setInterval(updateTimer, 1000);
+        loadTimerDate();
         updateTimer();
 
         // =====================================================
-        // 8. BOTTLES
+        // 7. LETTERS
         // =====================================================
         const bottleFeed = document.getElementById('bottleFeed');
         const letterForm = document.getElementById('letterForm');
@@ -1958,7 +1994,7 @@ function loadFromCloud(callback) {
             syncAllToCloud();
             letterContent.value = '';
             loadBottles();
-            showToast('🍾 Letter saved in a bottle!');
+            showToast('🍾 Letter saved & synced!');
             const bottles = bottleFeed.querySelectorAll('.bottle-card');
             if (bottles.length > 0) {
                 bottles[bottles.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1968,7 +2004,7 @@ function loadFromCloud(callback) {
         loadBottles();
 
         // =====================================================
-        // 9. BIRTHDAY WISHES
+        // 8. BIRTHDAY WISHES
         // =====================================================
         const wishArchive = document.getElementById('wishArchive');
         const wishInput = document.getElementById('birthdayWishInput');
@@ -2044,7 +2080,7 @@ function loadFromCloud(callback) {
             syncAllToCloud();
             wishInput.value = '';
             loadWishes();
-            showToast('🎂 Birthday wish saved!');
+            showToast('🎂 Birthday wish saved & synced!');
         });
 
         wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wishBtn.click(); });
@@ -2052,12 +2088,16 @@ function loadFromCloud(callback) {
         loadWishes();
 
         // =====================================================
-        // 10. GALLERY
+        // 9. GALLERY
         // =====================================================
         const galleryGrid = document.getElementById('galleryGrid');
         const newPhotoName = document.getElementById('newPhotoName');
         const newPhotoDate = document.getElementById('newPhotoDate');
         const addPhotoBtn = document.getElementById('addPhotoBtn');
+        const uploadImageBtn = document.getElementById('uploadImageBtn');
+        const imageUploadInput = document.getElementById('imageUploadInput');
+
+        let tempImageData = null;
 
         const photoEmojis = ['🌅', '🌄', '🌺', '🌻', '🌹', '🌸', '💐', '🌿', '🍃', '☀️', '🌙', '⭐', '🌈', '💫', '✨'];
 
@@ -2098,7 +2138,7 @@ function loadFromCloud(callback) {
 
             item.innerHTML = `
                 <div class="photo-placeholder" onclick="uploadImage(${index})">
-                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">click to add photo</span>`}
+                    ${hasImage ? `<img src="${image}" alt="${name}">` : `${emoji || '📸'}<span class="upload-hint">click to upload</span>`}
                 </div>
                 <div class="photo-label">${name}</div>
                 <div class="photo-date">${date || '✧'}</div>
@@ -2109,21 +2149,88 @@ function loadFromCloud(callback) {
         }
 
         window.uploadImage = function(index) {
-            const imageUrl = prompt('📸 Paste your image URL (from Imgur, Google Drive, etc.):');
-            if (imageUrl && imageUrl.trim() !== '') {
-                const saved = localStorage.getItem('galleryPhotos');
-                if (saved) {
-                    const photos = JSON.parse(saved);
-                    if (index >= 0 && index < photos.length) {
-                        photos[index].image = imageUrl.trim();
-                        localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-                        syncAllToCloud();
-                        loadGallery();
-                        showToast('📸 Photo updated!');
-                    }
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('⚠️ Gambar terlalu besar! Sila pilih gambar bawah 5MB.');
+                    return;
                 }
-            }
+
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const imageData = ev.target.result;
+                    const saved = localStorage.getItem('galleryPhotos');
+                    if (saved) {
+                        const photos = JSON.parse(saved);
+                        if (index >= 0 && index < photos.length) {
+                            photos[index].image = imageData;
+                            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+                            syncAllToCloud();
+                            loadGallery();
+                            showToast('📸 Photo uploaded & synced!');
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
         };
+
+        uploadImageBtn.addEventListener('click', function() {
+            imageUploadInput.click();
+        });
+
+        imageUploadInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('⚠️ Gambar terlalu besar! Sila pilih gambar bawah 5MB.');
+                imageUploadInput.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                tempImageData = ev.target.result;
+                showToast('📸 Image uploaded! Ready to add.');
+                uploadImageBtn.textContent = '✅ Image Ready';
+                uploadImageBtn.style.background = '#4caf50';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        addPhotoBtn.addEventListener('click', function() {
+            const name = newPhotoName.value.trim();
+            if (!name) { alert('Please enter a photo title!'); return; }
+            const date = newPhotoDate.value.trim() || '✧';
+
+            const saved = localStorage.getItem('galleryPhotos');
+            const photos = saved ? JSON.parse(saved) : [];
+
+            const imageData = tempImageData || '';
+            const emoji = imageData ? '' : getRandomEmoji();
+
+            photos.push({ name, date, emoji, image: imageData });
+            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+            syncAllToCloud();
+
+            newPhotoName.value = '';
+            newPhotoDate.value = '';
+            tempImageData = null;
+
+            uploadImageBtn.textContent = '📤 Upload Image';
+            uploadImageBtn.style.background = '#a71d31';
+            imageUploadInput.value = '';
+
+            loadGallery();
+            showToast('📸 Photo added & synced!');
+        });
 
         window.deletePhoto = function(index) {
             const saved = localStorage.getItem('galleryPhotos');
@@ -2140,48 +2247,83 @@ function loadFromCloud(callback) {
             }
         };
 
-        addPhotoBtn.addEventListener('click', function() {
-            const name = newPhotoName.value.trim();
-            if (!name) { alert('Please enter a photo title!'); return; }
-            const date = newPhotoDate.value.trim() || '✧';
-            const image = prompt('📸 Paste image URL (from Imgur, Google Drive, etc.):', 'https://example.com/photo.jpg');
-            const saved = localStorage.getItem('galleryPhotos');
-            const photos = saved ? JSON.parse(saved) : [];
-            photos.push({ name, date, emoji: getRandomEmoji(), image: image || '' });
-            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-            syncAllToCloud();
-            newPhotoName.value = '';
-            newPhotoDate.value = '';
-            loadGallery();
-            showToast('📸 Photo added!');
-        });
-
-        newPhotoName.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') addPhotoBtn.click();
-        });
-
         loadGallery();
 
         // =====================================================
-        // 11. LOAD FROM CLOUD ON PAGE LOAD
+        // 10. DATA MANAGEMENT
         // =====================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Try to load from cloud after 2 seconds
-            setTimeout(() => {
-                loadAndApplyFromCloud();
-            }, 2000);
-        });
+        window.viewAllData = function() {
+            const data = {
+                '📝 Letters': JSON.parse(localStorage.getItem('letterArchive') || '[]'),
+                '🎂 Wishes': JSON.parse(localStorage.getItem('wishArchive') || '[]'),
+                '📸 Photos': JSON.parse(localStorage.getItem('galleryPhotos') || '[]'),
+                '⏳ Timer': localStorage.getItem('timerStartDate') || '(not set)'
+            };
+            console.log('=== YOUR DATA ===');
+            console.table(data);
+            alert('✅ Data logged to console (F12 → Console tab)');
+        };
 
-        // Also sync to cloud every 30 seconds if there are changes
-        setInterval(() => {
-            // Only sync if cloud is enabled
-            if (BIN_ID && BIN_ID !== 'YOUR_BIN_ID_HERE') {
-                syncAllToCloud();
+        window.exportData = function() {
+            const data = {
+                letters: JSON.parse(localStorage.getItem('letterArchive') || '[]'),
+                wishes: JSON.parse(localStorage.getItem('wishArchive') || '[]'),
+                photos: JSON.parse(localStorage.getItem('galleryPhotos') || '[]'),
+                timerDate: localStorage.getItem('timerStartDate') || ''
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `memory-data-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('📥 Data exported!');
+        };
+
+        window.importData = function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        if (data.letters) localStorage.setItem('letterArchive', JSON.stringify(data.letters));
+                        if (data.wishes) localStorage.setItem('wishArchive', JSON.stringify(data.wishes));
+                        if (data.photos) localStorage.setItem('galleryPhotos', JSON.stringify(data.photos));
+                        if (data.timerDate) localStorage.setItem('timerStartDate', data.timerDate);
+                        syncAllToCloud();
+                        loadBottles();
+                        loadWishes();
+                        loadGallery();
+                        loadTimerDate();
+                        showToast('📤 Data imported!');
+                    } catch (err) {
+                        alert('Error importing data. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
+
+        window.clearAllData = function() {
+            if (confirm('⚠️ Delete ALL your saved data? This cannot be undone!')) {
+                if (confirm('🔄 Really? All letters, wishes, and memories will be gone.')) {
+                    localStorage.clear();
+                    syncAllToCloud();
+                    showToast('🗑️ All data cleared!');
+                    setTimeout(() => location.reload(), 500);
+                }
             }
-        }, 30000);
+        };
 
         // =====================================================
-        // 12. KEYBOARD SHORTCUT: ESC to close modal
+        // 11. KEYBOARD SHORTCUT
         // =====================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -2190,12 +2332,19 @@ function loadFromCloud(callback) {
         });
 
         // =====================================================
-        // 13. CONSOLE HELP
+        // 12. START - LOAD FROM CLOUD
         // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load from cloud after 1 second
+            setTimeout(() => {
+                loadFromCloud();
+            }, 1000);
+        });
+
         console.log('📖 I Keep U Forever');
         console.log('💾 Data auto-saves to localStorage and cloud');
-        console.log('📸 Use Imgur for image URLs: https://imgur.com');
-        console.log('🔑 Set your JSONBin credentials at the top of the script');
+        console.log('🔑 Using Master Key for stable sync');
+        console.log('✅ All sections sync: Letters, Wishes, Photos, Timer');
     </script>
 </body>
 </html>

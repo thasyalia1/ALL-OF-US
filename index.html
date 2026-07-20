@@ -6,988 +6,465 @@
     <title>🌻 For You · Museum of Memory</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Georgia', serif; background-color: #a71d31; overflow-x: hidden; min-height: 100vh; }
 
-        body {
-            font-family: 'Georgia', serif;
-            background-color: #a71d31;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* ===== INTRO SCREEN ===== */
+        /* INTRO SCREEN */
         #intro-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #a71d31 0%, #7a1525 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 1.5s ease-out, visibility 1.5s ease-out;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1000; transition: opacity 1.5s ease-out, visibility 1.5s ease-out;
         }
+        #intro-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .intro-sunflower { font-size: 120px; cursor: pointer; transition: transform 0.3s ease; animation: bounce 2s infinite; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3)); }
+        .intro-sunflower:hover { transform: scale(1.15) rotate(10deg); }
+        .intro-title { color: #f4d068; font-family: 'Brush Script MT', cursive; font-size: 3.5rem; margin-top: 20px; text-shadow: 3px 3px 0px #4a0710; }
+        .intro-sub { color: rgba(255,255,255,0.7); font-size: 1.2rem; margin-top: 10px; font-style: italic; letter-spacing: 5px; }
 
-        #intro-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .intro-sunflower {
-            font-size: 120px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            animation: bounce 2s infinite;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
-        }
-
-        .intro-sunflower:hover {
-            transform: scale(1.15) rotate(10deg);
-        }
-
-        .intro-title {
-            color: #f4d068;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            font-size: 3.5rem;
-            margin-top: 20px;
-            text-shadow: 3px 3px 0px #4a0710;
-            letter-spacing: 3px;
-        }
-
-        .intro-sub {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.2rem;
-            margin-top: 10px;
-            font-style: italic;
-            letter-spacing: 5px;
-        }
-
-        /* ===== SUNFLOWER PARTICLES ===== */
+        /* PARTICLES */
         .sunflower-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 999;
-            font-size: 2.8rem;
+            position: fixed; pointer-events: none; z-index: 999; font-size: 2.8rem;
             animation: flyOut 1.8s forwards ease-out;
         }
-
         @keyframes flyOut {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(0.3) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--mx), var(--my)) scale(1.8) rotate(var(--mr));
-            }
+            0% { opacity: 1; transform: translate(0,0) scale(0.3) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(1.8) rotate(var(--mr)); }
         }
+        @keyframes bounce { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
-        /* ===== SCRAPBOOK ===== */
+        /* SCRAPBOOK */
         #scrapbook {
-            max-width: 1280px;
-            width: 95%;
-            margin: 40px auto;
-            background: rgba(128, 19, 34, 0.95);
-            border: 12px double #f4d068;
-            border-radius: 10px;
-            padding: 40px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            opacity: 0;
-            transform: translateY(30px) scale(0.98);
+            max-width: 1280px; width: 95%; margin: 40px auto;
+            background: rgba(128,19,34,0.95); border: 12px double #f4d068; border-radius: 10px;
+            padding: 40px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            opacity: 0; transform: translateY(30px) scale(0.98);
             transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
         }
+        #scrapbook.visible { opacity: 1; transform: translateY(0) scale(1); }
 
-        #scrapbook.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* ===== HEADER ===== */
+        /* HEADER */
         .site-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            border-bottom: 2px dashed rgba(244, 208, 104, 0.3);
-            padding-bottom: 1.5rem;
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            margin-bottom: 2.5rem; border-bottom: 2px dashed rgba(244,208,104,0.3); padding-bottom: 1.5rem;
         }
+        .site-title h1 { font-size: 2.6rem; font-weight: 300; color: #f4d068; font-family: 'Brush Script MT', cursive; }
+        .site-title h1 i { color: #f4d068; margin-right: 10px; }
+        .site-title small { display: block; font-size: 0.9rem; color: rgba(244,208,104,0.6); letter-spacing: 3px; margin-top: 4px; font-family: 'Georgia', serif; }
+        .nav-icons { display: flex; gap: 1.8rem; font-size: 1.4rem; color: rgba(244,208,104,0.6); }
+        .nav-icons i { transition: 0.2s; cursor: default; }
+        .nav-icons i:hover { color: #f4d068; transform: scale(1.1); }
 
-        .site-title h1 {
-            font-size: 2.6rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            color: #f4d068;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-        }
-        .site-title h1 i {
-            color: #f4d068;
-            margin-right: 10px;
-        }
-        .site-title small {
-            display: block;
-            font-size: 0.9rem;
-            color: rgba(244, 208, 104, 0.6);
-            letter-spacing: 3px;
-            margin-top: 4px;
-            font-family: 'Georgia', serif;
-        }
+        /* GRID */
+        .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin-top: 1rem; }
 
-        .nav-icons {
-            display: flex;
-            gap: 1.8rem;
-            font-size: 1.4rem;
-            color: rgba(244, 208, 104, 0.6);
-        }
-        .nav-icons i {
-            transition: 0.2s;
-            cursor: default;
-        }
-        .nav-icons i:hover {
-            color: #f4d068;
-            transform: scale(1.1);
-        }
-
-        /* ===== GRID ===== */
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 1rem;
-        }
-
-        /* ===== CARDS ===== */
+        /* CARDS */
         .card {
-            background: rgba(255, 248, 240, 0.92);
-            backdrop-filter: blur(4px);
-            border-radius: 2.5rem;
-            padding: 1.8rem 1.5rem 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(244, 208, 104, 0.2);
-            transition: 0.25s ease;
-            display: flex;
-            flex-direction: column;
+            background: rgba(255,248,240,0.92); backdrop-filter: blur(4px); border-radius: 2.5rem;
+            padding: 1.8rem 1.5rem 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(244,208,104,0.2); transition: 0.25s ease; display: flex; flex-direction: column;
         }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 252, 248, 0.95);
-        }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 20px 35px rgba(0,0,0,0.3); background: rgba(255,252,248,0.95); }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; border-bottom: 1px solid #e7d7cb; padding-bottom: 0.8rem; }
+        .card-header i { font-size: 2rem; color: #a71d31; width: 2.6rem; text-align: center; }
+        .card-header h2 { font-weight: 400; font-size: 1.8rem; letter-spacing: 1px; color: #3e2c24; }
+        .card-header .badge { margin-left: auto; font-size: 0.6rem; background: #dccfc4; padding: 2px 12px; border-radius: 3rem; color: #5a4a3e; }
 
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #e7d7cb;
-            padding-bottom: 0.8rem;
-        }
-        .card-header i {
-            font-size: 2rem;
-            color: #a71d31;
-            width: 2.6rem;
-            text-align: center;
-        }
-        .card-header h2 {
-            font-weight: 400;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            color: #3e2c24;
-        }
-        .card-header .badge {
-            margin-left: auto;
-            font-size: 0.6rem;
-            background: #dccfc4;
-            padding: 2px 12px;
-            border-radius: 3rem;
-            color: #5a4a3e;
-        }
-
-        /* ===== NOTIFICATION ===== */
+        /* NOTIFICATION */
         .save-notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #2b2b2b;
-            color: #f4d068;
-            padding: 14px 28px;
-            border-radius: 3rem;
-            font-size: 0.95rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 2000;
-            border: 1px solid #f4d068;
+            position: fixed; bottom: 30px; right: 30px; background: #2b2b2b; color: #f4d068;
+            padding: 14px 28px; border-radius: 3rem; font-size: 0.95rem; box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none;
+            z-index: 2000; border: 1px solid #f4d068;
         }
-        .save-notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .save-notification.show { opacity: 1; transform: translateY(0); }
 
-        /* ===== TIMER ===== */
+        /* TIMER */
         .timer-display {
-            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
-            border-radius: 2.5rem;
-            padding: 1.8rem 1.2rem;
-            margin-bottom: 1.5rem;
-            border: 2px solid #ebd6c8;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%); border-radius: 2.5rem;
+            padding: 1.8rem 1.2rem; margin-bottom: 1.5rem; border: 2px solid #ebd6c8;
+            text-align: center; position: relative; overflow: hidden;
         }
-        .timer-display::before {
-            content: '⏳';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            font-size: 4rem;
-            opacity: 0.1;
-            transform: rotate(15deg);
-        }
+        .timer-display::before { content: '⏳'; position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1; transform: rotate(15deg); }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0 8px; }
+        .timer-block { background: rgba(255,248,240,0.6); border-radius: 1.5rem; padding: 10px 4px; border: 1px solid #ebd6c8; }
+        .timer-block .number { font-size: 2.4rem; font-weight: 300; color: #633f2e; font-family: 'Georgia', serif; line-height: 1.2; display: block; }
+        .timer-block .label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: #8a7567; font-weight: 400; }
+        .timer-sub { font-size: 0.85rem; color: #a68b7a; margin-top: 10px; font-style: italic; border-top: 1px dashed #dccfc4; padding-top: 12px; }
+        .timer-controls { display: flex; gap: 8px; margin-top: 12px; justify-content: center; flex-wrap: wrap; }
+        .timer-controls input { background: rgba(255,245,235,0.7); border: 1px solid #decfc2; border-radius: 3rem; padding: 8px 16px; font-size: 0.9rem; width: 140px; }
+        .timer-controls input:focus { outline: 2px solid #dbbcae; background: #fffbf7; }
+        .timer-controls button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .timer-controls button:hover { background: #801322; transform: scale(1.02); }
 
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 10px 0 8px;
-        }
-        .timer-block {
-            background: rgba(255, 248, 240, 0.6);
-            border-radius: 1.5rem;
-            padding: 10px 4px;
-            border: 1px solid #ebd6c8;
-        }
-        .timer-block .number {
-            font-size: 2.4rem;
-            font-weight: 300;
-            color: #633f2e;
-            font-family: 'Georgia', serif;
-            line-height: 1.2;
-            display: block;
-        }
-        .timer-block .label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #8a7567;
-            font-weight: 400;
-        }
+        /* LETTER ARCHIVE */
+        .letter-archive { display: flex; flex-direction: column; gap: 12px; max-height: 320px; overflow-y: auto; padding-right: 4px; margin-bottom: 15px; }
+        .letter-archive::-webkit-scrollbar { width: 4px; }
+        .letter-archive::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
+        .letter-archive::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+        .letter-entry { background: #fcf3ea; padding: 14px 16px; border-radius: 1.5rem; border-left: 4px solid #a71d31; animation: fadeIn 0.3s ease; position: relative; }
+        .letter-entry .letter-text { font-style: italic; color: #3e2c24; font-size: 0.9rem; line-height: 1.5; white-space: pre-wrap; }
+        .letter-entry .letter-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: #8f7668; }
+        .letter-entry .delete-letter { position: absolute; top: 6px; right: 10px; background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 0.9rem; opacity: 0.4; transition: 0.2s; }
+        .letter-entry .delete-letter:hover { opacity: 1; color: #c0392b; }
 
-        .timer-sub {
-            font-size: 0.85rem;
-            color: #a68b7a;
-            margin-top: 10px;
-            font-style: italic;
-            border-top: 1px dashed #dccfc4;
-            padding-top: 12px;
-        }
+        .letter-form { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+        .letter-form textarea { background: rgba(255,245,235,0.7); border: 1px solid #decfc2; border-radius: 2rem; padding: 14px 16px; font-size: 0.95rem; resize: vertical; min-height: 70px; transition: 0.2s; color: #3e2c24; }
+        .letter-form textarea:focus { outline: 2px solid #a71d31; background: #fffbf7; }
+        .letter-form .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .letter-form input { flex: 1; background: rgba(255,245,235,0.7); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 16px; font-size: 0.9rem; min-width: 120px; }
+        .letter-form input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
+        .letter-form button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; font-size: 0.95rem; }
+        .letter-form button:hover { background: #801322; }
+        .letter-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
 
-        .timer-controls {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .timer-controls input {
-            background: rgba(255, 245, 235, 0.7);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            width: 140px;
-        }
-        .timer-controls input:focus {
-            outline: 2px solid #dbbcae;
-            background: #fffbf7;
-        }
-        .timer-controls button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 20px;
-            font-weight: 500;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-        }
-        .timer-controls button:hover {
-            background: #801322;
-            transform: scale(1.02);
-        }
+        /* WISH ARCHIVE */
+        .wish-archive { display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto; padding-right: 4px; margin-bottom: 15px; }
+        .wish-archive::-webkit-scrollbar { width: 4px; }
+        .wish-archive::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
+        .wish-archive::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+        .wish-entry { background: #f9efe6; padding: 12px 16px; border-radius: 1.5rem; border-left: 4px solid #f4d068; animation: fadeIn 0.3s ease; position: relative; }
+        .wish-entry .wish-text { color: #3e2c24; font-size: 0.9rem; line-height: 1.5; }
+        .wish-entry .wish-meta { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.7rem; color: #8f7668; }
+        .wish-entry .delete-wish { position: absolute; top: 4px; right: 10px; background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 0.9rem; opacity: 0.4; transition: 0.2s; }
+        .wish-entry .delete-wish:hover { opacity: 1; color: #c0392b; }
 
-        /* ===== LETTER ARCHIVE ===== */
-        .letter-archive {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 320px;
-            overflow-y: auto;
-            padding-right: 4px;
-            margin-bottom: 15px;
-        }
-        .letter-archive::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter-archive::-webkit-scrollbar-track {
-            background: #f0e6de;
-            border-radius: 10px;
-        }
-        .letter-archive::-webkit-scrollbar-thumb {
-            background: #dccfc4;
-            border-radius: 10px;
-        }
+        .birthday-input-area { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .birthday-input-area input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 8px 16px; min-width: 140px; }
+        .birthday-input-area input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
+        .birthday-input-area button { background: #a71d31; border: none; border-radius: 3rem; padding: 6px 18px; cursor: pointer; color: #fff; font-weight: 500; }
+        .birthday-input-area button:hover { background: #801322; }
+        .wish-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
 
-        .letter-entry {
-            background: #fcf3ea;
-            padding: 14px 16px;
-            border-radius: 1.5rem;
-            border-left: 4px solid #a71d31;
-            animation: fadeIn 0.3s ease;
-            position: relative;
-        }
-        .letter-entry .letter-text {
-            font-style: italic;
-            color: #3e2c24;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-        }
-        .letter-entry .letter-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 6px;
-            font-size: 0.7rem;
-            color: #8f7668;
-        }
-        .letter-entry .delete-letter {
-            position: absolute;
-            top: 6px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #b48b7a;
-            cursor: pointer;
-            font-size: 0.9rem;
-            opacity: 0.4;
-            transition: 0.2s;
-        }
-        .letter-entry .delete-letter:hover {
-            opacity: 1;
-            color: #c0392b;
-        }
+        /* MEMORY GALLERY */
+        .memory-gallery { display: flex; flex-direction: column; gap: 12px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
+        .memory-gallery::-webkit-scrollbar { width: 4px; }
+        .memory-gallery::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
+        .memory-gallery::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+        .memory-item { background: #f7eee6; border-radius: 2rem; padding: 12px 18px; display: flex; align-items: center; gap: 14px; border: 1px solid #e3d0c0; transition: 0.15s; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .memory-item:hover { background: #f3e7dc; border-color: #c9b2a0; }
+        .memory-item i { font-size: 1.7rem; color: #a71d31; width: 2.2rem; text-align: center; }
+        .memory-item .mem-content { flex: 1; }
+        .memory-item .mem-content strong { display: block; font-weight: 500; color: #3e2c24; }
+        .memory-item .mem-content small { color: #8a7567; font-size: 0.8rem; }
+        .memory-item .mem-year { background: #dccfc4; padding: 4px 14px; border-radius: 3rem; font-size: 0.8rem; color: #3f3229; font-weight: 400; }
+        .memory-item .delete-memory { background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 1.1rem; padding: 0 4px; transition: 0.2s; opacity: 0.5; }
+        .memory-item .delete-memory:hover { opacity: 1; color: #c0392b; }
 
-        .letter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 6px;
-        }
-        .letter-form textarea {
-            background: rgba(255, 245, 235, 0.7);
-            border: 1px solid #decfc2;
-            border-radius: 2rem;
-            padding: 14px 16px;
-            font-size: 0.95rem;
-            resize: vertical;
-            min-height: 70px;
-            transition: 0.2s;
-            color: #3e2c24;
-        }
-        .letter-form textarea:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .letter-form .form-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .letter-form input {
-            flex: 1;
-            background: rgba(255, 245, 235, 0.7);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            min-width: 120px;
-        }
-        .letter-form input:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .letter-form button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 20px;
-            font-weight: 500;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
-        }
-        .letter-form button:hover {
-            background: #801322;
-        }
+        .add-memory { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .add-memory input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 16px; min-width: 140px; }
+        .add-memory input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
+        .add-memory button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 24px; color: #fff; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .add-memory button:hover { background: #801322; }
+        .memory-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 6px; }
 
-        .letter-count {
-            font-size: 0.75rem;
-            color: #a18b7d;
-            text-align: right;
-            margin-top: 4px;
-        }
+        /* DATA MANAGEMENT */
+        .data-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+        .data-actions button { background: rgba(255,255,255,0.1); border: 1px solid rgba(244,208,104,0.3); border-radius: 3rem; padding: 8px 20px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; color: #f4d068; font-family: 'Georgia', serif; }
+        .data-actions button:hover { background: rgba(244,208,104,0.2); transform: scale(1.02); }
+        .data-actions .btn-danger { color: #ff6b6b; border-color: rgba(255,107,107,0.3); }
+        .data-actions .btn-danger:hover { background: rgba(255,107,107,0.15); }
 
-        /* ===== BIRTHDAY WISH ARCHIVE ===== */
-        .wish-archive {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            padding-right: 4px;
-            margin-bottom: 15px;
-        }
-        .wish-archive::-webkit-scrollbar {
-            width: 4px;
-        }
-        .wish-archive::-webkit-scrollbar-track {
-            background: #f0e6de;
-            border-radius: 10px;
-        }
-        .wish-archive::-webkit-scrollbar-thumb {
-            background: #dccfc4;
-            border-radius: 10px;
-        }
+        /* FOOTER */
+        .site-footer { margin-top: 3rem; text-align: center; border-top: 1px solid rgba(244,208,104,0.2); padding-top: 1.8rem; font-size: 0.9rem; color: rgba(244,208,104,0.5); letter-spacing: 1px; }
+        .site-footer i { margin: 0 4px; color: #f4d068; }
 
-        .wish-entry {
-            background: #f9efe6;
-            padding: 12px 16px;
-            border-radius: 1.5rem;
-            border-left: 4px solid #f4d068;
-            animation: fadeIn 0.3s ease;
-            position: relative;
-        }
-        .wish-entry .wish-text {
-            color: #3e2c24;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .wish-entry .wish-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 4px;
-            font-size: 0.7rem;
-            color: #8f7668;
-        }
-        .wish-entry .delete-wish {
-            position: absolute;
-            top: 4px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #b48b7a;
-            cursor: pointer;
-            font-size: 0.9rem;
-            opacity: 0.4;
-            transition: 0.2s;
-        }
-        .wish-entry .delete-wish:hover {
-            opacity: 1;
-            color: #c0392b;
-        }
-
-        .birthday-input-area {
-            display: flex;
-            gap: 6px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-        .birthday-input-area input {
-            flex: 1;
-            background: rgba(255, 245, 235, 0.6);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 8px 16px;
-            min-width: 140px;
-        }
-        .birthday-input-area input:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .birthday-input-area button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 6px 18px;
-            cursor: pointer;
-            color: #fff;
-            font-weight: 500;
-        }
-        .birthday-input-area button:hover {
-            background: #801322;
-        }
-
-        .wish-count {
-            font-size: 0.75rem;
-            color: #a18b7d;
-            text-align: right;
-            margin-top: 4px;
-        }
-
-        /* ===== MEMORY GALLERY ===== */
-        .memory-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .memory-gallery::-webkit-scrollbar {
-            width: 4px;
-        }
-        .memory-gallery::-webkit-scrollbar-track {
-            background: #f0e6de;
-            border-radius: 10px;
-        }
-        .memory-gallery::-webkit-scrollbar-thumb {
-            background: #dccfc4;
-            border-radius: 10px;
-        }
-
-        .memory-item {
-            background: #f7eee6;
-            border-radius: 2rem;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid #e3d0c0;
-            transition: 0.15s;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .memory-item:hover {
-            background: #f3e7dc;
-            border-color: #c9b2a0;
-        }
-        .memory-item i {
-            font-size: 1.7rem;
-            color: #a71d31;
-            width: 2.2rem;
-            text-align: center;
-        }
-        .memory-item .mem-content {
-            flex: 1;
-        }
-        .memory-item .mem-content strong {
-            display: block;
-            font-weight: 500;
-            color: #3e2c24;
-        }
-        .memory-item .mem-content small {
-            color: #8a7567;
-            font-size: 0.8rem;
-        }
-        .memory-item .mem-year {
-            background: #dccfc4;
-            padding: 4px 14px;
-            border-radius: 3rem;
-            font-size: 0.8rem;
-            color: #3f3229;
-            font-weight: 400;
-        }
-        .memory-item .delete-memory {
-            background: none;
-            border: none;
-            color: #b48b7a;
-            cursor: pointer;
-            font-size: 1.1rem;
-            padding: 0 4px;
-            transition: 0.2s;
-            opacity: 0.5;
-        }
-        .memory-item .delete-memory:hover {
-            opacity: 1;
-            color: #c0392b;
-        }
-
-        .add-memory {
-            margin-top: 12px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .add-memory input {
-            flex: 1;
-            background: rgba(255, 245, 235, 0.6);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 10px 16px;
-            min-width: 140px;
-        }
-        .add-memory input:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .add-memory button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 24px;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-        }
-        .add-memory button:hover {
-            background: #801322;
-        }
-
-        .memory-count {
-            font-size: 0.75rem;
-            color: #a18b7d;
-            text-align: right;
-            margin-top: 6px;
-        }
-
-        /* ===== DATA MANAGEMENT ===== */
-        .data-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .data-actions button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(244, 208, 104, 0.3);
-            border-radius: 3rem;
-            padding: 8px 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #f4d068;
-            font-family: 'Georgia', serif;
-        }
-        .data-actions button:hover {
-            background: rgba(244, 208, 104, 0.2);
-            transform: scale(1.02);
-        }
-        .data-actions .btn-danger {
-            color: #ff6b6b;
-            border-color: rgba(255, 107, 107, 0.3);
-        }
-        .data-actions .btn-danger:hover {
-            background: rgba(255, 107, 107, 0.15);
-        }
-
-        /* ===== FOOTER ===== */
-        .site-footer {
-            margin-top: 3rem;
-            text-align: center;
-            border-top: 1px solid rgba(244, 208, 104, 0.2);
-            padding-top: 1.8rem;
-            font-size: 0.9rem;
-            color: rgba(244, 208, 104, 0.5);
-            letter-spacing: 1px;
-        }
-        .site-footer i {
-            margin: 0 4px;
-            color: #f4d068;
-        }
-
-        /* ===== RESPONSIVE ===== */
+        /* RESPONSIVE */
         @media (max-width: 650px) {
-            .site-header {
-                flex-direction: column;
-                align-items: start;
-                gap: 10px;
-            }
-            .nav-icons {
-                gap: 1.2rem;
-                font-size: 1.2rem;
-            }
-            .timer-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 6px;
-            }
-            .timer-block .number {
-                font-size: 1.8rem;
-            }
-            .intro-title {
-                font-size: 2.2rem;
-            }
-            .intro-sunflower {
-                font-size: 80px;
-            }
-            .site-title h1 {
-                font-size: 2rem;
-            }
+            .site-header { flex-direction: column; align-items: start; gap: 10px; }
+            .nav-icons { gap: 1.2rem; font-size: 1.2rem; }
+            .timer-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .timer-block .number { font-size: 1.8rem; }
+            .intro-title { font-size: 2.2rem; }
+            .intro-sunflower { font-size: 80px; }
+            .site-title h1 { font-size: 2rem; }
         }
         @media (max-width: 400px) {
-            .timer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .timer-block .number {
-                font-size: 1.4rem;
-            }
+            .timer-grid { grid-template-columns: repeat(2, 1fr); }
+            .timer-block .number { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================
-    INTRO SCREEN - SUNFLOWER OPENING
-    ========================================== -->
-    <div id="intro-screen">
-        <div class="intro-sunflower" onclick="openGift()">🌻</div>
-        <div class="intro-title">For You</div>
-        <div class="intro-sub">✦ click the sunflower ✦</div>
-    </div>
+<!-- INTRO SCREEN -->
+<div id="intro-screen">
+    <div class="intro-sunflower" onclick="openGift()">🌻</div>
+    <div class="intro-title">For You</div>
+    <div class="intro-sub">✦ click the sunflower ✦</div>
+</div>
 
-    <!-- ==========================================
-    SAVE NOTIFICATION
-    ========================================== -->
-    <div class="save-notification" id="saveNotification">
-        <i class="fas fa-check-circle"></i> Saved! 💾
-    </div>
+<!-- NOTIFICATION -->
+<div class="save-notification" id="saveNotification">
+    <i class="fas fa-check-circle"></i> Saved! 💾
+</div>
 
-    <!-- ==========================================
-    MAIN SCRAPBOOK
-    ========================================== -->
-    <div id="scrapbook">
+<!-- SCRAPBOOK -->
+<div id="scrapbook">
 
-        <!-- HEADER -->
-        <header class="site-header">
-            <div class="site-title">
-                <h1><i class="fas fa-feather-alt"></i> unsent · memory</h1>
-                <small>✧ letters · birthday · museum · timer ✧</small>
-            </div>
-            <div class="nav-icons">
-                <i class="fas fa-hourglass-half" title="days without you"></i>
-                <i class="fas fa-envelope" title="unsent letters"></i>
-                <i class="fas fa-birthday-cake" title="happy birthday"></i>
-                <i class="fas fa-archway" title="museum of memory"></i>
-            </div>
-        </header>
-
-        <!-- GRID -->
-        <div class="memory-grid">
-
-            <!-- 1. TIMER -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-hourglass-half"></i>
-                    <h2>without you</h2>
-                    <span class="badge"><i class="fas fa-save"></i> saved</span>
-                </div>
-                <div class="timer-display">
-                    <div class="timer-grid">
-                        <div class="timer-block">
-                            <span class="number" id="daysDisplay">0</span>
-                            <span class="label">days</span>
-                        </div>
-                        <div class="timer-block">
-                            <span class="number" id="hoursDisplay">0</span>
-                            <span class="label">hours</span>
-                        </div>
-                        <div class="timer-block">
-                            <span class="number" id="minutesDisplay">0</span>
-                            <span class="label">minutes</span>
-                        </div>
-                        <div class="timer-block">
-                            <span class="number" id="secondsDisplay">0</span>
-                            <span class="label">seconds</span>
-                        </div>
-                    </div>
-                    <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
-                </div>
-                <div class="timer-controls">
-                    <input type="date" id="startDateInput">
-                    <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
-                </div>
-            </section>
-
-            <!-- 2. UNSENT LETTERS -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-pen-fancy"></i>
-                    <h2>unsent</h2>
-                    <span class="badge"><i class="fas fa-archive"></i> archive</span>
-                </div>
-                <div class="letter-archive" id="letterArchive"></div>
-                <form class="letter-form" id="letterForm">
-                    <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
-                    <div class="form-row">
-                        <input type="text" id="letterSign" placeholder="Your signature" value="— always yours">
-                        <button type="submit"><i class="fas fa-paper-plane"></i> seal</button>
-                    </div>
-                </form>
-                <div class="letter-count" id="letterCount">0 letters</div>
-            </section>
-
-            <!-- 3. BIRTHDAY WISHES -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-birthday-cake"></i>
-                    <h2>birthday</h2>
-                    <span class="badge"><i class="fas fa-archive"></i> archive</span>
-                </div>
-                <div class="wish-archive" id="wishArchive"></div>
-                <div class="birthday-input-area">
-                    <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
-                    <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
-                </div>
-                <div class="wish-count" id="wishCount">0 wishes</div>
-            </section>
-
-            <!-- 4. MUSEUM OF MEMORY -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-landmark"></i>
-                    <h2>museum</h2>
-                    <span class="badge"><i class="fas fa-archive"></i> archive</span>
-                </div>
-                <div class="memory-gallery" id="memoryGallery"></div>
-                <div class="add-memory">
-                    <input type="text" id="newMemoryName" placeholder="📸 Memory name...">
-                    <input type="text" id="newMemoryYear" placeholder="Year" style="max-width:80px;">
-                    <button id="addMemoryBtn"><i class="fas fa-plus-circle"></i> add</button>
-                </div>
-                <div class="memory-count" id="memoryCount">0 memories</div>
-            </section>
+    <header class="site-header">
+        <div class="site-title">
+            <h1><i class="fas fa-feather-alt"></i> unsent · memory</h1>
+            <small>✧ letters · birthday · museum · timer ✧</small>
         </div>
-
-        <!-- DATA MANAGEMENT -->
-        <div style="margin-top: 2.5rem; text-align: center; border-top: 1px solid rgba(244, 208, 104, 0.2); padding-top: 1.5rem;">
-            <div class="data-actions">
-                <button onclick="viewAllData()"><i class="fas fa-eye"></i> View All Data</button>
-                <button onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
-                <button onclick="importData()"><i class="fas fa-upload"></i> Import Data</button>
-                <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
-            </div>
-            <p style="font-size: 0.7rem; color: rgba(244, 208, 104, 0.4); margin-top: 10px;">
-                <i class="fas fa-database"></i> All data stored in your browser. Nothing is lost on refresh!
-            </p>
+        <div class="nav-icons">
+            <i class="fas fa-hourglass-half"></i>
+            <i class="fas fa-envelope"></i>
+            <i class="fas fa-birthday-cake"></i>
+            <i class="fas fa-archway"></i>
         </div>
+    </header>
 
-        <!-- FOOTER -->
-        <footer class="site-footer">
-            <i class="fas fa-heart"></i>  for the ones we keep close  <i class="fas fa-heart"></i>
-            <br><small style="font-size: 0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
-        </footer>
+    <div class="memory-grid">
+
+        <!-- TIMER -->
+        <section class="card">
+            <div class="card-header">
+                <i class="fas fa-hourglass-half"></i>
+                <h2>without you</h2>
+                <span class="badge"><i class="fas fa-save"></i> saved</span>
+            </div>
+            <div class="timer-display">
+                <div class="timer-grid">
+                    <div class="timer-block"><span class="number" id="daysDisplay">0</span><span class="label">days</span></div>
+                    <div class="timer-block"><span class="number" id="hoursDisplay">00</span><span class="label">hours</span></div>
+                    <div class="timer-block"><span class="number" id="minutesDisplay">00</span><span class="label">minutes</span></div>
+                    <div class="timer-block"><span class="number" id="secondsDisplay">00</span><span class="label">seconds</span></div>
+                </div>
+                <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
+            </div>
+            <div class="timer-controls">
+                <input type="date" id="startDateInput">
+                <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
+            </div>
+        </section>
+
+        <!-- LETTERS -->
+        <section class="card">
+            <div class="card-header">
+                <i class="fas fa-pen-fancy"></i>
+                <h2>unsent</h2>
+                <span class="badge"><i class="fas fa-archive"></i> archive</span>
+            </div>
+            <div class="letter-archive" id="letterArchive"></div>
+            <form class="letter-form" id="letterForm">
+                <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
+                <div class="form-row">
+                    <input type="text" id="letterSign" placeholder="Your signature" value="— always yours">
+                    <button type="submit"><i class="fas fa-paper-plane"></i> seal</button>
+                </div>
+            </form>
+            <div class="letter-count" id="letterCount">0 letters</div>
+        </section>
+
+        <!-- BIRTHDAY -->
+        <section class="card">
+            <div class="card-header">
+                <i class="fas fa-birthday-cake"></i>
+                <h2>birthday</h2>
+                <span class="badge"><i class="fas fa-archive"></i> archive</span>
+            </div>
+            <div class="wish-archive" id="wishArchive"></div>
+            <div class="birthday-input-area">
+                <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
+                <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
+            </div>
+            <div class="wish-count" id="wishCount">0 wishes</div>
+        </section>
+
+        <!-- MUSEUM -->
+        <section class="card">
+            <div class="card-header">
+                <i class="fas fa-landmark"></i>
+                <h2>museum</h2>
+                <span class="badge"><i class="fas fa-archive"></i> archive</span>
+            </div>
+            <div class="memory-gallery" id="memoryGallery"></div>
+            <div class="add-memory">
+                <input type="text" id="newMemoryName" placeholder="📸 Memory name...">
+                <input type="text" id="newMemoryYear" placeholder="Year" style="max-width:80px;">
+                <button id="addMemoryBtn"><i class="fas fa-plus-circle"></i> add</button>
+            </div>
+            <div class="memory-count" id="memoryCount">0 memories</div>
+        </section>
     </div>
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT                                -->
-    <!-- ========================================== -->
-    <script>
-        // =====================================================
-        // OPENING - SUNFLOWER EXPLOSION
-        // =====================================================
-        function openGift() {
-            const introScreen = document.getElementById('intro-screen');
-            const scrapbook = document.getElementById('scrapbook');
+    <!-- DATA MANAGEMENT -->
+    <div style="margin-top: 2.5rem; text-align: center; border-top: 1px solid rgba(244,208,104,0.2); padding-top: 1.5rem;">
+        <div class="data-actions">
+            <button onclick="viewAllData()"><i class="fas fa-eye"></i> View All Data</button>
+            <button onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
+            <button onclick="importData()"><i class="fas fa-upload"></i> Import Data</button>
+            <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
+        </div>
+        <p style="font-size: 0.7rem; color: rgba(244,208,104,0.4); margin-top: 10px;">
+            <i class="fas fa-database"></i> All data stored in your browser. Nothing is lost on refresh!
+        </p>
+    </div>
 
-            const sunflowers = ['🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻'];
+    <footer class="site-footer">
+        <i class="fas fa-heart"></i>  for the ones we keep close  <i class="fas fa-heart"></i>
+        <br><small style="font-size: 0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
+    </footer>
+</div>
 
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('sunflower-particle');
-                particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
+<!-- ========================================== -->
+<!-- JAVASCRIPT - FULLY WORKING               -->
+<!-- ========================================== -->
+<script>
+// =====================================================
+// OPENING - SUNFLOWER EXPLOSION
+// =====================================================
+function openGift() {
+    const introScreen = document.getElementById('intro-screen');
+    const scrapbook = document.getElementById('scrapbook');
 
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 150 + Math.random() * 350;
-                particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
-                particle.style.setProperty('--my', Math.sin(angle) * distance - 100 + 'px');
-                particle.style.setProperty('--mr', Math.random() * 360 + 'deg');
-                particle.style.left = window.innerWidth / 2 + 'px';
-                particle.style.top = window.innerHeight / 2 + 'px';
+    const sunflowers = ['🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻'];
 
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1800);
-            }
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('sunflower-particle');
+        particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 150 + Math.random() * 350;
+        particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
+        particle.style.setProperty('--my', Math.sin(angle) * distance - 100 + 'px');
+        particle.style.setProperty('--mr', Math.random() * 360 + 'deg');
+        particle.style.left = window.innerWidth / 2 + 'px';
+        particle.style.top = window.innerHeight / 2 + 'px';
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1800);
+    }
 
-            introScreen.classList.add('hidden');
-            scrapbook.classList.add('visible');
-            setTimeout(() => showSaved('🌻 Welcome! Everything you write is saved forever!'), 1000);
-        }
+    introScreen.classList.add('hidden');
+    scrapbook.classList.add('visible');
+    setTimeout(() => showSaved('🌻 Welcome! Everything you write is saved forever!'), 1000);
+}
 
-        // =====================================================
-        // NOTIFICATION
-        // =====================================================
-        const notification = document.getElementById('saveNotification');
-        let notificationTimeout;
+// =====================================================
+// NOTIFICATION
+// =====================================================
+const notification = document.getElementById('saveNotification');
+let notifTimeout;
 
-        function showSaved(message = 'Saved! 💾') {
-            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-            notification.classList.add('show');
-            clearTimeout(notificationTimeout);
-            notificationTimeout = setTimeout(() => notification.classList.remove('show'), 2000);
-        }
+function showSaved(msg = 'Saved! 💾') {
+    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+    notification.classList.add('show');
+    clearTimeout(notifTimeout);
+    notifTimeout = setTimeout(() => notification.classList.remove('show'), 2000);
+}
 
-        function getCurrentDate() {
-            const now = new Date();
-            return now.toLocaleString('en-US', { 
-                month: 'short', day: 'numeric', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
-            });
-        }
+function getCurrentDate() {
+    const now = new Date();
+    return now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
 
-        // =====================================================
-        // 1. TIMER
-        // =====================================================
-        const daysDisplay = document.getElementById('daysDisplay');
-        const hoursDisplay = document.getElementById('hoursDisplay');
-        const minutesDisplay = document.getElementById('minutesDisplay');
-        const secondsDisplay = document.getElementById('secondsDisplay');
-        const timerSubMessage = document.getElementById('timerSubMessage');
-        const startDateInput = document.getElementById('startDateInput');
-        const updateTimerBtn = document.getElementById('updateTimerBtn');
+// =====================================================
+// 1. TIMER
+// =====================================================
+const daysEl = document.getElementById('daysDisplay');
+const hoursEl = document.getElementById('hoursDisplay');
+const minutesEl = document.getElementById('minutesDisplay');
+const secondsEl = document.getElementById('secondsDisplay');
+const timerMsg = document.getElementById('timerSubMessage');
+const startDateInput = document.getElementById('startDateInput');
+const updateBtn = document.getElementById('updateTimerBtn');
 
-        function loadTimerDate() {
-            const saved = localStorage.getItem('timerStartDate');
-            if (saved) {
-                startDateInput.value = saved;
+function loadTimerDate() {
+    const saved = localStorage.getItem('timerStartDate');
+    if (saved) { startDateInput.value = saved; } 
+    else {
+        const d = new Date(); d.setDate(d.getDate() - 30);
+        const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+        startDateInput.value = `${y}-${m}-${day}`;
+        localStorage.setItem('timerStartDate', startDateInput.value);
+    }
+}
+loadTimerDate();
+
+function calcDiff(start, end) {
+    const ms = Math.abs(end - start);
+    const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60), d = Math.floor(h/24);
+    return { days: d, hours: h % 24, minutes: m % 60, seconds: s % 60 };
+}
+
+function getTimerMsg(days) {
+    const msgs = [
+        { max: 1, text: '"the first day feels like an eternity"' },
+        { max: 7, text: '"a week without you feels like a lifetime"' },
+        { max: 30, text: '"a month without you feels like a year"' },
+        { max: 60, text: '"time moves slow when you\'re not here"' },
+        { max: 90, text: '"three months and the days blur together"' },
+        { max: 365, text: '"a year without you, and i still count"' },
+        { max: Infinity, text: '"every day without you is a day too long"' }
+    ];
+    for (const m of msgs) { if (days <= m.max) return m.text; }
+    return '"time moves slow when you\'re not here"';
+}
+
+function updateTimer() {
+    const val = startDateInput.value;
+    if (!val) { daysEl.textContent='0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; timerMsg.textContent='please set a date'; return; }
+    const start = new Date(val + 'T00:00:00');
+    const now = new Date();
+    if (isNaN(start.getTime())) { daysEl.textContent='0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; timerMsg.textContent='invalid date'; return; }
+    const diff = calcDiff(start, now);
+    daysEl.textContent = diff.days;
+    hoursEl.textContent = String(diff.hours).padStart(2,'0');
+    minutesEl.textContent = String(diff.minutes).padStart(2,'0');
+    secondsEl.textContent = String(diff.seconds).padStart(2,'0');
+    timerMsg.textContent = getTimerMsg(diff.days);
+}
+
+updateBtn.addEventListener('click', function() {
+    localStorage.setItem('timerStartDate', startDateInput.value);
+    showSaved('Timer updated!');
+    updateTimer();
+});
+
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// =====================================================
+// 2. LETTERS ARCHIVE
+// =====================================================
+const letterArchive = document.getElementById('letterArchive');
+const letterForm = document.getElementById('letterForm');
+const letterContent = document.getElementById('letterContent');
+const letterSign = document.getElementById('letterSign');
+const letterCount = document.getElementById('letterCount');
+
+function loadLetters() {
+    const saved = localStorage.getItem('letterArchive');
+    if (saved) {
+        try {
+            const letters = JSON.parse(saved);
+            letterArchive.innerHTML = '';
+            if (letters.length === 0) {
+                letterArchive.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No letters yet. Write your first one! ✨</p>`;
             } else {
-                const today = new Date();
-                const thirtyDaysAgo = new Date(today);
-                thirtyDaysAgo.setDate(today.getDate() - 30);
-                const year = thirtyDaysAgo.getFullYear();
-                const month = String(thirtyDaysAgo.getMonth() + 1).padStart(2, '0');
-                const day = String(thirtyDaysAgo.getDate()).padStart(2, '0');
-                startDateInput.value = `${year}-${month}-${day}`;
-                localStorage.setItem('timerStartDate', startDateInput.value);
+                letters.forEach((l, i) => addLetterToDOM(l.text, l.sign, l.date, i));
             }
-        }
-        loadTimerDate();
+            updateLetterCount();
+        } catch(e) { console.error(e); }
+    } else {
+        const defaultLetter = { text: 'some words stay folded, waiting for the right silence.', sign: '— always yours', date: getCurrentDate() };
+        localStorage.setItem('letterArchive', JSON.stringify([defaultLetter]));
+        addLetterToDOM(defaultLetter.text, defaultLetter.sign, defaultLetter.date, 0);
+        updateLetterCount();
+    }
+}
 
-        function getTimeDifference(startDate, endDate) {
-            const diffMs = Math.abs(endDate - startDate);
-            const seconds = Math.floor(diffMs / 1000);
-            const minutes = Math.floor(seconds / 60);
-           
+function addLetterToDOM(text, sign, date, index) {
+    const entry = document.createElement('div');
+    entry.className = 'letter-entry';
+    entry.innerHTML = `
+        <div class="letter-text">“${text}”</div>
+        <div class="letter-meta">
+            <span class="letter-sign">${sign || '— always yours'}</span>
+            <span class="letter-date">${date || getCurrentDate()}</span>
+        </div>
+        <button class="delete-letter" onclick="deleteLetter(${index})"><i class="fas fa-times"></i></button>
+    `;
+    letterArchive

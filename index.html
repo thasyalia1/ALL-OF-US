@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>❀ museum of memory · unsent letters · happy birthday</title>
-    <!-- Font Awesome Icons (free) -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -33,7 +33,7 @@
             border: 1px solid rgba(235, 215, 195, 0.5);
         }
 
-        /* ===== SAVED NOTIFICATION ===== */
+        /* ===== SAVE NOTIFICATION ===== */
         .save-notification {
             position: fixed;
             bottom: 20px;
@@ -144,14 +144,14 @@
         }
         .card-header .save-badge {
             margin-left: auto;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             background: #dccfc4;
             padding: 2px 12px;
             border-radius: 3rem;
             color: #5a4a3e;
         }
 
-        /* ===== TIMER SECTION ===== */
+        /* ===== TIMER ===== */
         .timer-display {
             background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
             border-radius: 2.5rem;
@@ -392,7 +392,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -508,6 +508,35 @@
             margin-top: 6px;
         }
 
+        /* ===== DATA MANAGEMENT ===== */
+        .data-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .data-actions button {
+            background: #dccfc4;
+            border: none;
+            border-radius: 3rem;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 400;
+            color: #3e342e;
+        }
+        .data-actions button:hover {
+            background: #d0bcae;
+        }
+        .data-actions .btn-danger {
+            color: #c0392b;
+        }
+        .data-actions .btn-danger:hover {
+            background: #f5d6d0;
+        }
+
         /* ===== FOOTER ===== */
         .site-footer {
             margin-top: 3.5rem;
@@ -559,7 +588,7 @@
 
 <!-- ===== SAVE NOTIFICATION ===== -->
 <div class="save-notification" id="saveNotification">
-    <i class="fas fa-check-circle"></i> Saved automatically! 💾
+    <i class="fas fa-check-circle"></i> Data saved! 💾
 </div>
 
 <div class="memory-container">
@@ -586,6 +615,7 @@
             <div class="card-header">
                 <i class="fas fa-hourglass-half"></i>
                 <h2>without you</h2>
+                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
             </div>
             <div class="timer-display">
                 <div class="timer-grid">
@@ -614,21 +644,21 @@
             </div>
         </section>
 
-        <!-- 2. UNSENT LETTERS (AUTO-SAVED) -->
+        <!-- 2. UNSENT LETTERS -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-pen-fancy"></i>
                 <h2>unsent</h2>
-                <span class="save-badge"><i class="fas fa-save"></i> auto-saved</span>
+                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
             </div>
             <div class="letter-preview" id="letterPreview">
                 <p>“some words stay folded, waiting for the right silence.”</p>
                 <div class="sign">— always yours</div>
             </div>
             <form class="letter-form" id="letterForm">
-                <textarea id="letterContent" placeholder="write your unsent letter..."></textarea>
+                <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
                 <div class="form-row">
-                    <input type="text" id="letterSign" placeholder="signature (optional)" value="— always yours">
+                    <input type="text" id="letterSign" placeholder="Your signature (optional)" value="— always yours">
                     <button type="submit" id="sendLetterBtn"><i class="fas fa-paper-plane"></i> seal</button>
                 </div>
             </form>
@@ -637,12 +667,12 @@
             </p>
         </section>
 
-        <!-- 3. HAPPY BIRTHDAY (AUTO-SAVED) -->
+        <!-- 3. HAPPY BIRTHDAY -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-birthday-cake"></i>
                 <h2>happy birthday</h2>
-                <span class="save-badge"><i class="fas fa-save"></i> auto-saved</span>
+                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
             </div>
             <div class="birthday-message">
                 <div class="bday-icon">🎂</div>
@@ -656,7 +686,7 @@
                 </div>
             </div>
             <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
-                <input type="text" id="birthdayWishInput" placeholder="write a birthday wish..." style="flex:1; background: rgba(255,245,235,0.6); border:1px solid #decfc2; border-radius:3rem; padding:8px 16px;">
+                <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish..." style="flex:1; background: rgba(255,245,235,0.6); border:1px solid #decfc2; border-radius:3rem; padding:8px 16px;">
                 <button id="updateBirthdayBtn" style="background:#dccfc4; border:none; border-radius:3rem; padding:6px 18px; cursor:pointer; background:#e3d3c6;">send wish</button>
             </div>
             <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px; text-align: center;">
@@ -664,33 +694,47 @@
             </p>
         </section>
 
-        <!-- 4. MUSEUM OF MEMORY (AUTO-SAVED) -->
+        <!-- 4. MUSEUM OF MEMORY -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-landmark"></i>
                 <h2>museum</h2>
-                <span class="save-badge"><i class="fas fa-save"></i> auto-saved</span>
+                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
             </div>
             <div class="memory-gallery" id="memoryGallery">
-                <!-- Memories will be loaded from localStorage -->
+                <!-- Loaded from localStorage -->
             </div>
             <div class="add-memory">
-                <input type="text" id="newMemoryName" placeholder="memory name...">
-                <input type="text" id="newMemoryYear" placeholder="year" style="max-width:80px;">
+                <input type="text" id="newMemoryName" placeholder="📸 Memory name...">
+                <input type="text" id="newMemoryYear" placeholder="Year" style="max-width:80px;">
                 <button id="addMemoryBtn"><i class="fas fa-plus-circle"></i> add</button>
             </div>
             <div class="memory-count" id="memoryCount">0 memories</div>
         </section>
     </div>
 
+    <!-- DATA MANAGEMENT -->
+    <div style="margin-top: 2rem; text-align: center; border-top: 1px solid #ddcec0; padding-top: 1.5rem;">
+        <div class="data-actions">
+            <button onclick="viewAllData()"><i class="fas fa-eye"></i> View All Data</button>
+            <button onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
+            <button onclick="importData()"><i class="fas fa-upload"></i> Import Data</button>
+            <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
+        </div>
+        <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px;">
+            <i class="fas fa-database"></i> All data is stored in your browser's Local Storage.
+            <br>Data persists even after refresh or browser restart.
+        </p>
+    </div>
+
     <footer class="site-footer">
         <i class="fas fa-heart" style="color:#c9a391;"></i>  for the ones we keep close  <i class="fas fa-heart" style="color:#c9a391;"></i>
-        <br><small style="font-size: 0.7rem;">💾 Everything you write is saved in your browser</small>
+        <br><small style="font-size: 0.7rem;">💾 Everything you write is saved automatically. Nothing is lost!</small>
     </footer>
 </div>
 
 <!-- ============================================ -->
-<!-- JAVASCRIPT – WITH LOCAL STORAGE             -->
+<!-- JAVASCRIPT – FULL LOCAL STORAGE             -->
 <!-- ============================================ -->
 <script>
     (function() {
@@ -700,7 +744,8 @@
         const notification = document.getElementById('saveNotification');
         let notificationTimeout;
 
-        function showSaved() {
+        function showSaved(message = 'Data saved! 💾') {
+            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             notification.classList.add('show');
             clearTimeout(notificationTimeout);
             notificationTimeout = setTimeout(() => {
@@ -719,7 +764,6 @@
         const startDateInput = document.getElementById('startDateInput');
         const updateTimerBtn = document.getElementById('updateTimerBtn');
 
-        // Load saved timer date or set default
         function loadTimerDate() {
             const saved = localStorage.getItem('timerStartDate');
             if (saved) {
@@ -743,12 +787,7 @@
             const minutes = Math.floor(seconds / 60);
             const hours = Math.floor(minutes / 60);
             const days = Math.floor(hours / 24);
-            return {
-                days: days,
-                hours: hours % 24,
-                minutes: minutes % 60,
-                seconds: seconds % 60
-            };
+            return { days, hours: hours % 24, minutes: minutes % 60, seconds: seconds % 60 };
         }
 
         function getTimerMessage(days) {
@@ -801,7 +840,7 @@
 
         updateTimerBtn.addEventListener('click', function() {
             localStorage.setItem('timerStartDate', startDateInput.value);
-            showSaved();
+            showSaved('Timer updated!');
             updateTimer();
         });
 
@@ -809,23 +848,18 @@
         updateTimer();
 
         // =====================================================
-        // 2. UNSENT LETTERS - WITH LOCAL STORAGE
+        // 2. UNSENT LETTERS
         // =====================================================
         const letterForm = document.getElementById('letterForm');
         const letterContent = document.getElementById('letterContent');
         const letterSign = document.getElementById('letterSign');
         const letterPreview = document.getElementById('letterPreview');
 
-        // Load saved letter
         function loadLetter() {
             const savedContent = localStorage.getItem('unsentLetterContent');
             const savedSign = localStorage.getItem('unsentLetterSign');
-            if (savedContent) {
-                letterContent.value = savedContent;
-            }
-            if (savedSign) {
-                letterSign.value = savedSign;
-            }
+            if (savedContent) letterContent.value = savedContent;
+            if (savedSign) letterSign.value = savedSign;
             updateLetterPreview(
                 letterContent.value || 'some words stay folded, waiting for the right silence.',
                 letterSign.value || '— always yours'
@@ -844,7 +878,7 @@
         function saveLetter() {
             localStorage.setItem('unsentLetterContent', letterContent.value);
             localStorage.setItem('unsentLetterSign', letterSign.value);
-            showSaved();
+            showSaved('Letter saved!');
         }
 
         letterForm.addEventListener('submit', function(e) {
@@ -855,7 +889,7 @@
             saveLetter();
         });
 
-        // Auto-save on input change
+        // Auto-save on input
         letterContent.addEventListener('input', function() {
             localStorage.setItem('unsentLetterContent', this.value);
         });
@@ -866,7 +900,7 @@
         loadLetter();
 
         // =====================================================
-        // 3. HAPPY BIRTHDAY - WITH LOCAL STORAGE
+        // 3. HAPPY BIRTHDAY
         // =====================================================
         const birthdayWishInput = document.getElementById('birthdayWishInput');
         const updateBirthdayBtn = document.getElementById('updateBirthdayBtn');
@@ -886,7 +920,7 @@
                 bdayMessage.innerHTML = `“${wish}”<br><span style="font-size:0.8rem; color:#8f7668;"> — with love</span>`;
                 localStorage.setItem('birthdayWish', wish);
                 birthdayWishInput.value = '';
-                showSaved();
+                showSaved('Birthday wish saved! 🎂');
             } else {
                 const defaultMsg = 'another trip around the sun — may your heart stay soft & wild.';
                 bdayMessage.innerHTML = `“${defaultMsg}”`;
@@ -902,7 +936,7 @@
         });
 
         // =====================================================
-        // 4. MUSEUM OF MEMORY - WITH LOCAL STORAGE
+        // 4. MUSEUM OF MEMORY
         // =====================================================
         const memoryGallery = document.getElementById('memoryGallery');
         const newMemoryName = document.getElementById('newMemoryName');
@@ -916,16 +950,34 @@
             return iconArray[Math.floor(Math.random() * iconArray.length)];
         }
 
-        // Load memories from localStorage
+        function addMemoryToDOM(name, year, icon) {
+            const item = document.createElement('div');
+            item.className = 'memory-item';
+            const iconClass = icon || getRandomIcon();
+            item.innerHTML = `
+                <i class="${iconClass}"></i>
+                <div class="mem-content"><strong>${name}</strong><small>a small memory</small></div>
+                <span class="mem-year">${year || '✧'}</span>
+                <button class="delete-memory" onclick="deleteMemory('${name}')"><i class="fas fa-times"></i></button>
+            `;
+            memoryGallery.appendChild(item);
+            updateMemoryCount();
+        }
+
         function loadMemories() {
             const saved = localStorage.getItem('memories');
             if (saved) {
                 try {
                     const memories = JSON.parse(saved);
                     memoryGallery.innerHTML = '';
-                    memories.forEach(mem => {
-                        addMemoryToDOM(mem.name, mem.year, mem.icon);
-                    });
+                    if (memories.length === 0) {
+                        memoryGallery.innerHTML = `<p style="text-align:center; color:#a18b7d; padding:20px;">No memories yet. Add your first memory above! ✨</p>`;
+                    } else {
+                        memories.forEach(mem => {
+                            addMemoryToDOM(mem.name, mem.year, mem.icon);
+                        });
+                    }
+                    updateMemoryCount();
                 } catch(e) {
                     console.error('Error loading memories', e);
                 }
@@ -937,4 +989,192 @@
                     { name: 'feather found', year: '2023', icon: 'fas fa-feather-alt' }
                 ];
                 localStorage.setItem('memories', JSON.stringify(defaults));
-                defaults.forEach
+                defaults.forEach(mem => addMemoryToDOM(mem.name, mem.year, mem.icon));
+                updateMemoryCount();
+            }
+        }
+
+        function saveMemories() {
+            const items = memoryGallery.querySelectorAll('.memory-item');
+            const memories = [];
+            items.forEach(item => {
+                const name = item.querySelector('.mem-content strong')?.textContent || '';
+                const year = item.querySelector('.mem-year')?.textContent || '';
+                const icon = item.querySelector('i')?.className || '';
+                if (name) {
+                    memories.push({ name, year, icon });
+                }
+            });
+            localStorage.setItem('memories', JSON.stringify(memories));
+            updateMemoryCount();
+        }
+
+        function updateMemoryCount() {
+            const count = memoryGallery.querySelectorAll('.memory-item').length;
+            memoryCount.textContent = `${count} ${count === 1 ? 'memory' : 'memories'}`;
+        }
+
+        // Delete memory (global function)
+        window.deleteMemory = function(name) {
+            if (confirm(`Delete "${name}"?`)) {
+                const items = memoryGallery.querySelectorAll('.memory-item');
+                items.forEach(item => {
+                    const itemName = item.querySelector('.mem-content strong')?.textContent;
+                    if (itemName === name) {
+                        item.remove();
+                    }
+                });
+                saveMemories();
+                updateMemoryCount();
+                showSaved('Memory deleted!');
+                if (memoryGallery.querySelectorAll('.memory-item').length === 0) {
+                    memoryGallery.innerHTML = `<p style="text-align:center; color:#a18b7d; padding:20px;">No memories yet. Add your first memory above! ✨</p>`;
+                }
+            }
+        };
+
+        addMemoryBtn.addEventListener('click', function() {
+            const name = newMemoryName.value.trim();
+            const year = newMemoryYear.value.trim() || '✧';
+            if (!name) {
+                alert('Please write a memory name.');
+                return;
+            }
+            // Remove "empty" message if exists
+            const emptyMsg = memoryGallery.querySelector('p');
+            if (emptyMsg && emptyMsg.textContent.includes('No memories yet')) {
+                emptyMsg.remove();
+            }
+            addMemoryToDOM(name, year);
+            saveMemories();
+            newMemoryName.value = '';
+            newMemoryYear.value = '';
+            showSaved('Memory added! 📸');
+        });
+
+        newMemoryName.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addMemoryBtn.click();
+            }
+        });
+
+        loadMemories();
+
+        // =====================================================
+        // 5. DATA MANAGEMENT TOOLS
+        // =====================================================
+
+        // View all data in console
+        window.viewAllData = function() {
+            const data = {
+                '📝 Letter': localStorage.getItem('unsentLetterContent') || '(empty)',
+                '✍️ Signature': localStorage.getItem('unsentLetterSign') || '(empty)',
+                '🎂 Birthday Wish': localStorage.getItem('birthdayWish') || '(empty)',
+                '🏛️ Memories': JSON.parse(localStorage.getItem('memories') || '[]'),
+                '⏳ Timer Date': localStorage.getItem('timerStartDate') || '(not set)'
+            };
+            console.log('=== YOUR SAVED DATA ===');
+            console.table(data);
+            alert('✅ Data has been logged to the console (F12 → Console tab)');
+        };
+
+        // Export data as JSON file
+        window.exportData = function() {
+            const data = {
+                unsentLetterContent: localStorage.getItem('unsentLetterContent') || '',
+                unsentLetterSign: localStorage.getItem('unsentLetterSign') || '',
+                birthdayWish: localStorage.getItem('birthdayWish') || '',
+                memories: JSON.parse(localStorage.getItem('memories') || '[]'),
+                timerStartDate: localStorage.getItem('timerStartDate') || ''
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `memory-data-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showSaved('Data exported! 📥');
+        };
+
+        // Import data from JSON file
+        window.importData = function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        if (data.unsentLetterContent !== undefined) {
+                            localStorage.setItem('unsentLetterContent', data.unsentLetterContent);
+                            localStorage.setItem('unsentLetterSign', data.unsentLetterSign || '');
+                        }
+                        if (data.birthdayWish !== undefined) {
+                            localStorage.setItem('birthdayWish', data.birthdayWish);
+                        }
+                        if (data.memories !== undefined) {
+                            localStorage.setItem('memories', JSON.stringify(data.memories));
+                        }
+                        if (data.timerStartDate !== undefined) {
+                            localStorage.setItem('timerStartDate', data.timerStartDate);
+                        }
+                        showSaved('Data imported! 🔄');
+                        location.reload();
+                    } catch(err) {
+                        alert('Error importing data. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
+
+        // Clear all data
+        window.clearAllData = function() {
+            if (confirm('⚠️ Are you sure you want to delete ALL your saved data?\nThis cannot be undone!')) {
+                if (confirm('🔄 Really? All your letters, wishes, and memories will be gone forever.')) {
+                    localStorage.clear();
+                    showSaved('All data cleared!');
+                    setTimeout(() => location.reload(), 500);
+                }
+            }
+        };
+
+        // =====================================================
+        // 6. Birthday counter click - random messages
+        // =====================================================
+        const bdayCounterSpans = document.querySelectorAll('.bday-counter span');
+        bdayCounterSpans.forEach(span => {
+            span.addEventListener('click', function() {
+                const msgs = ['✨ another spin around the sun', '🍰 sweet & timeless', '🎈 keep dreaming', '🌟 you are loved'];
+                const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+                bdayMessage.innerHTML = `“${randomMsg}”<br><span style="font-size:0.8rem; color:#8f7668;"> — from the museum</span>`;
+                localStorage.setItem('birthdayWish', randomMsg);
+                showSaved('Birthday wish updated!');
+            });
+        });
+
+        // =====================================================
+        // 7. Auto-save everything periodically
+        // =====================================================
+        setInterval(() => {
+            // Auto-save letter content if changed
+            if (document.activeElement === letterContent || document.activeElement === letterSign) {
+                localStorage.setItem('unsentLetterContent', letterContent.value);
+                localStorage.setItem('unsentLetterSign', letterSign.value);
+            }
+            // Auto-save birthday wish if changed
+            if (document.activeElement === birthdayWishInput && birthdayWishInput.value.trim()) {
+                // Don't auto-save empty wishes
+            }
+        }, 5000);
+
+    })();
+</script>
+</body>
+</html>

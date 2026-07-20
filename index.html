@@ -407,86 +407,12 @@
     <h2 class="page-title">🎂 To Live It All</h2>
     <p class="page-subtitle">💝 Click on a wish to open it like a beautiful scroll</p>
     <div class="wish-archive" id="wishArchive"></div>
-    
-    <!-- FORM DENGAN DATE PICKER -->
-    <div class="birthday-input-area" style="display:flex;flex-direction:column;gap:10px;width:100%;">
-        <textarea id="birthdayWishInput" placeholder="✍️ Write a birthday wish..." style="
-            background: rgba(255,245,235,0.7);
-            border: 1px solid #decfc2;
-            border-radius: 2rem;
-            padding: 14px 16px;
-            font-size: 0.95rem;
-            resize: vertical;
-            min-height: 70px;
-            transition: 0.2s;
-            color: #3e2c24;
-            font-family: 'Georgia', serif;
-            width: 100%;
-        "></textarea>
-        
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <input type="text" id="birthdayNameInput" placeholder="👤 Name (e.g. Naziff)" value="Naziff" style="
-                flex: 1;
-                min-width: 120px;
-                background: rgba(255,245,235,0.7);
-                border: 1px solid #decfc2;
-                border-radius: 3rem;
-                padding: 10px 16px;
-                font-size: 0.9rem;
-                font-family: 'Georgia', serif;
-            ">
-            
-            <input type="date" id="birthdayDateInput" style="
-                flex: 1;
-                min-width: 140px;
-                background: rgba(255,245,235,0.7);
-                border: 1px solid #decfc2;
-                border-radius: 3rem;
-                padding: 10px 16px;
-                font-size: 0.9rem;
-                font-family: 'Georgia', serif;
-                color: #3e2c24;
-            ">
-            
-            <button id="updateBirthdayBtn" style="
-                background: #a71d31;
-                border: none;
-                border-radius: 3rem;
-                padding: 10px 24px;
-                color: #fff;
-                cursor: pointer;
-                font-family: 'Georgia', serif;
-                font-size: 0.95rem;
-                transition: 0.2s;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            " onmouseover="this.style.background='#801322'" onmouseout="this.style.background='#a71d31'">
-                <i class="fas fa-gift"></i> send
-            </button>
-        </div>
-        
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px;">
-            <label style="font-size:0.8rem;color:#8f7668;font-family:'Georgia',serif;display:flex;align-items:center;gap:8px;cursor:pointer;">
-                <input type="checkbox" id="birthdayPasswordCheck" style="width:16px;height:16px;cursor:pointer;">
-                🔐 Add password protection
-            </label>
-            <input type="text" id="birthdayPasswordInput" placeholder="Enter password..." style="
-                flex: 1;
-                min-width: 140px;
-                background: rgba(255,245,235,0.7);
-                border: 1px solid #decfc2;
-                border-radius: 3rem;
-                padding: 8px 16px;
-                font-size: 0.85rem;
-                font-family: 'Georgia', serif;
-                display: none;
-            ">
-        </div>
+    <div class="birthday-input-area">
+        <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
+        <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
     </div>
-    
-    <div style="text-align:center;margin-top:6px;font-size:0.65rem;color:rgba(244,208,104,0.3);">
-        <i class="fas fa-info-circle"></i> Set date, name & optional password for each wish
+    <div style="text-align:center;margin-top:4px;font-size:0.65rem;color:rgba(244,208,104,0.3);">
+        <i class="fas fa-info-circle"></i> You'll be asked for: Name, Date & optional Password
     </div>
     <div class="wish-count" id="wishCount">0 wishes</div>
 </div>

@@ -33,7 +33,6 @@
             border: 1px solid rgba(235, 215, 195, 0.5);
         }
 
-        /* ===== SAVE NOTIFICATION ===== */
         .save-notification {
             position: fixed;
             bottom: 20px;
@@ -100,7 +99,7 @@
 
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2.5rem;
             margin-top: 1rem;
         }
@@ -246,28 +245,70 @@
             box-shadow: 0 2px 8px rgba(130, 90, 70, 0.2);
         }
 
-        /* ===== UNSENT LETTERS ===== */
-        .letter-preview {
-            background: #fcf3ea;
-            padding: 1.2rem 1.2rem 0.8rem;
-            border-radius: 2rem;
-            margin-bottom: 1.5rem;
-            border-left: 6px solid #dbbcae;
-            min-height: 120px;
+        /* ===== LETTER ARCHIVE ===== */
+        .letter-archive {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
         }
-        .letter-preview p {
+        .letter-archive::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-archive::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .letter-archive::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
+        .letter-entry {
+            background: #fcf3ea;
+            padding: 14px 16px;
+            border-radius: 1.5rem;
+            border-left: 4px solid #dbbcae;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        .letter-entry .letter-text {
             font-style: italic;
             color: #5a4a3e;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .letter-preview .sign {
-            text-align: right;
-            font-style: normal;
-            font-weight: 300;
-            color: #8f7668;
-            margin-top: 6px;
             font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .letter-entry .letter-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.75rem;
+            color: #8f7668;
+        }
+        .letter-entry .letter-sign {
+            font-weight: 300;
+        }
+        .letter-entry .letter-date {
+            opacity: 0.7;
+        }
+        .letter-entry .delete-letter {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            transition: 0.2s;
+        }
+        .letter-entry .delete-letter:hover {
+            opacity: 1;
+            color: #c0392b;
         }
 
         .letter-form {
@@ -330,61 +371,109 @@
             box-shadow: 0 2px 8px rgba(130, 90, 70, 0.2);
         }
 
-        /* ===== HAPPY BIRTHDAY ===== */
-        .birthday-message {
-            background: #f9efe6;
-            border-radius: 2.5rem;
-            padding: 1.5rem 1.2rem;
-            margin-bottom: 1.8rem;
-            border: 1px solid #ebd6c8;
+        .letter-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
         }
-        .birthday-message .bday-icon {
-            font-size: 2.6rem;
-            text-align: center;
-            margin-bottom: 4px;
-            color: #c79a82;
-        }
-        .birthday-message h3 {
-            font-size: 1.8rem;
-            font-weight: 300;
-            text-align: center;
-            color: #633f2e;
-            letter-spacing: 2px;
-        }
-        .birthday-message .bday-text {
-            text-align: center;
-            font-size: 1rem;
-            color: #5d4b3e;
-            padding: 10px 0 4px;
-            line-height: 1.7;
-            background: rgba(255, 240, 230, 0.5);
-            border-radius: 2rem;
-            margin-top: 6px;
-            min-height: 60px;
-        }
-        .bday-counter {
+
+        /* ===== BIRTHDAY WISH ARCHIVE ===== */
+        .wish-archive {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             gap: 10px;
-            flex-wrap: wrap;
-            margin: 16px 0 6px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
         }
-        .bday-counter span {
-            background: #eadace;
-            padding: 6px 18px;
-            border-radius: 3rem;
-            font-size: 1.1rem;
-            border: 1px solid #dac4b6;
-            color: #4b3b31;
+        .wish-archive::-webkit-scrollbar {
+            width: 4px;
+        }
+        .wish-archive::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .wish-archive::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
+        .wish-entry {
+            background: #f9efe6;
+            padding: 12px 16px;
+            border-radius: 1.5rem;
+            border-left: 4px solid #c79a82;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        .wish-entry .wish-text {
+            color: #5d4b3e;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .wish-entry .wish-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            font-size: 0.7rem;
+            color: #8f7668;
+        }
+        .wish-entry .delete-wish {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #b48b7a;
             cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
             transition: 0.2s;
         }
-        .bday-counter span:hover {
-            background: #dccfc4;
+        .wish-entry .delete-wish:hover {
+            opacity: 1;
+            color: #c0392b;
         }
-        .bday-counter i {
-            margin-right: 6px;
-            color: #b48b7a;
+
+        .birthday-input-area {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .birthday-input-area input {
+            flex: 1;
+            background: rgba(255, 245, 235, 0.6);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 8px 16px;
+            min-width: 140px;
+        }
+        .birthday-input-area input:focus {
+            outline: 2px solid #dbbcae;
+            background: #fffbf7;
+        }
+        .birthday-input-area button {
+            background: #dccfc4;
+            border: none;
+            border-radius: 3rem;
+            padding: 6px 18px;
+            cursor: pointer;
+            background: #e3d3c6;
+            font-weight: 500;
+            color: #3e342e;
+        }
+        .birthday-input-area button:hover {
+            background: #d0bcae;
+        }
+
+        .wish-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
         }
 
         /* ===== MUSEUM OF MEMORY ===== */
@@ -392,7 +481,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 350px;
+            max-height: 300px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -586,9 +675,9 @@
 </head>
 <body>
 
-<!-- ===== SAVE NOTIFICATION ===== -->
+<!-- SAVE NOTIFICATION -->
 <div class="save-notification" id="saveNotification">
-    <i class="fas fa-check-circle"></i> Data saved! 💾
+    <i class="fas fa-check-circle"></i> Saved! 💾
 </div>
 
 <div class="memory-container">
@@ -644,54 +733,41 @@
             </div>
         </section>
 
-        <!-- 2. UNSENT LETTERS -->
+        <!-- 2. UNSENT LETTERS ARCHIVE -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-pen-fancy"></i>
                 <h2>unsent</h2>
-                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
+                <span class="save-badge"><i class="fas fa-archive"></i> archive</span>
             </div>
-            <div class="letter-preview" id="letterPreview">
-                <p>“some words stay folded, waiting for the right silence.”</p>
-                <div class="sign">— always yours</div>
+            <div class="letter-archive" id="letterArchive">
+                <!-- Letters loaded from localStorage -->
             </div>
             <form class="letter-form" id="letterForm">
                 <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
                 <div class="form-row">
                     <input type="text" id="letterSign" placeholder="Your signature (optional)" value="— always yours">
-                    <button type="submit" id="sendLetterBtn"><i class="fas fa-paper-plane"></i> seal</button>
+                    <button type="submit" id="sendLetterBtn"><i class="fas fa-paper-plane"></i> seal & save</button>
                 </div>
             </form>
-            <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px; text-align: center;">
-                <i class="fas fa-database"></i> Your letter is saved automatically in your browser
-            </p>
+            <div class="letter-count" id="letterCount">0 letters</div>
         </section>
 
-        <!-- 3. HAPPY BIRTHDAY -->
+        <!-- 3. BIRTHDAY WISHES ARCHIVE -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-birthday-cake"></i>
-                <h2>happy birthday</h2>
-                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
+                <h2>birthday</h2>
+                <span class="save-badge"><i class="fas fa-archive"></i> archive</span>
             </div>
-            <div class="birthday-message">
-                <div class="bday-icon">🎂</div>
-                <h3>for you, always</h3>
-                <div class="bday-text" id="bdayMessage">
-                    “another trip around the sun —<br> may your heart stay soft & wild.”
-                </div>
-                <div class="bday-counter">
-                    <span><i class="far fa-calendar-alt"></i> 12 · may</span>
-                    <span><i class="fas fa-star"></i> 26</span>
-                </div>
+            <div class="wish-archive" id="wishArchive">
+                <!-- Wishes loaded from localStorage -->
             </div>
-            <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
-                <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish..." style="flex:1; background: rgba(255,245,235,0.6); border:1px solid #decfc2; border-radius:3rem; padding:8px 16px;">
-                <button id="updateBirthdayBtn" style="background:#dccfc4; border:none; border-radius:3rem; padding:6px 18px; cursor:pointer; background:#e3d3c6;">send wish</button>
+            <div class="birthday-input-area">
+                <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
+                <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send wish</button>
             </div>
-            <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px; text-align: center;">
-                <i class="fas fa-database"></i> Your birthday wishes are saved forever
-            </p>
+            <div class="wish-count" id="wishCount">0 wishes</div>
         </section>
 
         <!-- 4. MUSEUM OF MEMORY -->
@@ -699,10 +775,10 @@
             <div class="card-header">
                 <i class="fas fa-landmark"></i>
                 <h2>museum</h2>
-                <span class="save-badge"><i class="fas fa-save"></i> saved</span>
+                <span class="save-badge"><i class="fas fa-archive"></i> archive</span>
             </div>
             <div class="memory-gallery" id="memoryGallery">
-                <!-- Loaded from localStorage -->
+                <!-- Memories loaded from localStorage -->
             </div>
             <div class="add-memory">
                 <input type="text" id="newMemoryName" placeholder="📸 Memory name...">
@@ -722,14 +798,13 @@
             <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
         </div>
         <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px;">
-            <i class="fas fa-database"></i> All data is stored in your browser's Local Storage.
-            <br>Data persists even after refresh or browser restart.
+            <i class="fas fa-database"></i> All data stored in your browser. Nothing is lost on refresh!
         </p>
     </div>
 
     <footer class="site-footer">
         <i class="fas fa-heart" style="color:#c9a391;"></i>  for the ones we keep close  <i class="fas fa-heart" style="color:#c9a391;"></i>
-        <br><small style="font-size: 0.7rem;">💾 Everything you write is saved automatically. Nothing is lost!</small>
+        <br><small style="font-size: 0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
     </footer>
 </div>
 
@@ -739,18 +814,29 @@
 <script>
     (function() {
         // =====================================================
-        // UTILITY: Show save notification
+        // UTILITY
         // =====================================================
         const notification = document.getElementById('saveNotification');
         let notificationTimeout;
 
-        function showSaved(message = 'Data saved! 💾') {
+        function showSaved(message = 'Saved! 💾') {
             notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             notification.classList.add('show');
             clearTimeout(notificationTimeout);
             notificationTimeout = setTimeout(() => {
                 notification.classList.remove('show');
             }, 1500);
+        }
+
+        function getCurrentDate() {
+            const now = new Date();
+            return now.toLocaleString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
         }
 
         // =====================================================
@@ -848,333 +934,49 @@
         updateTimer();
 
         // =====================================================
-        // 2. UNSENT LETTERS
+        // 2. LETTER ARCHIVE
         // =====================================================
+        const letterArchive = document.getElementById('letterArchive');
         const letterForm = document.getElementById('letterForm');
         const letterContent = document.getElementById('letterContent');
         const letterSign = document.getElementById('letterSign');
-        const letterPreview = document.getElementById('letterPreview');
+        const letterCount = document.getElementById('letterCount');
 
-        function loadLetter() {
-            const savedContent = localStorage.getItem('unsentLetterContent');
-            const savedSign = localStorage.getItem('unsentLetterSign');
-            if (savedContent) letterContent.value = savedContent;
-            if (savedSign) letterSign.value = savedSign;
-            updateLetterPreview(
-                letterContent.value || 'some words stay folded, waiting for the right silence.',
-                letterSign.value || '— always yours'
-            );
-        }
-
-        function updateLetterPreview(content, sign) {
-            const signText = sign.trim() || '— always yours';
-            const displayContent = content.trim() || '“some words stay folded, waiting for the right silence.”';
-            letterPreview.innerHTML = `
-                <p>“${displayContent}”</p>
-                <div class="sign">${signText}</div>
-            `;
-        }
-
-        function saveLetter() {
-            localStorage.setItem('unsentLetterContent', letterContent.value);
-            localStorage.setItem('unsentLetterSign', letterSign.value);
-            showSaved('Letter saved!');
-        }
-
-        letterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const content = letterContent.value.trim() || 'some words stay folded, waiting for the right silence.';
-            const sign = letterSign.value.trim() || '— always yours';
-            updateLetterPreview(content, sign);
-            saveLetter();
-        });
-
-        // Auto-save on input
-        letterContent.addEventListener('input', function() {
-            localStorage.setItem('unsentLetterContent', this.value);
-        });
-        letterSign.addEventListener('input', function() {
-            localStorage.setItem('unsentLetterSign', this.value);
-        });
-
-        loadLetter();
-
-        // =====================================================
-        // 3. HAPPY BIRTHDAY
-        // =====================================================
-        const birthdayWishInput = document.getElementById('birthdayWishInput');
-        const updateBirthdayBtn = document.getElementById('updateBirthdayBtn');
-        const bdayMessage = document.getElementById('bdayMessage');
-
-        function loadBirthdayWish() {
-            const saved = localStorage.getItem('birthdayWish');
-            if (saved) {
-                bdayMessage.innerHTML = `“${saved}”<br><span style="font-size:0.8rem; color:#8f7668;"> — with love</span>`;
-            }
-        }
-        loadBirthdayWish();
-
-        updateBirthdayBtn.addEventListener('click', function() {
-            const wish = birthdayWishInput.value.trim();
-            if (wish) {
-                bdayMessage.innerHTML = `“${wish}”<br><span style="font-size:0.8rem; color:#8f7668;"> — with love</span>`;
-                localStorage.setItem('birthdayWish', wish);
-                birthdayWishInput.value = '';
-                showSaved('Birthday wish saved! 🎂');
-            } else {
-                const defaultMsg = 'another trip around the sun — may your heart stay soft & wild.';
-                bdayMessage.innerHTML = `“${defaultMsg}”`;
-                localStorage.removeItem('birthdayWish');
-            }
-        });
-
-        birthdayWishInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                updateBirthdayBtn.click();
-            }
-        });
-
-        // =====================================================
-        // 4. MUSEUM OF MEMORY
-        // =====================================================
-        const memoryGallery = document.getElementById('memoryGallery');
-        const newMemoryName = document.getElementById('newMemoryName');
-        const newMemoryYear = document.getElementById('newMemoryYear');
-        const addMemoryBtn = document.getElementById('addMemoryBtn');
-        const memoryCount = document.getElementById('memoryCount');
-
-        const iconArray = ['fas fa-camera-retro', 'fas fa-map-pin', 'fas fa-feather-alt', 'fas fa-book-open', 'fas fa-tree', 'fas fa-sun', 'fas fa-moon', 'fas fa-compass', 'fas fa-crown', 'fas fa-gem'];
-
-        function getRandomIcon() {
-            return iconArray[Math.floor(Math.random() * iconArray.length)];
-        }
-
-        function addMemoryToDOM(name, year, icon) {
-            const item = document.createElement('div');
-            item.className = 'memory-item';
-            const iconClass = icon || getRandomIcon();
-            item.innerHTML = `
-                <i class="${iconClass}"></i>
-                <div class="mem-content"><strong>${name}</strong><small>a small memory</small></div>
-                <span class="mem-year">${year || '✧'}</span>
-                <button class="delete-memory" onclick="deleteMemory('${name}')"><i class="fas fa-times"></i></button>
-            `;
-            memoryGallery.appendChild(item);
-            updateMemoryCount();
-        }
-
-        function loadMemories() {
-            const saved = localStorage.getItem('memories');
+        function loadLetters() {
+            const saved = localStorage.getItem('letterArchive');
             if (saved) {
                 try {
-                    const memories = JSON.parse(saved);
-                    memoryGallery.innerHTML = '';
-                    if (memories.length === 0) {
-                        memoryGallery.innerHTML = `<p style="text-align:center; color:#a18b7d; padding:20px;">No memories yet. Add your first memory above! ✨</p>`;
+                    const letters = JSON.parse(saved);
+                    letterArchive.innerHTML = '';
+                    if (letters.length === 0) {
+                        letterArchive.innerHTML = `<p style="text-align:center; color:#a18b7d; padding:20px; font-size:0.9rem;">No letters yet. Write your first one above! ✨</p>`;
                     } else {
-                        memories.forEach(mem => {
-                            addMemoryToDOM(mem.name, mem.year, mem.icon);
+                        letters.forEach((letter, index) => {
+                            addLetterToDOM(letter.text, letter.sign, letter.date, index);
                         });
                     }
-                    updateMemoryCount();
+                    updateLetterCount();
                 } catch(e) {
-                    console.error('Error loading memories', e);
+                    console.error('Error loading letters', e);
                 }
             } else {
-                // Default memories
-                const defaults = [
-                    { name: 'first polaroid', year: '2018', icon: 'fas fa-camera-retro' },
-                    { name: 'train to nowhere', year: '2021', icon: 'fas fa-map-pin' },
-                    { name: 'feather found', year: '2023', icon: 'fas fa-feather-alt' }
-                ];
-                localStorage.setItem('memories', JSON.stringify(defaults));
-                defaults.forEach(mem => addMemoryToDOM(mem.name, mem.year, mem.icon));
-                updateMemoryCount();
-            }
-        }
-
-        function saveMemories() {
-            const items = memoryGallery.querySelectorAll('.memory-item');
-            const memories = [];
-            items.forEach(item => {
-                const name = item.querySelector('.mem-content strong')?.textContent || '';
-                const year = item.querySelector('.mem-year')?.textContent || '';
-                const icon = item.querySelector('i')?.className || '';
-                if (name) {
-                    memories.push({ name, year, icon });
-                }
-            });
-            localStorage.setItem('memories', JSON.stringify(memories));
-            updateMemoryCount();
-        }
-
-        function updateMemoryCount() {
-            const count = memoryGallery.querySelectorAll('.memory-item').length;
-            memoryCount.textContent = `${count} ${count === 1 ? 'memory' : 'memories'}`;
-        }
-
-        // Delete memory (global function)
-        window.deleteMemory = function(name) {
-            if (confirm(`Delete "${name}"?`)) {
-                const items = memoryGallery.querySelectorAll('.memory-item');
-                items.forEach(item => {
-                    const itemName = item.querySelector('.mem-content strong')?.textContent;
-                    if (itemName === name) {
-                        item.remove();
-                    }
-                });
-                saveMemories();
-                updateMemoryCount();
-                showSaved('Memory deleted!');
-                if (memoryGallery.querySelectorAll('.memory-item').length === 0) {
-                    memoryGallery.innerHTML = `<p style="text-align:center; color:#a18b7d; padding:20px;">No memories yet. Add your first memory above! ✨</p>`;
-                }
-            }
-        };
-
-        addMemoryBtn.addEventListener('click', function() {
-            const name = newMemoryName.value.trim();
-            const year = newMemoryYear.value.trim() || '✧';
-            if (!name) {
-                alert('Please write a memory name.');
-                return;
-            }
-            // Remove "empty" message if exists
-            const emptyMsg = memoryGallery.querySelector('p');
-            if (emptyMsg && emptyMsg.textContent.includes('No memories yet')) {
-                emptyMsg.remove();
-            }
-            addMemoryToDOM(name, year);
-            saveMemories();
-            newMemoryName.value = '';
-            newMemoryYear.value = '';
-            showSaved('Memory added! 📸');
-        });
-
-        newMemoryName.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addMemoryBtn.click();
-            }
-        });
-
-        loadMemories();
-
-        // =====================================================
-        // 5. DATA MANAGEMENT TOOLS
-        // =====================================================
-
-        // View all data in console
-        window.viewAllData = function() {
-            const data = {
-                '📝 Letter': localStorage.getItem('unsentLetterContent') || '(empty)',
-                '✍️ Signature': localStorage.getItem('unsentLetterSign') || '(empty)',
-                '🎂 Birthday Wish': localStorage.getItem('birthdayWish') || '(empty)',
-                '🏛️ Memories': JSON.parse(localStorage.getItem('memories') || '[]'),
-                '⏳ Timer Date': localStorage.getItem('timerStartDate') || '(not set)'
-            };
-            console.log('=== YOUR SAVED DATA ===');
-            console.table(data);
-            alert('✅ Data has been logged to the console (F12 → Console tab)');
-        };
-
-        // Export data as JSON file
-        window.exportData = function() {
-            const data = {
-                unsentLetterContent: localStorage.getItem('unsentLetterContent') || '',
-                unsentLetterSign: localStorage.getItem('unsentLetterSign') || '',
-                birthdayWish: localStorage.getItem('birthdayWish') || '',
-                memories: JSON.parse(localStorage.getItem('memories') || '[]'),
-                timerStartDate: localStorage.getItem('timerStartDate') || ''
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `memory-data-${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showSaved('Data exported! 📥');
-        };
-
-        // Import data from JSON file
-        window.importData = function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    try {
-                        const data = JSON.parse(ev.target.result);
-                        if (data.unsentLetterContent !== undefined) {
-                            localStorage.setItem('unsentLetterContent', data.unsentLetterContent);
-                            localStorage.setItem('unsentLetterSign', data.unsentLetterSign || '');
-                        }
-                        if (data.birthdayWish !== undefined) {
-                            localStorage.setItem('birthdayWish', data.birthdayWish);
-                        }
-                        if (data.memories !== undefined) {
-                            localStorage.setItem('memories', JSON.stringify(data.memories));
-                        }
-                        if (data.timerStartDate !== undefined) {
-                            localStorage.setItem('timerStartDate', data.timerStartDate);
-                        }
-                        showSaved('Data imported! 🔄');
-                        location.reload();
-                    } catch(err) {
-                        alert('Error importing data. Please check the file format.');
-                    }
+                // Default welcome letter
+                const defaultLetter = {
+                    text: 'some words stay folded, waiting for the right silence.',
+                    sign: '— always yours',
+                    date: getCurrentDate()
                 };
-                reader.readAsText(file);
-            };
-            input.click();
-        };
-
-        // Clear all data
-        window.clearAllData = function() {
-            if (confirm('⚠️ Are you sure you want to delete ALL your saved data?\nThis cannot be undone!')) {
-                if (confirm('🔄 Really? All your letters, wishes, and memories will be gone forever.')) {
-                    localStorage.clear();
-                    showSaved('All data cleared!');
-                    setTimeout(() => location.reload(), 500);
-                }
+                localStorage.setItem('letterArchive', JSON.stringify([defaultLetter]));
+                addLetterToDOM(defaultLetter.text, defaultLetter.sign, defaultLetter.date, 0);
+                updateLetterCount();
             }
-        };
+        }
 
-        // =====================================================
-        // 6. Birthday counter click - random messages
-        // =====================================================
-        const bdayCounterSpans = document.querySelectorAll('.bday-counter span');
-        bdayCounterSpans.forEach(span => {
-            span.addEventListener('click', function() {
-                const msgs = ['✨ another spin around the sun', '🍰 sweet & timeless', '🎈 keep dreaming', '🌟 you are loved'];
-                const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
-                bdayMessage.innerHTML = `“${randomMsg}”<br><span style="font-size:0.8rem; color:#8f7668;"> — from the museum</span>`;
-                localStorage.setItem('birthdayWish', randomMsg);
-                showSaved('Birthday wish updated!');
-            });
-        });
-
-        // =====================================================
-        // 7. Auto-save everything periodically
-        // =====================================================
-        setInterval(() => {
-            // Auto-save letter content if changed
-            if (document.activeElement === letterContent || document.activeElement === letterSign) {
-                localStorage.setItem('unsentLetterContent', letterContent.value);
-                localStorage.setItem('unsentLetterSign', letterSign.value);
-            }
-            // Auto-save birthday wish if changed
-            if (document.activeElement === birthdayWishInput && birthdayWishInput.value.trim()) {
-                // Don't auto-save empty wishes
-            }
-        }, 5000);
-
-    })();
-</script>
-</body>
-</html>
+        function addLetterToDOM(text, sign, date, index) {
+            const entry = document.createElement('div');
+            entry.className = 'letter-entry';
+            const signText = sign || '— always yours';
+            entry.innerHTML = `
+                <div class="letter-text">“${text}”</div>
+                <div class="letter-meta">
+                    <span class="letter-sign">${signText}</

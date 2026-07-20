@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 I Keep U Forever</title>
+    <title>📖 I Keep U Forever · Our Love Gallery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* ============================================
+           BASE & RESET
+           ============================================ */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -43,7 +46,6 @@
             pointer-events: none;
         }
 
-        /* Book wrapper */
         .book-wrapper {
             perspective: 1500px;
             cursor: pointer;
@@ -86,7 +88,6 @@
             transform: rotateY(-175deg) rotateX(0deg);
         }
 
-        /* ===== BOOK COVER ===== */
         .book-cover {
             position: absolute;
             top: 0;
@@ -101,11 +102,7 @@
             justify-content: center;
             align-items: center;
             padding: 35px 30px;
-            box-shadow: 
-                inset -12px 0 30px rgba(0,0,0,0.8),
-                inset 0 -8px 20px rgba(0,0,0,0.4),
-                inset 0 8px 20px rgba(0,0,0,0.2),
-                8px 8px 30px rgba(0,0,0,0.6);
+            box-shadow: inset -12px 0 30px rgba(0,0,0,0.8), inset 0 -8px 20px rgba(0,0,0,0.4), inset 0 8px 20px rgba(0,0,0,0.2), 8px 8px 30px rgba(0,0,0,0.6);
             border: 1px solid #8B6914;
             border-left: 10px solid #a67c2e;
             border-right: 1px solid #5a4010;
@@ -117,9 +114,7 @@
             position: absolute;
             inset: 0;
             border-radius: 4px 10px 10px 4px;
-            background: 
-                repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(255,255,255,0.005) 5px, rgba(255,255,255,0.005) 6px);
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px), repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(255,255,255,0.005) 5px, rgba(255,255,255,0.005) 6px);
             pointer-events: none;
             opacity: 0.3;
         }
@@ -194,7 +189,6 @@
             z-index: 1;
         }
 
-        /* ===== BOOK SPINE ===== */
         .book-spine {
             position: absolute;
             top: 0;
@@ -220,7 +214,6 @@
             background: repeating-linear-gradient(180deg, transparent, transparent 15px, rgba(198, 154, 58, 0.05) 15px, rgba(198, 154, 58, 0.05) 16px);
         }
 
-        /* ===== BOOK PAGES ===== */
         .book-pages {
             position: absolute;
             top: 0;
@@ -253,7 +246,6 @@
             border-radius: 2px;
         }
 
-        /* ===== BOOK INSIDE ===== */
         .book-inside {
             position: absolute;
             top: 0;
@@ -282,9 +274,7 @@
             inset: 12px;
             border: 1px solid rgba(139, 69, 19, 0.06);
             border-radius: 2px;
-            background: 
-                repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(139, 69, 19, 0.02) 20px, rgba(139, 69, 19, 0.02) 21px),
-                repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(139, 69, 19, 0.02) 20px, rgba(139, 69, 19, 0.02) 21px);
+            background: repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(139, 69, 19, 0.02) 20px, rgba(139, 69, 19, 0.02) 21px), repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(139, 69, 19, 0.02) 20px, rgba(139, 69, 19, 0.02) 21px);
             pointer-events: none;
         }
 
@@ -334,7 +324,9 @@
             z-index: 1;
         }
 
-        /* ===== SUNFLOWER PARTICLES ===== */
+        /* ============================================
+           SUNFLOWER PARTICLES
+           ============================================ */
         .sunflower-particle {
             position: fixed;
             pointer-events: none;
@@ -360,186 +352,434 @@
         }
 
         /* ============================================
-           SCRAPBOOK
+           APP CONTAINER
            ============================================ */
-        #scrapbook {
-            max-width: 1280px;
-            width: 95%;
+        .app-container {
+            width: 100%;
+            max-width: 900px;
             margin: 40px auto;
-            background: rgba(44, 24, 16, 0.95);
-            border: 12px double #f4d068;
-            border-radius: 10px;
-            padding: 40px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            opacity: 0;
-            transform: translateY(30px) scale(0.98);
-            transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
+            background: #5d0c16;
+            border: 8px double #f4d068;
+            border-radius: 8px;
             position: relative;
-            z-index: 1;
-        }
-        #scrapbook.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* HEADER */
-        .site-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            border-bottom: 2px dashed rgba(244,208,104,0.3);
-            padding-bottom: 1.5rem;
-        }
-        .site-title h1 {
-            font-size: 2.6rem;
-            font-weight: 300;
-            color: #f4d068;
-            font-family: 'Brush Script MT', cursive;
-        }
-        .site-title h1 i { color: #f4d068; margin-right: 10px; }
-        .site-title small {
-            display: block;
-            font-size: 0.9rem;
-            color: rgba(244,208,104,0.6);
-            letter-spacing: 3px;
-            margin-top: 4px;
-            font-family: 'Georgia', serif;
-        }
-
-        .nav-icons {
-            display: flex;
-            gap: 1.8rem;
-            font-size: 1.4rem;
-            color: rgba(244,208,104,0.6);
-        }
-        .nav-icons i { transition: 0.2s; cursor: default; }
-        .nav-icons i:hover { color: #f4d068; transform: scale(1.1); }
-
-        /* GRID */
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 1rem;
-        }
-
-        /* CARDS */
-        .card {
-            background: rgba(255,248,240,0.92);
-            backdrop-filter: blur(4px);
-            border-radius: 2.5rem;
-            padding: 1.8rem 1.5rem 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            border: 1px solid rgba(244,208,104,0.2);
-            transition: 0.25s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
-            background: rgba(255,252,248,0.95);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #e7d7cb;
-            padding-bottom: 0.8rem;
-        }
-        .card-header i {
-            font-size: 2rem;
-            color: #a71d31;
-            width: 2.6rem;
-            text-align: center;
-        }
-        .card-header h2 {
-            font-weight: 400;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            color: #3e2c24;
-        }
-
-        /* NOTIFICATION */
-        .save-notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #2b2b2b;
-            color: #f4d068;
-            padding: 14px 28px;
-            border-radius: 3rem;
-            font-size: 0.95rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 2000;
-            border: 1px solid #f4d068;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
+            min-height: 500px;
         }
-        .save-notification.show { opacity: 1; transform: translateY(0); }
+
+        .app-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* ============================================
-           BOTTLE WITH CSS - Like Shutterstock Image
+           SCREEN SYSTEM
+           ============================================ */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 25px 20px;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Home Button */
+        .home-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(244, 208, 104, 0.2);
+            border: 1px solid #f4d068;
+            color: #f4d068;
+            padding: 4px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            z-index: 10;
+            transition: 0.3s;
+            font-family: 'Georgia', serif;
+        }
+        .home-btn:hover {
+            background: #f4d068;
+            color: #4a0710;
+        }
+
+        /* ============================================
+           WELCOME SCREEN
+           ============================================ */
+        #welcome-screen {
+            background: linear-gradient(rgba(74,7,16,0.85), rgba(74,7,16,0.85)), url('https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=800') center/cover;
+            text-align: center;
+        }
+
+        .main-title {
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 4rem;
+            color: #f4d068;
+            text-shadow: 3px 3px 0px #000;
+        }
+
+        .subtitle {
+            font-style: italic;
+            margin: 10px 0 25px;
+            color: #dfbda7;
+        }
+
+        .start-btn {
+            background-color: #f4d068;
+            color: #4a0710;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            background-color: #fff;
+        }
+
+        /* ============================================
+           MUSEUM SCREEN
+           ============================================ */
+        #museum-screen {
+            background: #f7f4eb;
+            color: #333;
+            justify-content: flex-start;
+            padding-top: 35px;
+        }
+
+        .wall-title {
+            font-size: 1.4rem;
+            color: #4a0710;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .frames-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .frame {
+            background: #4a0710;
+            padding: 6px;
+            border: 3px solid #f4d068;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #f4d068;
+        }
+
+        .frame:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .f-heart {
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            width: 70px;
+            height: 70px;
+        }
+        .f-oval {
+            border-radius: 50%;
+            width: 65px;
+            height: 85px;
+        }
+        .f-rect {
+            width: 85px;
+            height: 65px;
+        }
+        .f-square {
+            width: 70px;
+            height: 70px;
+        }
+
+        .visitors {
+            display: flex;
+            gap: 30px;
+            margin-top: 12px;
+        }
+        .visitor {
+            font-size: 1.6rem;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+        }
+
+        /* ============================================
+           SUB PAGES
+           ============================================ */
+        .split-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: space-around;
+            padding: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .split-text {
+            max-width: 45%;
+            text-align: left;
+            line-height: 1.6;
+            color: #f4d068;
+        }
+
+        .split-text h2 {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2rem;
+        }
+
+        .chat-mockup {
+            background: #1e1e1e;
+            width: 280px;
+            height: 380px;
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .msg {
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 80%;
+            font-size: 0.8rem;
+        }
+
+        .msg.left {
+            background: #333;
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        .msg.right {
+            background: #007aff;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .letter-box {
+            background: #fbf7ee;
+            color: #333;
+            padding: 30px;
+            border-radius: 4px;
+            width: 85%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-left: 6px solid #f4d068;
+            line-height: 1.6;
+        }
+
+        .letter-box h3 {
+            color: #4a0710;
+            margin-bottom: 10px;
+        }
+
+        .vinyl-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .vinyl {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #f4d068 15%, #111 16%, #222 30%, #111 45%, #222 60%, #111 75%);
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            animation: spin 5s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .song-list {
+            list-style: none;
+            text-align: left;
+            color: #f4d068;
+        }
+
+        .song-list li {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+
+        .song-list li span {
+            font-size: 0.8rem;
+            color: #fff;
+        }
+
+        .quote-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 90%;
+        }
+
+        .quote-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px dashed #f4d068;
+            padding: 15px;
+            font-size: 0.8rem;
+            text-align: center;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f4d068;
+        }
+
+        .clock-gallery {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .center-time {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #f4d068;
+            font-size: 1.5rem;
+            background: #4a0710;
+            padding: 10px 15px;
+            border-radius: 50%;
+            border: 2px solid #f4d068;
+        }
+
+        .pic-node {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: #fff;
+            padding: 2px;
+            border: 2px solid #f4d068;
+            transform: translate(-50%, -50%);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .pic-node img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .countdown-timer {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #f4d068;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .sub-page-title {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2.2rem;
+            color: #f4d068;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* ============================================
+           BOTTLE SECTION (Inside Museum)
            ============================================ */
         .bottle-feed {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-height: 380px;
+            gap: 15px;
+            max-height: 300px;
             overflow-y: auto;
             padding-right: 8px;
-            margin-bottom: 15px;
+            width: 100%;
         }
-        .bottle-feed::-webkit-scrollbar { width: 4px; }
-        .bottle-feed::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .bottle-feed::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
 
-        /* Beautiful Bottle Card */
+        .bottle-feed::-webkit-scrollbar {
+            width: 4px;
+        }
+        .bottle-feed::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .bottle-feed::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
         .bottle-card {
             display: flex;
             align-items: center;
-            gap: 18px;
-            background: linear-gradient(145deg, rgba(255,248,240,0.92), rgba(235,225,215,0.92));
-            padding: 14px 20px;
+            gap: 15px;
+            background: linear-gradient(145deg, rgba(255,248,240,0.9), rgba(235,225,215,0.9));
+            padding: 12px 18px;
             border-radius: 2rem;
-            border: 2px solid rgba(139, 69, 19, 0.12);
+            border: 2px solid rgba(139, 69, 19, 0.15);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: floatBottle 3s ease-in-out infinite;
-            box-shadow: 
-                0 4px 20px rgba(0,0,0,0.08),
-                inset 0 0 40px rgba(255,255,255,0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             position: relative;
-            backdrop-filter: blur(10px);
         }
 
-        .bottle-card:nth-child(even) { animation-delay: 1.5s; }
-        .bottle-card:nth-child(3n) { animation-delay: 0.7s; }
+        .bottle-card:nth-child(even) {
+            animation-delay: 1.5s;
+        }
+        .bottle-card:nth-child(3n) {
+            animation-delay: 0.7s;
+        }
 
         @keyframes floatBottle {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(1.5deg); }
+            50% { transform: translateY(-4px) rotate(1deg); }
         }
 
         .bottle-card:hover {
-            transform: scale(1.03) translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            transform: scale(1.02) translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             border-color: #a67c2e;
             background: linear-gradient(145deg, #fcf3ea, #f5e6da);
         }
 
-        /* ===== CSS BOTTLE GLASS ===== */
         .bottle-glass {
-            width: 70px;
-            height: 100px;
+            width: 60px;
+            height: 90px;
             flex-shrink: 0;
-            position: relative;
         }
 
         .bottle-glass svg {
@@ -553,21 +793,20 @@
             transform: rotate(-8deg) scale(1.05);
         }
 
-        /* Bottle info */
         .bottle-info {
             flex: 1;
             min-width: 0;
         }
 
         .bottle-info .recipient-name {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #2c1810;
             font-family: 'Georgia', serif;
         }
 
         .bottle-info .message-preview {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #8f7668;
             white-space: nowrap;
             overflow: hidden;
@@ -588,7 +827,6 @@
             border-radius: 20px;
         }
 
-        /* Delete button */
         .bottle-card .delete-bottle {
             background: none;
             border: none;
@@ -600,18 +838,86 @@
             padding: 4px;
             flex-shrink: 0;
         }
+
         .bottle-card .delete-bottle:hover {
             opacity: 1;
             color: #c0392b;
         }
 
-        /* Empty state */
-        .empty-bottles {
-            text-align: center;
-            color: #a18b7d;
-            padding: 30px 20px;
-            font-style: italic;
+        .letter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .letter-form textarea {
+            background: rgba(255, 245, 235, 0.7);
+            border: 1px solid #decfc2;
+            border-radius: 2rem;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 60px;
+            transition: 0.2s;
+            color: #3e2c24;
             font-family: 'Georgia', serif;
+        }
+
+        .letter-form textarea:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+
+        .letter-form .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .letter-form input {
+            flex: 1;
+            background: rgba(255, 245, 235, 0.7);
+            border: 1px solid #decfc2;
+            border-radius: 3rem;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            min-width: 100px;
+            font-family: 'Georgia', serif;
+        }
+
+        .letter-form input:focus {
+            outline: 2px solid #a71d31;
+            background: #fffbf7;
+        }
+
+        .letter-form button {
+            background: #a71d31;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 18px;
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .letter-form button:hover {
+            background: #801322;
+        }
+
+        .letter-count {
+            font-size: 0.7rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 4px;
+            width: 100%;
         }
 
         /* ============================================
@@ -646,7 +952,7 @@
             max-width: 420px;
             padding: 35px 30px 30px 30px;
             border-radius: 8px;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(139, 69, 19, 0.1);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 69, 19, 0.1);
             position: relative;
             transform: scale(0.7) translateY(50px);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -671,7 +977,11 @@
             transition: 0.2s;
             z-index: 5;
         }
-        .letter-paper .close-btn:hover { color: #333; transform: rotate(90deg); }
+
+        .letter-paper .close-btn:hover {
+            color: #333;
+            transform: rotate(90deg);
+        }
 
         .letter-paper .letter-header {
             border-bottom: 1px solid #d4cbb5;
@@ -697,7 +1007,7 @@
 
         .letter-paper .letter-content {
             font-family: 'Georgia', serif;
-            font-size: 0.98rem;
+            font-size: 0.95rem;
             line-height: 1.8;
             color: #333;
             max-height: 300px;
@@ -707,9 +1017,17 @@
             padding-right: 5px;
         }
 
-        .letter-paper .letter-content::-webkit-scrollbar { width: 3px; }
-        .letter-paper .letter-content::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .letter-paper .letter-content::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
+        .letter-paper .letter-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .letter-paper .letter-content::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .letter-paper .letter-content::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
 
         .letter-paper .letter-footer {
             text-align: right;
@@ -721,202 +1039,116 @@
             font-family: 'Georgia', serif;
         }
 
-        /* ===== LETTER FORM ===== */
-        .letter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 6px;
-        }
-        .letter-form textarea {
-            background: rgba(255,245,235,0.7);
-            border: 1px solid #decfc2;
-            border-radius: 2rem;
-            padding: 14px 16px;
-            font-size: 0.95rem;
-            resize: vertical;
-            min-height: 70px;
-            transition: 0.2s;
-            color: #3e2c24;
-            font-family: 'Georgia', serif;
-        }
-        .letter-form textarea:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .letter-form .form-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .letter-form input {
-            flex: 1;
-            background: rgba(255,245,235,0.7);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            min-width: 120px;
-            font-family: 'Georgia', serif;
-        }
-        .letter-form input:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .letter-form button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 20px;
-            font-weight: 500;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
-            font-family: 'Georgia', serif;
-        }
-        .letter-form button:hover { background: #801322; }
-
-        .letter-count {
-            font-size: 0.75rem;
-            color: #a18b7d;
-            text-align: right;
-            margin-top: 4px;
-        }
-
-        /* ===== BIRTHDAY WISHES ===== */
-        .wish-archive {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            padding-right: 4px;
-            margin-bottom: 15px;
-        }
-        .wish-archive::-webkit-scrollbar { width: 4px; }
-        .wish-archive::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .wish-archive::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
-
-        .wish-entry {
-            background: #f9efe6;
-            padding: 12px 16px;
-            border-radius: 1.5rem;
-            border-left: 4px solid #f4d068;
-            animation: fadeIn 0.3s ease;
-            position: relative;
-        }
-        .wish-entry .wish-text { color: #3e2c24; font-size: 0.9rem; line-height: 1.5; }
-        .wish-entry .wish-meta { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.7rem; color: #8f7668; }
-        .wish-entry .delete-wish { position: absolute; top: 4px; right: 10px; background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 0.9rem; opacity: 0.4; transition: 0.2s; }
-        .wish-entry .delete-wish:hover { opacity: 1; color: #c0392b; }
-
-        .birthday-input-area { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-        .birthday-input-area input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 8px 16px; min-width: 140px; font-family: 'Georgia', serif; }
-        .birthday-input-area input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .birthday-input-area button { background: #a71d31; border: none; border-radius: 3rem; padding: 6px 18px; cursor: pointer; color: #fff; font-weight: 500; font-family: 'Georgia', serif; }
-        .birthday-input-area button:hover { background: #801322; }
-        .wish-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 4px; }
-
-        /* ===== MUSEUM ===== */
-        .memory-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .memory-gallery::-webkit-scrollbar { width: 4px; }
-        .memory-gallery::-webkit-scrollbar-track { background: #f0e6de; border-radius: 10px; }
-        .memory-gallery::-webkit-scrollbar-thumb { background: #dccfc4; border-radius: 10px; }
-
-        .memory-item {
-            background: #f7eee6;
-            border-radius: 2rem;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid #e3d0c0;
-            transition: 0.15s;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .memory-item:hover { background: #f3e7dc; border-color: #c9b2a0; }
-        .memory-item i { font-size: 1.7rem; color: #a71d31; width: 2.2rem; text-align: center; }
-        .memory-item .mem-content { flex: 1; }
-        .memory-item .mem-content strong { display: block; font-weight: 500; color: #3e2c24; }
-        .memory-item .mem-content small { color: #8a7567; font-size: 0.8rem; }
-        .memory-item .mem-year { background: #dccfc4; padding: 4px 14px; border-radius: 3rem; font-size: 0.8rem; color: #3f3229; font-weight: 400; }
-        .memory-item .delete-memory { background: none; border: none; color: #b48b7a; cursor: pointer; font-size: 1.1rem; padding: 0 4px; transition: 0.2s; opacity: 0.5; }
-        .memory-item .delete-memory:hover { opacity: 1; color: #c0392b; }
-
-        .add-memory { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-        .add-memory input { flex: 1; background: rgba(255,245,235,0.6); border: 1px solid #decfc2; border-radius: 3rem; padding: 10px 16px; min-width: 140px; font-family: 'Georgia', serif; }
-        .add-memory input:focus { outline: 2px solid #a71d31; background: #fffbf7; }
-        .add-memory button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 24px; color: #fff; cursor: pointer; transition: 0.2s; font-weight: 500; font-family: 'Georgia', serif; }
-        .add-memory button:hover { background: #801322; }
-        .memory-count { font-size: 0.75rem; color: #a18b7d; text-align: right; margin-top: 6px; }
-
-        /* ===== TIMER ===== */
-        .timer-display {
-            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
-            border-radius: 2.5rem;
-            padding: 1.8rem 1.2rem;
-            margin-bottom: 1.5rem;
-            border: 2px solid #ebd6c8;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .timer-display::before { content: '⏳'; position: absolute; top: -10px; right: -10px; font-size: 4rem; opacity: 0.1; transform: rotate(15deg); }
-        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0 8px; }
-        .timer-block { background: rgba(255,248,240,0.6); border-radius: 1.5rem; padding: 10px 4px; border: 1px solid #ebd6c8; }
-        .timer-block .number { font-size: 2.4rem; font-weight: 300; color: #633f2e; font-family: 'Georgia', serif; line-height: 1.2; display: block; }
-        .timer-block .label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: #8a7567; font-weight: 400; }
-        .timer-sub { font-size: 0.85rem; color: #a68b7a; margin-top: 10px; font-style: italic; border-top: 1px dashed #dccfc4; padding-top: 12px; }
-        .timer-controls { display: flex; gap: 8px; margin-top: 12px; justify-content: center; flex-wrap: wrap; }
-        .timer-controls input { background: rgba(255,245,235,0.7); border: 1px solid #decfc2; border-radius: 3rem; padding: 8px 16px; font-size: 0.9rem; width: 140px; font-family: 'Georgia', serif; }
-        .timer-controls input:focus { outline: 2px solid #dbbcae; background: #fffbf7; }
-        .timer-controls button { background: #a71d31; border: none; border-radius: 3rem; padding: 8px 20px; font-weight: 500; color: #fff; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-family: 'Georgia', serif; }
-        .timer-controls button:hover { background: #801322; transform: scale(1.02); }
-
-        /* ===== DATA MANAGEMENT ===== */
-        .data-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
-        .data-actions button { background: rgba(255,255,255,0.1); border: 1px solid rgba(244,208,104,0.3); border-radius: 3rem; padding: 8px 20px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; color: #f4d068; font-family: 'Georgia', serif; }
-        .data-actions button:hover { background: rgba(244,208,104,0.2); transform: scale(1.02); }
-        .data-actions .btn-danger { color: #ff6b6b; border-color: rgba(255,107,107,0.3); }
-        .data-actions .btn-danger:hover { background: rgba(255,107,107,0.15); }
-
-        /* FOOTER */
-        .site-footer { margin-top: 3rem; text-align: center; border-top: 1px solid rgba(244,208,104,0.2); padding-top: 1.8rem; font-size: 0.9rem; color: rgba(244,208,104,0.5); letter-spacing: 1px; }
-        .site-footer i { margin: 0 4px; color: #f4d068; }
-
-        /* RESPONSIVE */
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 650px) {
-            .site-header { flex-direction: column; align-items: start; gap: 10px; }
-            .nav-icons { gap: 1.2rem; font-size: 1.2rem; }
-            .timer-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-            .timer-block .number { font-size: 1.8rem; }
-            .site-title h1 { font-size: 2rem; }
-            .book { width: 220px; height: 320px; }
-            .book-cover .main-title { font-size: 1.8rem; }
-            .book-inside .page-text { font-size: 1.6rem; }
-            .book-inside .sunflower-icon { font-size: 3rem; }
-            .bottle-glass { width: 50px; height: 75px; }
+            .book {
+                width: 220px;
+                height: 320px;
+            }
+            .book-cover .main-title {
+                font-size: 1.8rem;
+            }
+            .book-inside .page-text {
+                font-size: 1.6rem;
+            }
+            .book-inside .sunflower-icon {
+                font-size: 3rem;
+            }
+            .main-title {
+                font-size: 2.8rem;
+            }
+            .split-layout {
+                flex-direction: column;
+                padding: 10px;
+            }
+            .split-text {
+                max-width: 100%;
+                text-align: center;
+            }
+            .chat-mockup {
+                width: 100%;
+                max-width: 280px;
+            }
+            .quote-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .frames-container {
+                gap: 8px;
+            }
+            .frame {
+                font-size: 1.2rem;
+            }
+            .f-heart {
+                width: 55px;
+                height: 55px;
+            }
+            .f-oval {
+                width: 50px;
+                height: 65px;
+            }
+            .f-rect {
+                width: 65px;
+                height: 50px;
+            }
+            .f-square {
+                width: 55px;
+                height: 55px;
+            }
+            .app-container {
+                min-height: 600px;
+            }
+            .bottle-glass {
+                width: 45px;
+                height: 65px;
+            }
         }
+
         @media (max-width: 400px) {
-            .timer-grid { grid-template-columns: repeat(2, 1fr); }
-            .timer-block .number { font-size: 1.4rem; }
-            .book { width: 180px; height: 260px; }
-            .book-cover .main-title { font-size: 1.4rem; }
-            .book-inside .page-text { font-size: 1.2rem; }
-            .book-inside .sunflower-icon { font-size: 2.5rem; }
-            .bottle-glass { width: 40px; height: 60px; }
+            .book {
+                width: 180px;
+                height: 260px;
+            }
+            .book-cover .main-title {
+                font-size: 1.4rem;
+            }
+            .book-inside .page-text {
+                font-size: 1.2rem;
+            }
+            .book-inside .sunflower-icon {
+                font-size: 2.5rem;
+            }
+            .main-title {
+                font-size: 2.2rem;
+            }
+            .quote-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .quote-card {
+                font-size: 0.7rem;
+                padding: 10px;
+            }
+            .countdown-timer {
+                font-size: 1.8rem;
+            }
+            .vinyl {
+                width: 100px;
+                height: 100px;
+            }
+            .clock-gallery {
+                width: 220px;
+                height: 220px;
+            }
+            .pic-node {
+                width: 40px;
+                height: 40px;
+            }
+            .center-time {
+                font-size: 1rem;
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
@@ -929,7 +1161,6 @@
         <div class="book-wrapper" onclick="openBook()">
             <div class="book" id="book">
                 <div class="book-spine"></div>
-
                 <div class="book-cover">
                     <div class="gold-frame"></div>
                     <div class="main-title">
@@ -940,11 +1171,9 @@
                     <div class="subtitle-bottom">I Love U Naziff</div>
                     <div class="click-hint">✦ click to open ✦</div>
                 </div>
-
                 <div class="book-pages">
                     <div class="page-block"></div>
                 </div>
-
                 <div class="book-inside">
                     <div class="sunflower-icon">🌻</div>
                     <div class="gold-line"></div>
@@ -956,133 +1185,139 @@
         </div>
     </div>
 
-    <!-- NOTIFICATION -->
-    <div class="save-notification" id="saveNotification">
-        <i class="fas fa-check-circle"></i> Saved! 💾
-    </div>
-
-    <!-- MODAL -->
+    <!-- ==========================================
+    MODAL - LETTER POPUP
+    ========================================== -->
     <div class="modal-overlay" id="letterModal">
         <div class="letter-paper">
             <button class="close-btn" id="closeBtn">&times;</button>
             <div class="letter-header">
                 <div class="letter-to">Message For</div>
-                <div class="letter-name" id="modalName">Recipient Name</div>
+                <div class="letter-name" id="modalName">Recipient</div>
             </div>
-            <div class="letter-content" id="modalContent">
-                Letter text goes here...
-            </div>
-            <div class="letter-footer">
-                An Unsent Letter 📜
-            </div>
+            <div class="letter-content" id="modalContent">Letter text goes here...</div>
+            <div class="letter-footer">An Unsent Letter 📜</div>
         </div>
     </div>
 
-    <!-- SCRAPBOOK -->
-    <div id="scrapbook">
+    <!-- ==========================================
+    APP CONTAINER
+    ========================================== -->
+    <div class="app-container" id="appContainer">
 
-        <header class="site-header">
-            <div class="site-title">
-                <h1><i class="fas fa-feather-alt"></i> to hope</h1>
-                <small>✧ to live it all · to love despite it all ✧</small>
-            </div>
-            <div class="nav-icons">
-                <i class="fas fa-hourglass-half"></i>
-                <i class="fas fa-envelope"></i>
-                <i class="fas fa-birthday-cake"></i>
-                <i class="fas fa-archway"></i>
-            </div>
-        </header>
+        <!-- HOME BUTTON -->
+        <button class="home-btn" id="globalHomeBtn" style="display:none;" onclick="showScreen('museum-screen')">🏠 Home</button>
 
-        <div class="memory-grid">
-
-            <!-- TIMER -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-hourglass-half"></i>
-                    <h2>without you</h2>
-                </div>
-                <div class="timer-display">
-                    <div class="timer-grid">
-                        <div class="timer-block"><span class="number" id="daysDisplay">0</span><span class="label">days</span></div>
-                        <div class="timer-block"><span class="number" id="hoursDisplay">00</span><span class="label">hours</span></div>
-                        <div class="timer-block"><span class="number" id="minutesDisplay">00</span><span class="label">minutes</span></div>
-                        <div class="timer-block"><span class="number" id="secondsDisplay">00</span><span class="label">seconds</span></div>
-                    </div>
-                    <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
-                </div>
-                <div class="timer-controls">
-                    <input type="date" id="startDateInput">
-                    <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
-                </div>
-            </section>
-
-            <!-- LETTERS IN BOTTLES -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-pen-fancy"></i>
-                    <h2>to hope</h2>
-                </div>
-                <div class="bottle-feed" id="bottleFeed">
-                    <!-- Bottles loaded here -->
-                </div>
-                <form class="letter-form" id="letterForm">
-                    <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
-                    <div class="form-row">
-                        <input type="text" id="letterSign" placeholder="Recipient name" value="For You">
-                        <button type="submit"><i class="fas fa-paper-plane"></i> put in bottle</button>
-                    </div>
-                </form>
-                <div class="letter-count" id="letterCount">0 letters</div>
-            </section>
-
-            <!-- BIRTHDAY -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-birthday-cake"></i>
-                    <h2>to live it all</h2>
-                </div>
-                <div class="wish-archive" id="wishArchive"></div>
-                <div class="birthday-input-area">
-                    <input type="text" id="birthdayWishInput" placeholder="✍️ Write a birthday wish...">
-                    <button id="updateBirthdayBtn"><i class="fas fa-gift"></i> send</button>
-                </div>
-                <div class="wish-count" id="wishCount">0 wishes</div>
-            </section>
-
-            <!-- MUSEUM -->
-            <section class="card">
-                <div class="card-header">
-                    <i class="fas fa-landmark"></i>
-                    <h2>to love despite it all</h2>
-                </div>
-                <div class="memory-gallery" id="memoryGallery"></div>
-                <div class="add-memory">
-                    <input type="text" id="newMemoryName" placeholder="📸 Memory name...">
-                    <input type="text" id="newMemoryYear" placeholder="Year" style="max-width:80px;">
-                    <button id="addMemoryBtn"><i class="fas fa-plus-circle"></i> add</button>
-                </div>
-                <div class="memory-count" id="memoryCount">0 memories</div>
-            </section>
+        <!-- 1. WELCOME SCREEN -->
+        <div class="screen active" id="welcome-screen">
+            <h1 class="main-title">Our Love Gallery</h1>
+            <p class="subtitle">"Every memory deserves a frame"</p>
+            <button class="start-btn" onclick="showScreen('museum-screen')">continue &rarr;</button>
         </div>
 
-        <!-- DATA MANAGEMENT -->
-        <div style="margin-top: 2.5rem; text-align: center; border-top: 1px solid rgba(244,208,104,0.2); padding-top: 1.5rem;">
-            <div class="data-actions">
-                <button onclick="viewAllData()"><i class="fas fa-eye"></i> View All Data</button>
-                <button onclick="exportData()"><i class="fas fa-download"></i> Export Data</button>
-                <button onclick="importData()"><i class="fas fa-upload"></i> Import Data</button>
-                <button class="btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Clear All Data</button>
+        <!-- 2. MUSEUM SCREEN -->
+        <div class="screen" id="museum-screen">
+            <div class="wall-title">📸 Tap a frame to explore our memories</div>
+
+            <div class="frames-container">
+                <div class="frame f-heart" onclick="showScreen('page-chat')">💬</div>
+                <div class="frame f-oval" onclick="showScreen('page-letter')">📜</div>
+                <div class="frame f-rect" onclick="showScreen('page-music')">🎵</div>
+                <div class="frame f-square" onclick="showScreen('page-quotes')">⭐</div>
+                <div class="frame f-oval" onclick="showScreen('page-clock')">⏰</div>
+                <div class="frame f-heart" onclick="showScreen('page-countdown')">⏳</div>
+                <div class="frame f-square" onclick="showScreen('page-bottles')">🍾</div>
             </div>
-            <p style="font-size: 0.7rem; color: rgba(244,208,104,0.4); margin-top: 10px;">
-                <i class="fas fa-database"></i> All data stored in your browser. Nothing is lost on refresh!
-            </p>
+
+            <div class="visitors">
+                <div class="visitor">🚶‍♂️</div>
+                <div class="visitor">🚶‍♀️</div>
+                <div class="visitor">👫</div>
+            </div>
         </div>
 
-        <footer class="site-footer">
-            <i class="fas fa-heart"></i>  for the ones we keep close  <i class="fas fa-heart"></i>
-            <br><small style="font-size: 0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
-        </footer>
+        <!-- 3. CHAT PAGE -->
+        <div class="screen" id="page-chat">
+            <div class="split-layout">
+                <div class="split-text">
+                    <h2>💬 Remember our first conversation?</h2>
+                    <p style="margin-top:10px; font-size:0.9rem; color:#dfbda7;">It's funny how something so simple turned into something so important. That very moment changed everything.</p>
+                </div>
+                <div class="chat-mockup">
+                    <div class="msg left">Hai! Awak yang join event semalam tu ke?</div>
+                    <div class="msg right">Eh hi! Haah saya la tu. Kenapa ya? Haha</div>
+                    <div class="msg left">Saja jerr, nampak macam best kalau dapat kenal. 😊</div>
+                    <div class="msg right">Boleh je, no problem!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. LETTER PAGE -->
+        <div class="screen" id="page-letter">
+            <div class="letter-box">
+                <h3>My Love,</h3>
+                <p style="font-size:0.95rem;">I don't think I say this enough, but having you in my life is one of the best things that has ever happened to me. You calm my world and make everything feel lighter, warmer, and more meaningful. Even on my hardest days, just knowing that you're there gives me comfort.</p>
+                <p style="margin-top:10px; font-size:0.95rem; text-align:right; font-weight:bold;">Always yours, ❤️</p>
+            </div>
+        </div>
+
+        <!-- 5. MUSIC PAGE -->
+        <div class="screen" id="page-music">
+            <h2 class="sub-page-title">🎵 Songs That Remind Me of You</h2>
+            <div class="vinyl-container">
+                <div class="vinyl"></div>
+                <ul class="song-list">
+                    <li>1. Best Part — <span>Daniel Caesar</span></li>
+                    <li>2. A Piece of You — <span>Nathaniel</span></li>
+                    <li>3. Iris — <span>Goo Goo Dolls</span></li>
+                    <li>4. Those Eyes — <span>New West</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6. QUOTES PAGE -->
+        <div class="screen" id="page-quotes">
+            <h2 class="sub-page-title">⭐ Reasons I Love You</h2>
+            <div class="quote-grid">
+                <div class="quote-card">You make my world brighter & happier.</div>
+                <div class="quote-card">I'll choose you, over and over again.</div>
+                <div class="quote-card">You are the warmth I carry with me.</div>
+                <div class="quote-card">Every moment with you becomes a treasure.</div>
+                <div class="quote-card">With you, the simplest days feel special.</div>
+                <div class="quote-card">You are my favorite person in every version of life.</div>
+            </div>
+        </div>
+
+        <!-- 7. CLOCK PAGE -->
+        <div class="screen" id="page-clock">
+            <h2 class="sub-page-title">⏰ Timeless Memories</h2>
+            <div class="clock-gallery" id="clockGallery">
+                <div class="center-time">12:00</div>
+            </div>
+        </div>
+
+        <!-- 8. COUNTDOWN PAGE -->
+        <div class="screen" id="page-countdown">
+            <h2 class="sub-page-title">⏳ We've been together for</h2>
+            <div class="countdown-timer" id="timerDisplay">00:00:00:000</div>
+            <p style="color:#dfbda7; font-style:italic;">and still counting forever...</p>
+        </div>
+
+        <!-- 9. BOTTLES PAGE -->
+        <div class="screen" id="page-bottles">
+            <h2 class="sub-page-title">🍾 Letters in Bottles</h2>
+            <div class="bottle-feed" id="bottleFeed">
+                <!-- Bottles loaded from localStorage -->
+            </div>
+            <form class="letter-form" id="letterForm">
+                <textarea id="letterContent" placeholder="✍️ Write your unsent letter here..."></textarea>
+                <div class="form-row">
+                    <input type="text" id="letterSign" placeholder="Recipient name" value="For You">
+                    <button type="submit"><i class="fas fa-paper-plane"></i> put in bottle</button>
+                </div>
+            </form>
+            <div class="letter-count" id="letterCount">0 bottles</div>
+        </div>
     </div>
 
     <!-- ========================================== -->
@@ -1090,27 +1325,25 @@
     <!-- ========================================== -->
     <script>
         // =====================================================
-        // 1. OPEN BOOK - WITH MASSIVE SUNFLOWER EXPLOSION
+        // 1. OPEN BOOK - SUNFLOWER EXPLOSION
         // =====================================================
         function openBook() {
             const book = document.getElementById('book');
             const introScreen = document.getElementById('intro-screen');
-            const scrapbook = document.getElementById('scrapbook');
+            const appContainer = document.getElementById('appContainer');
 
             book.classList.add('open');
 
             setTimeout(() => {
-                const sunflowers = ['🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻','🌻'];
-                for (let i = 0; i < 250; i++) {
+                const sunflowers = ['🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻'];
+                for (let i = 0; i < 200; i++) {
                     const particle = document.createElement('div');
                     particle.classList.add('sunflower-particle');
                     particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
                     const angle = Math.random() * Math.PI * 2;
-                    const distance = 200 + Math.random() * 800;
-                    const x = Math.cos(angle) * distance;
-                    const y = Math.sin(angle) * distance - 100;
-                    particle.style.setProperty('--mx', x + 'px');
-                    particle.style.setProperty('--my', y + 'px');
+                    const distance = 200 + Math.random() * 700;
+                    particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
+                    particle.style.setProperty('--my', Math.sin(angle) * distance - 100 + 'px');
                     particle.style.setProperty('--mr', (Math.random() * 720 - 360) + 'deg');
                     particle.style.left = window.innerWidth / 2 + 'px';
                     particle.style.top = window.innerHeight / 2 + 'px';
@@ -1122,23 +1355,36 @@
 
                 setTimeout(() => {
                     introScreen.classList.add('hidden');
-                    scrapbook.classList.add('visible');
+                    appContainer.classList.add('visible');
                     showSaved('🌻 Welcome! Everything you write is saved forever!');
                 }, 1200);
             }, 1500);
         }
 
         // =====================================================
-        // 2. NOTIFICATION
+        // 2. SCREEN NAVIGATION
         // =====================================================
-        const notification = document.getElementById('saveNotification');
-        let notifTimeout;
+        function showScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
 
-        function showSaved(msg = 'Saved! 💾') {
-            notification.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
-            notification.classList.add('show');
-            clearTimeout(notifTimeout);
-            notifTimeout = setTimeout(() => notification.classList.remove('show'), 2000);
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) targetScreen.classList.add('active');
+
+            const homeBtn = document.getElementById('globalHomeBtn');
+            if (screenId === 'welcome-screen' || screenId === 'museum-screen') {
+                homeBtn.style.display = 'none';
+            } else {
+                homeBtn.style.display = 'block';
+            }
+        }
+
+        // =====================================================
+        // 3. NOTIFICATION
+        // =====================================================
+        function showSaved(msg) {
+            // Simple alert for now
+            console.log(msg);
         }
 
         function getCurrentDate() {
@@ -1147,73 +1393,74 @@
         }
 
         // =====================================================
-        // 3. TIMER
+        // 4. CLOCK GALLERY
         // =====================================================
-        const daysEl = document.getElementById('daysDisplay');
-        const hoursEl = document.getElementById('hoursDisplay');
-        const minutesEl = document.getElementById('minutesDisplay');
-        const secondsEl = document.getElementById('secondsDisplay');
-        const timerMsg = document.getElementById('timerSubMessage');
-        const startDateInput = document.getElementById('startDateInput');
-        const updateBtn = document.getElementById('updateTimerBtn');
+        const clockGallery = document.getElementById('clockGallery');
+        const totalNodes = 8;
+        const radius = 100;
 
-        function loadTimerDate() {
-            const saved = localStorage.getItem('timerStartDate');
-            if (saved) { startDateInput.value = saved; } 
-            else {
-                const d = new Date(); d.setDate(d.getDate() - 30);
-                const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
-                startDateInput.value = `${y}-${m}-${day}`;
-                localStorage.setItem('timerStartDate', startDateInput.value);
-            }
-        }
-        loadTimerDate();
+        for (let i = 0; i < totalNodes; i++) {
+            const angle = (i * 2 * Math.PI) / totalNodes;
+            const x = 150 + radius * Math.cos(angle);
+            const y = 150 + radius * Math.sin(angle);
 
-        function calcDiff(start, end) {
-            const ms = Math.abs(end - start);
-            const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60), d = Math.floor(h/24);
-            return { days: d, hours: h % 24, minutes: m % 60, seconds: s % 60 };
+            const imgNode = document.createElement('div');
+            imgNode.className = 'pic-node';
+            imgNode.style.left = `${x}px`;
+            imgNode.style.top = `${y}px`;
+            imgNode.innerHTML = `<img src="https://picsum.photos/60?random=${i}" alt="memory">`;
+            clockGallery.appendChild(imgNode);
         }
 
-        function getTimerMsg(days) {
-            const msgs = [
-                { max: 1, text: '"the first day feels like an eternity"' },
-                { max: 7, text: '"a week without you feels like a lifetime"' },
-                { max: 30, text: '"a month without you feels like a year"' },
-                { max: 60, text: '"time moves slow when you\'re not here"' },
-                { max: 90, text: '"three months and the days blur together"' },
-                { max: 365, text: '"a year without you, and i still count"' },
-                { max: Infinity, text: '"every day without you is a day too long"' }
-            ];
-            for (const m of msgs) { if (days <= m.max) return m.text; }
-            return '"time moves slow when you\'re not here"';
-        }
+        // =====================================================
+        // 5. COUNTDOWN TIMER
+        // =====================================================
+        const startDate = new Date(2025, 0, 22, 0, 0, 0);
 
         function updateTimer() {
-            const val = startDateInput.value;
-            if (!val) { daysEl.textContent='0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; timerMsg.textContent='please set a date'; return; }
-            const start = new Date(val + 'T00:00:00');
             const now = new Date();
-            if (isNaN(start.getTime())) { daysEl.textContent='0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00'; timerMsg.textContent='invalid date'; return; }
-            const diff = calcDiff(start, now);
-            daysEl.textContent = diff.days;
-            hoursEl.textContent = String(diff.hours).padStart(2,'0');
-            minutesEl.textContent = String(diff.minutes).padStart(2,'0');
-            secondsEl.textContent = String(diff.seconds).padStart(2,'0');
-            timerMsg.textContent = getTimerMsg(diff.days);
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const ms = Math.floor((diff % 1000));
+
+            const display = document.getElementById('timerDisplay');
+            if (display) {
+                display.innerHTML =
+                    `${String(days).padStart(2,'0')}d : ${String(hours).padStart(2,'0')}h : ${String(minutes).padStart(2,'0')}m : ${String(seconds).padStart(2,'0')}s : <span style="font-size:1.5rem;">${String(ms).padStart(3,'0')}</span>`;
+            }
         }
-
-        updateBtn.addEventListener('click', function() {
-            localStorage.setItem('timerStartDate', startDateInput.value);
-            showSaved('Timer updated!');
-            updateTimer();
-        });
-
-        setInterval(updateTimer, 1000);
+        setInterval(updateTimer, 41);
         updateTimer();
 
         // =====================================================
-        // 4. LETTERS IN BOTTLES - WITH SVG BOTTLE
+        // 6. BOTTLES - SVG BOTTLE
+        // =====================================================
+        function getBottleSVG() {
+            return `
+            <svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="28" y="2" width="24" height="12" rx="3" fill="#b08968" stroke="#7f5539" stroke-width="1.5"/>
+                <rect x="30" y="0" width="20" height="4" rx="2" fill="#7f5539"/>
+                <path d="M32 14 L32 22 L48 22 L48 14 Z" fill="rgba(255,255,255,0.3)" stroke="#b0c4de" stroke-width="1.5"/>
+                <path d="M30 22 C30 22 22 30 22 45 L22 95 C22 105 30 112 40 112 C50 112 58 105 58 95 L58 45 C58 30 50 22 50 22 Z" fill="rgba(255,255,255,0.25)" stroke="#b0c4de" stroke-width="2"/>
+                <path d="M28 40 L26 90 C26 98 30 102 35 104" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+                <path d="M32 30 L30 60" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                <ellipse cx="45" cy="65" rx="12" ry="25" fill="white" opacity="0.08" transform="rotate(10 45 65)"/>
+                <rect x="30" y="42" width="22" height="35" rx="2" fill="#f4e1d2" stroke="#d3b8ae" stroke-width="1" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="50" x2="48" y2="49" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="55" x2="46" y2="54" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="60" x2="44" y2="59" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="65" x2="42" y2="64" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <line x1="33" y1="70" x2="40" y2="69" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
+                <ellipse cx="40" cy="16" rx="6" ry="3" fill="#b08968" opacity="0.3"/>
+            </svg>`;
+        }
+
+        // =====================================================
+        // 7. LOAD BOTTLES
         // =====================================================
         const bottleFeed = document.getElementById('bottleFeed');
         const letterForm = document.getElementById('letterForm');
@@ -1226,41 +1473,6 @@
         const modalName = document.getElementById('modalName');
         const modalContent = document.getElementById('modalContent');
 
-        // SVG Bottle SVG - Beautiful glass bottle with letter inside
-        function getBottleSVG() {
-            return `
-            <svg viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Bottle cap -->
-                <rect x="28" y="2" width="24" height="12" rx="3" fill="#b08968" stroke="#7f5539" stroke-width="1.5"/>
-                <rect x="30" y="0" width="20" height="4" rx="2" fill="#7f5539"/>
-                
-                <!-- Bottle neck -->
-                <path d="M32 14 L32 22 L48 22 L48 14 Z" fill="rgba(255,255,255,0.3)" stroke="#b0c4de" stroke-width="1.5"/>
-                
-                <!-- Bottle body - glass -->
-                <path d="M30 22 C30 22 22 30 22 45 L22 95 C22 105 30 112 40 112 C50 112 58 105 58 95 L58 45 C58 30 50 22 50 22 Z" 
-                      fill="rgba(255,255,255,0.25)" stroke="#b0c4de" stroke-width="2"/>
-                
-                <!-- Glass shine effect -->
-                <path d="M28 40 L26 90 C26 98 30 102 35 104" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-                <path d="M32 30 L30 60" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
-                
-                <!-- Glass reflection on body -->
-                <ellipse cx="45" cy="65" rx="12" ry="25" fill="white" opacity="0.08" transform="rotate(10 45 65)"/>
-                
-                <!-- Letter inside the bottle -->
-                <rect x="30" y="42" width="22" height="35" rx="2" fill="#f4e1d2" stroke="#d3b8ae" stroke-width="1" transform="rotate(-5 41 59)"/>
-                <line x1="33" y1="50" x2="48" y2="49" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
-                <line x1="33" y1="55" x2="46" y2="54" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
-                <line x1="33" y1="60" x2="44" y2="59" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
-                <line x1="33" y1="65" x2="42" y2="64" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
-                <line x1="33" y1="70" x2="40" y2="69" stroke="#d0a85c" stroke-width="1.2" opacity="0.6" transform="rotate(-5 41 59)"/>
-                
-                <!-- Small cork detail -->
-                <ellipse cx="40" cy="16" rx="6" ry="3" fill="#b08968" opacity="0.3"/>
-            </svg>`;
-        }
-
         function loadBottles() {
             const saved = localStorage.getItem('letterArchive');
             if (saved) {
@@ -1268,14 +1480,16 @@
                     const letters = JSON.parse(saved);
                     bottleFeed.innerHTML = '';
                     if (letters.length === 0) {
-                        bottleFeed.innerHTML = `<div class="empty-bottles">No letters in bottles yet.<br>Write one below! 🍾</div>`;
+                        bottleFeed.innerHTML =
+                            `<p style="text-align:center;color:#a18b7d;padding:20px;font-style:italic;">No letters in bottles yet. Write one! 🍾</p>`;
                     } else {
                         letters.forEach((l, i) => addBottleToDOM(l.text, l.sign, l.date, i));
                     }
                     updateLetterCount();
-                } catch(e) { console.error(e); }
+                } catch (e) { console.error(e); }
             } else {
-                const defaultLetter = { text: 'some words stay folded, waiting for the right silence.', sign: 'For You', date: getCurrentDate() };
+                const defaultLetter = { text: 'some words stay folded, waiting for the right silence.', sign: 'For You',
+                    date: getCurrentDate() };
                 localStorage.setItem('letterArchive', JSON.stringify([defaultLetter]));
                 addBottleToDOM(defaultLetter.text, defaultLetter.sign, defaultLetter.date, 0);
                 updateLetterCount();
@@ -1290,9 +1504,7 @@
             const preview = text.length > 50 ? text.substring(0, 50) + '...' : text;
 
             card.innerHTML = `
-                <div class="bottle-glass">
-                    ${getBottleSVG()}
-                </div>
+                <div class="bottle-glass">${getBottleSVG()}</div>
                 <div class="bottle-info">
                     <div class="recipient-name">${sign || 'For You'}</div>
                     <div class="message-preview">“${preview}”</div>
@@ -1333,7 +1545,6 @@
                     letters.splice(index, 1);
                     localStorage.setItem('letterArchive', JSON.stringify(letters));
                     loadBottles();
-                    showSaved('Letter deleted!');
                 }
             }
         };
@@ -1358,7 +1569,6 @@
             localStorage.setItem('letterArchive', JSON.stringify(letters));
             letterContent.value = '';
             loadBottles();
-            showSaved('Letter saved in a bottle! 🍾');
             const bottles = bottleFeed.querySelectorAll('.bottle-card');
             if (bottles.length > 0) {
                 bottles[bottles.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1368,238 +1578,13 @@
         loadBottles();
 
         // =====================================================
-        // 5. BIRTHDAY WISHES
+        // 8. KEYBOARD SHORTCUT: ESC to close modal
         // =====================================================
-        const wishArchive = document.getElementById('wishArchive');
-        const wishInput = document.getElementById('birthdayWishInput');
-        const wishBtn = document.getElementById('updateBirthdayBtn');
-        const wishCount = document.getElementById('wishCount');
-
-        function loadWishes() {
-            const saved = localStorage.getItem('wishArchive');
-            if (saved) {
-                try {
-                    const wishes = JSON.parse(saved);
-                    wishArchive.innerHTML = '';
-                    if (wishes.length === 0) {
-                        wishArchive.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No birthday wishes yet. Send one! 🎂</p>`;
-                    } else {
-                        wishes.forEach((w, i) => addWishToDOM(w.text, w.date, i));
-                    }
-                    updateWishCount();
-                } catch(e) { console.error(e); }
-            } else {
-                const defaultWish = { text: 'another trip around the sun — may your heart stay soft & wild.', date: getCurrentDate() };
-                localStorage.setItem('wishArchive', JSON.stringify([defaultWish]));
-                addWishToDOM(defaultWish.text, defaultWish.date, 0);
-                updateWishCount();
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
             }
-        }
-
-        function addWishToDOM(text, date, index) {
-            const entry = document.createElement('div');
-            entry.className = 'wish-entry';
-            entry.innerHTML = `
-                <div class="wish-text">“${text}”</div>
-                <div class="wish-meta">
-                    <span>💝 with love</span>
-                    <span>${date || getCurrentDate()}</span>
-                </div>
-                <button class="delete-wish" onclick="deleteWish(${index})"><i class="fas fa-times"></i></button>
-            `;
-            wishArchive.appendChild(entry);
-        }
-
-        function updateWishCount() {
-            const count = wishArchive.querySelectorAll('.wish-entry').length;
-            wishCount.textContent = `${count} ${count === 1 ? 'wish' : 'wishes'}`;
-        }
-
-        window.deleteWish = function(index) {
-            const saved = localStorage.getItem('wishArchive');
-            if (!saved) return;
-            const wishes = JSON.parse(saved);
-            if (index >= 0 && index < wishes.length) {
-                if (confirm('Delete this wish?')) {
-                    wishes.splice(index, 1);
-                    localStorage.setItem('wishArchive', JSON.stringify(wishes));
-                    loadWishes();
-                    showSaved('Wish deleted!');
-                }
-            }
-        };
-
-        wishBtn.addEventListener('click', function() {
-            const text = wishInput.value.trim();
-            if (!text) { alert('Please write a birthday wish!'); return; }
-            const date = getCurrentDate();
-            const saved = localStorage.getItem('wishArchive');
-            const wishes = saved ? JSON.parse(saved) : [];
-            wishes.push({ text, date });
-            localStorage.setItem('wishArchive', JSON.stringify(wishes));
-            wishInput.value = '';
-            loadWishes();
-            showSaved('Birthday wish saved! 🎂');
         });
-
-        wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wishBtn.click(); });
-
-        loadWishes();
-
-        // =====================================================
-        // 6. MEMORY MUSEUM
-        // =====================================================
-        const memoryGallery = document.getElementById('memoryGallery');
-        const memName = document.getElementById('newMemoryName');
-        const memYear = document.getElementById('newMemoryYear');
-        const memBtn = document.getElementById('addMemoryBtn');
-        const memCount = document.getElementById('memoryCount');
-
-        const icons = ['fas fa-camera-retro','fas fa-map-pin','fas fa-feather-alt','fas fa-book-open','fas fa-tree','fas fa-sun','fas fa-moon','fas fa-compass','fas fa-crown','fas fa-gem'];
-
-        function getRandomIcon() { return icons[Math.floor(Math.random() * icons.length)]; }
-
-        function loadMemories() {
-            const saved = localStorage.getItem('memories');
-            if (saved) {
-                try {
-                    const memories = JSON.parse(saved);
-                    memoryGallery.innerHTML = '';
-                    if (memories.length === 0) {
-                        memoryGallery.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:20px;">No memories yet. Add your first! 📸</p>`;
-                    } else {
-                        memories.forEach((m, i) => addMemoryToDOM(m.name, m.year, m.icon, i));
-                    }
-                    updateMemCount();
-                } catch(e) { console.error(e); }
-            } else {
-                const defaults = [
-                    { name: 'first polaroid', year: '2018', icon: 'fas fa-camera-retro' },
-                    { name: 'train to nowhere', year: '2021', icon: 'fas fa-map-pin' },
-                    { name: 'feather found', year: '2023', icon: 'fas fa-feather-alt' }
-                ];
-                localStorage.setItem('memories', JSON.stringify(defaults));
-                defaults.forEach((m, i) => addMemoryToDOM(m.name, m.year, m.icon, i));
-                updateMemCount();
-            }
-        }
-
-        function addMemoryToDOM(name, year, icon, index) {
-            const item = document.createElement('div');
-            item.className = 'memory-item';
-            item.innerHTML = `
-                <i class="${icon || getRandomIcon()}"></i>
-                <div class="mem-content"><strong>${name}</strong><small>a small memory</small></div>
-                <span class="mem-year">${year || '✧'}</span>
-                <button class="delete-memory" onclick="deleteMemory(${index})"><i class="fas fa-times"></i></button>
-            `;
-            memoryGallery.appendChild(item);
-        }
-
-        function updateMemCount() {
-            const count = memoryGallery.querySelectorAll('.memory-item').length;
-            memCount.textContent = `${count} ${count === 1 ? 'memory' : 'memories'}`;
-        }
-
-        window.deleteMemory = function(index) {
-            const saved = localStorage.getItem('memories');
-            if (!saved) return;
-            const memories = JSON.parse(saved);
-            if (index >= 0 && index < memories.length) {
-                if (confirm('Delete this memory?')) {
-                    memories.splice(index, 1);
-                    localStorage.setItem('memories', JSON.stringify(memories));
-                    loadMemories();
-                    showSaved('Memory deleted!');
-                }
-            }
-        };
-
-        memBtn.addEventListener('click', function() {
-            const name = memName.value.trim();
-            if (!name) { alert('Please enter a memory name!'); return; }
-            const year = memYear.value.trim() || '✧';
-            const saved = localStorage.getItem('memories');
-            const memories = saved ? JSON.parse(saved) : [];
-            memories.push({ name, year, icon: getRandomIcon() });
-            localStorage.setItem('memories', JSON.stringify(memories));
-            memName.value = '';
-            memYear.value = '';
-            loadMemories();
-            showSaved('Memory added! 📸');
-        });
-
-        memName.addEventListener('keypress', function(e) { if (e.key === 'Enter') memBtn.click(); });
-
-        loadMemories();
-
-        // =====================================================
-        // 7. DATA MANAGEMENT
-        // =====================================================
-        window.viewAllData = function() {
-            const data = {
-                '📝 Letters': JSON.parse(localStorage.getItem('letterArchive') || '[]'),
-                '🎂 Birthday Wishes': JSON.parse(localStorage.getItem('wishArchive') || '[]'),
-                '🏛️ Memories': JSON.parse(localStorage.getItem('memories') || '[]'),
-                '⏳ Timer Date': localStorage.getItem('timerStartDate') || '(not set)'
-            };
-            console.log('=== YOUR SAVED DATA ===');
-            console.table(data);
-            alert('✅ Data logged to console (F12 → Console tab)');
-        };
-
-        window.exportData = function() {
-            const data = {
-                letterArchive: JSON.parse(localStorage.getItem('letterArchive') || '[]'),
-                wishArchive: JSON.parse(localStorage.getItem('wishArchive') || '[]'),
-                memories: JSON.parse(localStorage.getItem('memories') || '[]'),
-                timerStartDate: localStorage.getItem('timerStartDate') || ''
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `memory-data-${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showSaved('Data exported! 📥');
-        };
-
-        window.importData = function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    try {
-                        const data = JSON.parse(ev.target.result);
-                        if (data.letterArchive) localStorage.setItem('letterArchive', JSON.stringify(data.letterArchive));
-                        if (data.wishArchive) localStorage.setItem('wishArchive', JSON.stringify(data.wishArchive));
-                        if (data.memories) localStorage.setItem('memories', JSON.stringify(data.memories));
-                        if (data.timerStartDate) localStorage.setItem('timerStartDate', data.timerStartDate);
-                        showSaved('Data imported! 🔄');
-                        location.reload();
-                    } catch(err) {
-                        alert('Error importing data. Please check the file format.');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        };
-
-        window.clearAllData = function() {
-            if (confirm('⚠️ Delete ALL your saved data? This cannot be undone!')) {
-                if (confirm('🔄 Really? All letters, wishes, and memories will be gone.')) {
-                    localStorage.clear();
-                    showSaved('All data cleared!');
-                    setTimeout(() => location.reload(), 500);
-                }
-            }
-        };
     </script>
 </body>
 </html>

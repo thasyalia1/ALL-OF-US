@@ -852,61 +852,55 @@
         wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wishBtn.click(); });
         loadWishes();
 
-        // =====================================================
-        // 8. GALLERY - POSTIMAGES URL (FIXED!)
-        // =====================================================
-        const galleryGrid = document.getElementById('galleryGrid');
-        const newPhotoName = document.getElementById('newPhotoName');
-        const newPhotoDate = document.getElementById('newPhotoDate');
-        const newPhotoUrl = document.getElementById('newPhotoUrl');
-        const addPhotoBtn = document.getElementById('addPhotoBtn');
+      // =====================================================
+// 8. GALLERY - POSTIMAGES URL (FULLY FIXED!)
+// =====================================================
+const galleryGrid = document.getElementById('galleryGrid');
+const newPhotoName = document.getElementById('newPhotoName');
+const newPhotoDate = document.getElementById('newPhotoDate');
+const newPhotoUrl = document.getElementById('newPhotoUrl');
+const addPhotoBtn = document.getElementById('addPhotoBtn');
 
-        const photoEmojis = ['🌅','🌄','🌺','🌻','🌹','🌸','💐','🌿','🍃','☀️','🌙','⭐','🌈','💫','✨'];
+const photoEmojis = ['🌅','🌄','🌺','🌻','🌹','🌸','💐','🌿','🍃','☀️','🌙','⭐','🌈','💫','✨'];
 
-        function getRandomEmoji() { 
-            return photoEmojis[Math.floor(Math.random() * photoEmojis.length)]; 
-        }
+function getRandomEmoji() { 
+    return photoEmojis[Math.floor(Math.random() * photoEmojis.length)]; 
+}
 
-        function loadGallery() {
-            const saved = localStorage.getItem('galleryPhotos');
-            if (saved) {
-                try {
-                    const photos = JSON.parse(saved);
-                    galleryGrid.innerHTML = '';
-                    if (photos.length === 0) {
-                        galleryGrid.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
-                    } else {
-                        photos.forEach((p, i) => {
-                            const imageSrc = p.image || '';
-                            const hasImage = imageSrc && imageSrc.trim() !== '';
-                            
-                            const item = document.createElement('div');
-                            item.className = 'gallery-item';
-                            item.innerHTML = `
-                                <div class="photo-placeholder">
-                                    ${hasImage ? `<img src="${imageSrc}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='${p.emoji || '📸'}<span class=\\'upload-hint\\'>Image not found</span>'">` : `${p.emoji || '📸'}<span class="upload-hint">No image</span>`}
-                                </div>
-                                <div class="photo-label">${p.name}</div>
-                                <div class="photo-date">${p.date || '✧'}</div>
-                                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${i})"><i class="fas fa-times"></i></button>
-                            `;
-                            galleryGrid.appendChild(item);
-                        });
-                    }
-                } catch (e) { console.error('Load gallery error:', e); }
+// ===== LOAD GALLERY FROM LOCAL STORAGE =====
+function loadGallery() {
+    const saved = localStorage.getItem('galleryPhotos');
+    console.log('📸 Loading gallery from localStorage:', saved);
+    
+    if (saved) {
+        try {
+            const photos = JSON.parse(saved);
+            console.log('📸 Photos found:', photos.length);
+            galleryGrid.innerHTML = '';
+            
+            if (photos.length === 0) {
+                galleryGrid.innerHTML = `<p style="text-align:center;color:#a18b7d;padding:30px;font-style:italic;grid-column:1/-1;">No photos yet. Add your memories with Naziff! 📸</p>`;
             } else {
-                const defaults = [
-                    { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
-                    { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
-                    { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
-                ];
-                localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
-                defaults.forEach((p, i) => {
+                photos.forEach((p, i) => {
+                    const imageSrc = p.image || '';
+                    const hasImage = imageSrc && imageSrc.trim() !== '';
+                    
+                    console.log(`📸 Photo ${i}:`, p.name, 'Image:', imageSrc.substring(0, 50) + '...');
+                    
                     const item = document.createElement('div');
                     item.className = 'gallery-item';
+                    
+                    // Create image element properly
+                    let imageHtml = '';
+                    if (hasImage) {
+                        imageHtml = `<img src="${imageSrc}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:4rem;\\'>${p.emoji || '📸'}</span><span class=\\'upload-hint\\'>Image not found</span>'">`;
+                    } else {
+                        imageHtml = `${p.emoji || '📸'}<span class="upload-hint">No image</span>`;
+                    }
+                    
                     item.innerHTML = `
                         <div class="photo-placeholder">
-                            ${p.emoji || '📸'}<span class="upload-hint">No image</span>
+                            ${imageHtml}
                         </div>
                         <div class="photo-label">${p.name}</div>
                         <div class="photo-date">${p.date || '✧'}</div>
@@ -914,57 +908,104 @@
                     `;
                     galleryGrid.appendChild(item);
                 });
-                syncAllToCloud();
             }
+        } catch (e) { 
+            console.error('❌ Load gallery error:', e); 
         }
-
-        addPhotoBtn.addEventListener('click', function() {
-            const name = newPhotoName.value.trim();
-            if (!name) { 
-                alert('Please enter a photo title!'); 
-                return; 
-            }
-            const date = newPhotoDate.value.trim() || '✧';
-            const imageUrl = newPhotoUrl.value.trim();
-
-            const saved = localStorage.getItem('galleryPhotos');
-            const photos = saved ? JSON.parse(saved) : [];
-            const emoji = imageUrl ? '' : getRandomEmoji();
-
-            photos.push({ 
-                name: name, 
-                date: date, 
-                emoji: emoji, 
-                image: imageUrl 
-            });
-            
-            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-            syncAllToCloud();
-
-            newPhotoName.value = '';
-            newPhotoDate.value = '';
-            newPhotoUrl.value = '';
-
-            loadGallery();
-            showToast('📸 Photo added & synced!');
+    } else {
+        console.log('📸 No gallery data found, creating defaults');
+        // Default photos
+        const defaults = [
+            { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
+            { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
+            { name: 'Special Moment', date: 'Mar 2025', emoji: '🌻', image: '' }
+        ];
+        localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
+        defaults.forEach((p, i) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <div class="photo-placeholder">
+                    ${p.emoji || '📸'}<span class="upload-hint">No image</span>
+                </div>
+                <div class="photo-label">${p.name}</div>
+                <div class="photo-date">${p.date || '✧'}</div>
+                <button class="delete-photo" onclick="event.stopPropagation(); deletePhoto(${i})"><i class="fas fa-times"></i></button>
+            `;
+            galleryGrid.appendChild(item);
         });
+        syncAllToCloud();
+    }
+}
 
-        window.deletePhoto = function(index) {
-            const saved = localStorage.getItem('galleryPhotos');
-            if (!saved) return;
-            const photos = JSON.parse(saved);
-            if (index >= 0 && index < photos.length) {
-                if (confirm('Delete this photo?')) {
-                    photos.splice(index, 1);
-                    localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-                    syncAllToCloud();
-                    loadGallery();
-                    showToast('🗑️ Photo deleted!');
-                }
-            }
-        };
+// ===== ADD PHOTO WITH URL =====
+addPhotoBtn.addEventListener('click', function() {
+    const name = newPhotoName.value.trim();
+    if (!name) { 
+        alert('Please enter a photo title!'); 
+        return; 
+    }
+    const date = newPhotoDate.value.trim() || '✧';
+    const imageUrl = newPhotoUrl.value.trim();
 
-        loadGallery();
+    console.log('📸 Adding photo:', name, 'URL:', imageUrl);
+
+    const saved = localStorage.getItem('galleryPhotos');
+    const photos = saved ? JSON.parse(saved) : [];
+    const emoji = imageUrl ? '' : getRandomEmoji();
+
+    photos.push({ 
+        name: name, 
+        date: date, 
+        emoji: emoji, 
+        image: imageUrl 
+    });
+    
+    localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+    console.log('📸 Photos saved to localStorage:', photos.length);
+    
+    syncAllToCloud();
+
+    // Clear inputs
+    newPhotoName.value = '';
+    newPhotoDate.value = '';
+    newPhotoUrl.value = '';
+
+    loadGallery();
+    showToast('📸 Photo added & synced!');
+});
+
+// ===== DELETE PHOTO =====
+window.deletePhoto = function(index) {
+    const saved = localStorage.getItem('galleryPhotos');
+    if (!saved) return;
+    const photos = JSON.parse(saved);
+    if (index >= 0 && index < photos.length) {
+        if (confirm('Delete this photo?')) {
+            photos.splice(index, 1);
+            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+            console.log('📸 Photo deleted, remaining:', photos.length);
+            syncAllToCloud();
+            loadGallery();
+            showToast('🗑️ Photo deleted!');
+        }
+    }
+};
+
+// ===== FORCE SYNC AND RELOAD =====
+function forceReloadGallery() {
+    console.log('📸 Force reloading gallery...');
+    loadGallery();
+}
+
+// START
+console.log('📸 Gallery system initialized');
+loadGallery();
+
+// Reload gallery when switching to gallery tab
+document.querySelector('[data-page="page-gallery"]')?.addEventListener('click', function() {
+    setTimeout(loadGallery, 100);
+});
 
         // =====================================================
         // 9. DATA MANAGEMENT

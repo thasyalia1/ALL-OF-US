@@ -33,6 +33,28 @@
             border: 1px solid rgba(235, 215, 195, 0.5);
         }
 
+        /* ===== SAVED NOTIFICATION ===== */
+        .save-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4f3f35;
+            color: #fcf7f0;
+            padding: 12px 24px;
+            border-radius: 3rem;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .save-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .site-header {
             display: flex;
             flex-wrap: wrap;
@@ -120,8 +142,16 @@
             letter-spacing: 1px;
             color: #4f3f35;
         }
+        .card-header .save-badge {
+            margin-left: auto;
+            font-size: 0.7rem;
+            background: #dccfc4;
+            padding: 2px 12px;
+            border-radius: 3rem;
+            color: #5a4a3e;
+        }
 
-        /* ========== TIMER SECTION ========== */
+        /* ===== TIMER SECTION ===== */
         .timer-display {
             background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
             border-radius: 2.5rem;
@@ -142,7 +172,6 @@
             transform: rotate(15deg);
         }
 
-        /* Timer grid for days, hours, minutes, seconds */
         .timer-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -217,13 +246,14 @@
             box-shadow: 0 2px 8px rgba(130, 90, 70, 0.2);
         }
 
-        /* ========== UNSENT LETTERS ========== */
+        /* ===== UNSENT LETTERS ===== */
         .letter-preview {
             background: #fcf3ea;
             padding: 1.2rem 1.2rem 0.8rem;
             border-radius: 2rem;
             margin-bottom: 1.5rem;
             border-left: 6px solid #dbbcae;
+            min-height: 120px;
         }
         .letter-preview p {
             font-style: italic;
@@ -300,7 +330,7 @@
             box-shadow: 0 2px 8px rgba(130, 90, 70, 0.2);
         }
 
-        /* ========== HAPPY BIRTHDAY ========== */
+        /* ===== HAPPY BIRTHDAY ===== */
         .birthday-message {
             background: #f9efe6;
             border-radius: 2.5rem;
@@ -330,6 +360,7 @@
             background: rgba(255, 240, 230, 0.5);
             border-radius: 2rem;
             margin-top: 6px;
+            min-height: 60px;
         }
         .bday-counter {
             display: flex;
@@ -345,18 +376,38 @@
             font-size: 1.1rem;
             border: 1px solid #dac4b6;
             color: #4b3b31;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .bday-counter span:hover {
+            background: #dccfc4;
         }
         .bday-counter i {
             margin-right: 6px;
             color: #b48b7a;
         }
 
-        /* ========== MUSEUM OF MEMORY ========== */
+        /* ===== MUSEUM OF MEMORY ===== */
         .memory-gallery {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
         }
+        .memory-gallery::-webkit-scrollbar {
+            width: 4px;
+        }
+        .memory-gallery::-webkit-scrollbar-track {
+            background: #f0e6de;
+            border-radius: 10px;
+        }
+        .memory-gallery::-webkit-scrollbar-thumb {
+            background: #dccfc4;
+            border-radius: 10px;
+        }
+
         .memory-item {
             background: #f7eee6;
             border-radius: 2rem;
@@ -366,6 +417,11 @@
             gap: 14px;
             border: 1px solid #e3d0c0;
             transition: 0.15s;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .memory-item:hover {
             background: #f3e7dc;
@@ -396,6 +452,20 @@
             font-size: 0.8rem;
             color: #3f3229;
             font-weight: 400;
+        }
+        .memory-item .delete-memory {
+            background: none;
+            border: none;
+            color: #b48b7a;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0 4px;
+            transition: 0.2s;
+            opacity: 0.5;
+        }
+        .memory-item .delete-memory:hover {
+            opacity: 1;
+            color: #c0392b;
         }
 
         .add-memory {
@@ -431,7 +501,14 @@
             background: #d0bcae;
         }
 
-        /* ========== FOOTER ========== */
+        .memory-count {
+            font-size: 0.75rem;
+            color: #a18b7d;
+            text-align: right;
+            margin-top: 6px;
+        }
+
+        /* ===== FOOTER ===== */
         .site-footer {
             margin-top: 3.5rem;
             text-align: center;
@@ -446,7 +523,7 @@
             color: #b48b7a;
         }
 
-        /* ========== RESPONSIVE ========== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 650px) {
             .memory-container {
                 padding: 1.5rem 1rem;
@@ -479,6 +556,12 @@
     </style>
 </head>
 <body>
+
+<!-- ===== SAVE NOTIFICATION ===== -->
+<div class="save-notification" id="saveNotification">
+    <i class="fas fa-check-circle"></i> Saved automatically! 💾
+</div>
+
 <div class="memory-container">
 
     <!-- HEADER -->
@@ -498,14 +581,13 @@
     <!-- 4-PART GRID -->
     <div class="memory-grid">
 
-        <!-- 1. TIMER - DAYS, HOURS, MINUTES, SECONDS -->
-        <section class="card" id="timerCard">
+        <!-- 1. TIMER -->
+        <section class="card">
             <div class="card-header">
                 <i class="fas fa-hourglass-half"></i>
                 <h2>without you</h2>
             </div>
             <div class="timer-display">
-                <!-- Timer Grid: Days | Hours | Minutes | Seconds -->
                 <div class="timer-grid">
                     <div class="timer-block">
                         <span class="number" id="daysDisplay">0</span>
@@ -527,19 +609,17 @@
                 <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
             </div>
             <div class="timer-controls">
-                <input type="date" id="startDateInput" value="2026-06-20">
+                <input type="date" id="startDateInput">
                 <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
             </div>
-            <p style="font-size: 0.75rem; color: #a18b7d; margin-top: 10px; text-align: center; letter-spacing: 0.3px;">
-                <i class="fas fa-clock"></i> counting every second since we parted
-            </p>
         </section>
 
-        <!-- 2. UNSENT LETTERS -->
+        <!-- 2. UNSENT LETTERS (AUTO-SAVED) -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-pen-fancy"></i>
                 <h2>unsent</h2>
+                <span class="save-badge"><i class="fas fa-save"></i> auto-saved</span>
             </div>
             <div class="letter-preview" id="letterPreview">
                 <p>“some words stay folded, waiting for the right silence.”</p>
@@ -552,16 +632,19 @@
                     <button type="submit" id="sendLetterBtn"><i class="fas fa-paper-plane"></i> seal</button>
                 </div>
             </form>
-            <p style="font-size: 0.75rem; color: #a18b7d; margin-top: 10px; letter-spacing: 0.3px;"><i class="fas fa-arrow-right"></i> your letter stays in this room</p>
+            <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px; text-align: center;">
+                <i class="fas fa-database"></i> Your letter is saved automatically in your browser
+            </p>
         </section>
 
-        <!-- 3. HAPPY BIRTHDAY -->
+        <!-- 3. HAPPY BIRTHDAY (AUTO-SAVED) -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-birthday-cake"></i>
                 <h2>happy birthday</h2>
+                <span class="save-badge"><i class="fas fa-save"></i> auto-saved</span>
             </div>
-            <div class="birthday-message" id="birthdayBlock">
+            <div class="birthday-message">
                 <div class="bday-icon">🎂</div>
                 <h3>for you, always</h3>
                 <div class="bday-text" id="bdayMessage">
@@ -576,51 +659,57 @@
                 <input type="text" id="birthdayWishInput" placeholder="write a birthday wish..." style="flex:1; background: rgba(255,245,235,0.6); border:1px solid #decfc2; border-radius:3rem; padding:8px 16px;">
                 <button id="updateBirthdayBtn" style="background:#dccfc4; border:none; border-radius:3rem; padding:6px 18px; cursor:pointer; background:#e3d3c6;">send wish</button>
             </div>
+            <p style="font-size: 0.7rem; color: #a18b7d; margin-top: 8px; text-align: center;">
+                <i class="fas fa-database"></i> Your birthday wishes are saved forever
+            </p>
         </section>
 
-        <!-- 4. MUSEUM OF MEMORY -->
+        <!-- 4. MUSEUM OF MEMORY (AUTO-SAVED) -->
         <section class="card">
             <div class="card-header">
                 <i class="fas fa-landmark"></i>
                 <h2>museum</h2>
+                <span class="save-badge"><i class="fas fa-save"></i> auto-saved</span>
             </div>
             <div class="memory-gallery" id="memoryGallery">
-                <div class="memory-item">
-                    <i class="fas fa-camera-retro"></i>
-                    <div class="mem-content"><strong>first polaroid</strong><small>sunflowers & laughter</small></div>
-                    <span class="mem-year">2018</span>
-                </div>
-                <div class="memory-item">
-                    <i class="fas fa-map-pin"></i>
-                    <div class="mem-content"><strong>train to nowhere</strong><small>just because</small></div>
-                    <span class="mem-year">2021</span>
-                </div>
-                <div class="memory-item">
-                    <i class="fas fa-feather-alt"></i>
-                    <div class="mem-content"><strong>feather found</strong><small>in the old book</small></div>
-                    <span class="mem-year">2023</span>
-                </div>
+                <!-- Memories will be loaded from localStorage -->
             </div>
             <div class="add-memory">
                 <input type="text" id="newMemoryName" placeholder="memory name...">
                 <input type="text" id="newMemoryYear" placeholder="year" style="max-width:80px;">
                 <button id="addMemoryBtn"><i class="fas fa-plus-circle"></i> add</button>
             </div>
+            <div class="memory-count" id="memoryCount">0 memories</div>
         </section>
     </div>
 
     <footer class="site-footer">
         <i class="fas fa-heart" style="color:#c9a391;"></i>  for the ones we keep close  <i class="fas fa-heart" style="color:#c9a391;"></i>
+        <br><small style="font-size: 0.7rem;">💾 Everything you write is saved in your browser</small>
     </footer>
 </div>
 
 <!-- ============================================ -->
-<!-- JAVASCRIPT – ALL INTERACTIVE PARTS          -->
+<!-- JAVASCRIPT – WITH LOCAL STORAGE             -->
 <!-- ============================================ -->
 <script>
     (function() {
         // =====================================================
-        // 1. DETAILED TIMER - DAYS, HOURS, MINUTES, SECONDS
+        // UTILITY: Show save notification
+        // =====================================================
+        const notification = document.getElementById('saveNotification');
+        let notificationTimeout;
+
+        function showSaved() {
+            notification.classList.add('show');
+            clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => {
+                notification.classList.remove('show');
+            }, 1500);
+        }
+
+        // =====================================================
+        // 1. TIMER
         // =====================================================
         const daysDisplay = document.getElementById('daysDisplay');
         const hoursDisplay = document.getElementById('hoursDisplay');
@@ -630,37 +719,38 @@
         const startDateInput = document.getElementById('startDateInput');
         const updateTimerBtn = document.getElementById('updateTimerBtn');
 
-        // Set default date to 30 days ago (so it shows 30 days)
-        function setDefaultDate() {
-            const today = new Date();
-            const thirtyDaysAgo = new Date(today);
-            thirtyDaysAgo.setDate(today.getDate() - 30);
-            const year = thirtyDaysAgo.getFullYear();
-            const month = String(thirtyDaysAgo.getMonth() + 1).padStart(2, '0');
-            const day = String(thirtyDaysAgo.getDate()).padStart(2, '0');
-            startDateInput.value = `${year}-${month}-${day}`;
+        // Load saved timer date or set default
+        function loadTimerDate() {
+            const saved = localStorage.getItem('timerStartDate');
+            if (saved) {
+                startDateInput.value = saved;
+            } else {
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+                const year = thirtyDaysAgo.getFullYear();
+                const month = String(thirtyDaysAgo.getMonth() + 1).padStart(2, '0');
+                const day = String(thirtyDaysAgo.getDate()).padStart(2, '0');
+                startDateInput.value = `${year}-${month}-${day}`;
+                localStorage.setItem('timerStartDate', startDateInput.value);
+            }
         }
-        setDefaultDate();
+        loadTimerDate();
 
-        // Calculate detailed time difference
         function getTimeDifference(startDate, endDate) {
             const diffMs = Math.abs(endDate - startDate);
-            
             const seconds = Math.floor(diffMs / 1000);
             const minutes = Math.floor(seconds / 60);
             const hours = Math.floor(minutes / 60);
             const days = Math.floor(hours / 24);
-
             return {
                 days: days,
                 hours: hours % 24,
                 minutes: minutes % 60,
-                seconds: seconds % 60,
-                totalSeconds: seconds
+                seconds: seconds % 60
             };
         }
 
-        // Get message based on total days
         function getTimerMessage(days) {
             const messages = [
                 { max: 1, text: '"the first day feels like an eternity"' },
@@ -675,16 +765,12 @@
                 { max: 730, text: '"two years, and every second still matters"' },
                 { max: Infinity, text: '"every day without you is a day too long"' }
             ];
-
             for (const m of messages) {
-                if (days <= m.max) {
-                    return m.text;
-                }
+                if (days <= m.max) return m.text;
             }
             return '"time moves slow when you\'re not here"';
         }
 
-        // Update the timer display
         function updateTimer() {
             const startDateValue = startDateInput.value;
             if (!startDateValue) {
@@ -695,10 +781,8 @@
                 timerSubMessage.textContent = 'please set a date';
                 return;
             }
-
             const startDate = new Date(startDateValue + 'T00:00:00');
             const now = new Date();
-
             if (isNaN(startDate.getTime())) {
                 daysDisplay.textContent = '0';
                 hoursDisplay.textContent = '00';
@@ -707,37 +791,46 @@
                 timerSubMessage.textContent = 'invalid date';
                 return;
             }
-
             const diff = getTimeDifference(startDate, now);
-            
-            // Update display with padding for hours/minutes/seconds
             daysDisplay.textContent = diff.days;
             hoursDisplay.textContent = String(diff.hours).padStart(2, '0');
             minutesDisplay.textContent = String(diff.minutes).padStart(2, '0');
             secondsDisplay.textContent = String(diff.seconds).padStart(2, '0');
-
-            // Update message
             timerSubMessage.textContent = getTimerMessage(diff.days);
         }
 
-        // Update timer on button click
         updateTimerBtn.addEventListener('click', function() {
+            localStorage.setItem('timerStartDate', startDateInput.value);
+            showSaved();
             updateTimer();
         });
 
-        // Auto-update timer every second (so seconds tick!)
         setInterval(updateTimer, 1000);
-
-        // Initial update
         updateTimer();
 
         // =====================================================
-        // 2. UNSENT LETTERS
+        // 2. UNSENT LETTERS - WITH LOCAL STORAGE
         // =====================================================
         const letterForm = document.getElementById('letterForm');
         const letterContent = document.getElementById('letterContent');
         const letterSign = document.getElementById('letterSign');
         const letterPreview = document.getElementById('letterPreview');
+
+        // Load saved letter
+        function loadLetter() {
+            const savedContent = localStorage.getItem('unsentLetterContent');
+            const savedSign = localStorage.getItem('unsentLetterSign');
+            if (savedContent) {
+                letterContent.value = savedContent;
+            }
+            if (savedSign) {
+                letterSign.value = savedSign;
+            }
+            updateLetterPreview(
+                letterContent.value || 'some words stay folded, waiting for the right silence.',
+                letterSign.value || '— always yours'
+            );
+        }
 
         function updateLetterPreview(content, sign) {
             const signText = sign.trim() || '— always yours';
@@ -748,28 +841,56 @@
             `;
         }
 
+        function saveLetter() {
+            localStorage.setItem('unsentLetterContent', letterContent.value);
+            localStorage.setItem('unsentLetterSign', letterSign.value);
+            showSaved();
+        }
+
         letterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const content = letterContent.value.trim() || 'some words stay folded, waiting for the right silence.';
             const sign = letterSign.value.trim() || '— always yours';
             updateLetterPreview(content, sign);
-            letterContent.value = '';
+            saveLetter();
         });
 
+        // Auto-save on input change
+        letterContent.addEventListener('input', function() {
+            localStorage.setItem('unsentLetterContent', this.value);
+        });
+        letterSign.addEventListener('input', function() {
+            localStorage.setItem('unsentLetterSign', this.value);
+        });
+
+        loadLetter();
+
         // =====================================================
-        // 3. HAPPY BIRTHDAY
+        // 3. HAPPY BIRTHDAY - WITH LOCAL STORAGE
         // =====================================================
         const birthdayWishInput = document.getElementById('birthdayWishInput');
         const updateBirthdayBtn = document.getElementById('updateBirthdayBtn');
         const bdayMessage = document.getElementById('bdayMessage');
 
+        function loadBirthdayWish() {
+            const saved = localStorage.getItem('birthdayWish');
+            if (saved) {
+                bdayMessage.innerHTML = `“${saved}”<br><span style="font-size:0.8rem; color:#8f7668;"> — with love</span>`;
+            }
+        }
+        loadBirthdayWish();
+
         updateBirthdayBtn.addEventListener('click', function() {
             const wish = birthdayWishInput.value.trim();
             if (wish) {
                 bdayMessage.innerHTML = `“${wish}”<br><span style="font-size:0.8rem; color:#8f7668;"> — with love</span>`;
+                localStorage.setItem('birthdayWish', wish);
                 birthdayWishInput.value = '';
+                showSaved();
             } else {
-                bdayMessage.innerHTML = `“another trip around the sun —<br> may your heart stay soft & wild.”`;
+                const defaultMsg = 'another trip around the sun — may your heart stay soft & wild.';
+                bdayMessage.innerHTML = `“${defaultMsg}”`;
+                localStorage.removeItem('birthdayWish');
             }
         });
 
@@ -781,12 +902,13 @@
         });
 
         // =====================================================
-        // 4. MUSEUM OF MEMORY
+        // 4. MUSEUM OF MEMORY - WITH LOCAL STORAGE
         // =====================================================
         const memoryGallery = document.getElementById('memoryGallery');
         const newMemoryName = document.getElementById('newMemoryName');
         const newMemoryYear = document.getElementById('newMemoryYear');
         const addMemoryBtn = document.getElementById('addMemoryBtn');
+        const memoryCount = document.getElementById('memoryCount');
 
         const iconArray = ['fas fa-camera-retro', 'fas fa-map-pin', 'fas fa-feather-alt', 'fas fa-book-open', 'fas fa-tree', 'fas fa-sun', 'fas fa-moon', 'fas fa-compass', 'fas fa-crown', 'fas fa-gem'];
 
@@ -794,46 +916,25 @@
             return iconArray[Math.floor(Math.random() * iconArray.length)];
         }
 
-        addMemoryBtn.addEventListener('click', function() {
-            const name = newMemoryName.value.trim();
-            const year = newMemoryYear.value.trim() || '✧';
-            if (!name) {
-                alert('please write a memory name.');
-                return;
-            }
-            const item = document.createElement('div');
-            item.className = 'memory-item';
-            const icon = getRandomIcon();
-            item.innerHTML = `
-                <i class="${icon}"></i>
-                <div class="mem-content"><strong>${name}</strong><small>a small memory</small></div>
-                <span class="mem-year">${year}</span>
-            `;
-            memoryGallery.appendChild(item);
-            newMemoryName.value = '';
-            newMemoryYear.value = '';
-        });
-
-        newMemoryName.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addMemoryBtn.click();
-            }
-        });
-
-        // =====================================================
-        // 5. Click on birthday counter for random message
-        // =====================================================
-        const bdayCounterSpans = document.querySelectorAll('.bday-counter span');
-        bdayCounterSpans.forEach(span => {
-            span.addEventListener('click', function() {
-                const msgs = ['✨ another spin around the sun', '🍰 sweet & timeless', '🎈 keep dreaming', '🌟 you are loved'];
-                const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
-                bdayMessage.innerHTML = `“${randomMsg}”<br><span style="font-size:0.8rem; color:#8f7668;"> — from the museum</span>`;
-            });
-        });
-
-    })();
-</script>
-</body>
-</html>
+        // Load memories from localStorage
+        function loadMemories() {
+            const saved = localStorage.getItem('memories');
+            if (saved) {
+                try {
+                    const memories = JSON.parse(saved);
+                    memoryGallery.innerHTML = '';
+                    memories.forEach(mem => {
+                        addMemoryToDOM(mem.name, mem.year, mem.icon);
+                    });
+                } catch(e) {
+                    console.error('Error loading memories', e);
+                }
+            } else {
+                // Default memories
+                const defaults = [
+                    { name: 'first polaroid', year: '2018', icon: 'fas fa-camera-retro' },
+                    { name: 'train to nowhere', year: '2021', icon: 'fas fa-map-pin' },
+                    { name: 'feather found', year: '2023', icon: 'fas fa-feather-alt' }
+                ];
+                localStorage.setItem('memories', JSON.stringify(defaults));
+                defaults.forEach

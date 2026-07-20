@@ -22,7 +22,6 @@
             color: #3e3a36;
         }
 
-        /* main container – soft card */
         .memory-container {
             max-width: 1280px;
             margin: 0 auto;
@@ -34,7 +33,6 @@
             border: 1px solid rgba(235, 215, 195, 0.5);
         }
 
-        /* header with vintage touch */
         .site-header {
             display: flex;
             flex-wrap: wrap;
@@ -78,7 +76,6 @@
             transform: scale(1.1);
         }
 
-        /* grid layout: 4 columns now */
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -86,7 +83,6 @@
             margin-top: 1rem;
         }
 
-        /* each card – glassmorphism soft */
         .card {
             background: rgba(255, 248, 240, 0.7);
             backdrop-filter: blur(4px);
@@ -125,7 +121,7 @@
             color: #4f3f35;
         }
 
-        /* ---------- TIMER SECTION (NEW) ---------- */
+        /* ========== TIMER SECTION ========== */
         .timer-display {
             background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
             border-radius: 2.5rem;
@@ -145,21 +141,36 @@
             opacity: 0.1;
             transform: rotate(15deg);
         }
-        .timer-number {
-            font-size: 4.5rem;
+
+        /* Timer grid for days, hours, minutes, seconds */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px 0 8px;
+        }
+        .timer-block {
+            background: rgba(255, 248, 240, 0.6);
+            border-radius: 1.5rem;
+            padding: 10px 4px;
+            border: 1px solid #ebd6c8;
+        }
+        .timer-block .number {
+            font-size: 2.4rem;
             font-weight: 300;
             color: #633f2e;
-            letter-spacing: 4px;
-            line-height: 1.2;
             font-family: 'Georgia', serif;
+            line-height: 1.2;
+            display: block;
         }
-        .timer-label {
-            font-size: 1.1rem;
+        .timer-block .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             color: #8a7567;
-            letter-spacing: 3px;
-            margin-top: 6px;
-            font-weight: 300;
+            font-weight: 400;
         }
+
         .timer-sub {
             font-size: 0.85rem;
             color: #a68b7a;
@@ -168,6 +179,7 @@
             border-top: 1px dashed #dccfc4;
             padding-top: 12px;
         }
+
         .timer-controls {
             display: flex;
             gap: 8px;
@@ -205,7 +217,7 @@
             box-shadow: 0 2px 8px rgba(130, 90, 70, 0.2);
         }
 
-        /* ---------- UNSENT LETTERS ---------- */
+        /* ========== UNSENT LETTERS ========== */
         .letter-preview {
             background: #fcf3ea;
             padding: 1.2rem 1.2rem 0.8rem;
@@ -288,7 +300,7 @@
             box-shadow: 0 2px 8px rgba(130, 90, 70, 0.2);
         }
 
-        /* ---------- HAPPY BIRTHDAY ---------- */
+        /* ========== HAPPY BIRTHDAY ========== */
         .birthday-message {
             background: #f9efe6;
             border-radius: 2.5rem;
@@ -339,7 +351,7 @@
             color: #b48b7a;
         }
 
-        /* ---------- MUSEUM OF MEMORY ---------- */
+        /* ========== MUSEUM OF MEMORY ========== */
         .memory-gallery {
             display: flex;
             flex-direction: column;
@@ -419,7 +431,7 @@
             background: #d0bcae;
         }
 
-        /* small footer */
+        /* ========== FOOTER ========== */
         .site-footer {
             margin-top: 3.5rem;
             text-align: center;
@@ -434,7 +446,7 @@
             color: #b48b7a;
         }
 
-        /* responsive touches */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 650px) {
             .memory-container {
                 padding: 1.5rem 1rem;
@@ -448,8 +460,20 @@
                 gap: 1.2rem;
                 font-size: 1.3rem;
             }
-            .timer-number {
-                font-size: 3rem;
+            .timer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .timer-block .number {
+                font-size: 1.8rem;
+            }
+        }
+        @media (max-width: 400px) {
+            .timer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .timer-block .number {
+                font-size: 1.4rem;
             }
         }
     </style>
@@ -457,7 +481,7 @@
 <body>
 <div class="memory-container">
 
-    <!-- header -->
+    <!-- HEADER -->
     <header class="site-header">
         <div class="site-title">
             <h1><i class="fas fa-feather-alt"></i> unsent · memory</h1>
@@ -471,18 +495,35 @@
         </div>
     </header>
 
-    <!-- 4-part grid (now includes timer) -->
+    <!-- 4-PART GRID -->
     <div class="memory-grid">
 
-        <!-- 1. TIMER - DAYS WITHOUT YOU (NEW) -->
+        <!-- 1. TIMER - DAYS, HOURS, MINUTES, SECONDS -->
         <section class="card" id="timerCard">
             <div class="card-header">
                 <i class="fas fa-hourglass-half"></i>
                 <h2>without you</h2>
             </div>
             <div class="timer-display">
-                <div class="timer-number" id="daysCounter">0</div>
-                <div class="timer-label">days without you</div>
+                <!-- Timer Grid: Days | Hours | Minutes | Seconds -->
+                <div class="timer-grid">
+                    <div class="timer-block">
+                        <span class="number" id="daysDisplay">0</span>
+                        <span class="label">days</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="number" id="hoursDisplay">0</span>
+                        <span class="label">hours</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="number" id="minutesDisplay">0</span>
+                        <span class="label">minutes</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="number" id="secondsDisplay">0</span>
+                        <span class="label">seconds</span>
+                    </div>
+                </div>
                 <div class="timer-sub" id="timerSubMessage">"time moves slow when you're not here"</div>
             </div>
             <div class="timer-controls">
@@ -490,7 +531,7 @@
                 <button id="updateTimerBtn"><i class="fas fa-sync-alt"></i> update</button>
             </div>
             <p style="font-size: 0.75rem; color: #a18b7d; margin-top: 10px; text-align: center; letter-spacing: 0.3px;">
-                <i class="fas fa-clock"></i> counting every day since we parted
+                <i class="fas fa-clock"></i> counting every second since we parted
             </p>
         </section>
 
@@ -573,18 +614,23 @@
     </footer>
 </div>
 
-<!-- JavaScript – all interactive parts -->
+<!-- ============================================ -->
+<!-- JAVASCRIPT – ALL INTERACTIVE PARTS          -->
+<!-- ============================================ -->
 <script>
     (function() {
         // =====================================================
-        // 1. TIMER - DAYS WITHOUT YOU (NEW)
+        // 1. DETAILED TIMER - DAYS, HOURS, MINUTES, SECONDS
         // =====================================================
-        const daysCounter = document.getElementById('daysCounter');
+        const daysDisplay = document.getElementById('daysDisplay');
+        const hoursDisplay = document.getElementById('hoursDisplay');
+        const minutesDisplay = document.getElementById('minutesDisplay');
+        const secondsDisplay = document.getElementById('secondsDisplay');
         const timerSubMessage = document.getElementById('timerSubMessage');
         const startDateInput = document.getElementById('startDateInput');
         const updateTimerBtn = document.getElementById('updateTimerBtn');
 
-        // Set default date to 30 days ago (so it shows 30 initially)
+        // Set default date to 30 days ago (so it shows 30 days)
         function setDefaultDate() {
             const today = new Date();
             const thirtyDaysAgo = new Date(today);
@@ -596,55 +642,82 @@
         }
         setDefaultDate();
 
-        // Calculate days between two dates
-        function calculateDays(date1, date2) {
-            const oneDay = 24 * 60 * 60 * 1000;
-            const diffTime = Math.abs(date2 - date1);
-            return Math.floor(diffTime / oneDay);
+        // Calculate detailed time difference
+        function getTimeDifference(startDate, endDate) {
+            const diffMs = Math.abs(endDate - startDate);
+            
+            const seconds = Math.floor(diffMs / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            return {
+                days: days,
+                hours: hours % 24,
+                minutes: minutes % 60,
+                seconds: seconds % 60,
+                totalSeconds: seconds
+            };
         }
 
-        // Update the timer display
-        function updateTimer() {
-            const startDateValue = startDateInput.value;
-            if (!startDateValue) {
-                daysCounter.textContent = '0';
-                timerSubMessage.textContent = 'please set a date';
-                return;
-            }
-
-            const startDate = new Date(startDateValue + 'T00:00:00');
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            if (isNaN(startDate.getTime())) {
-                daysCounter.textContent = '0';
-                timerSubMessage.textContent = 'invalid date';
-                return;
-            }
-
-            const days = calculateDays(startDate, today);
-            daysCounter.textContent = days;
-
-            // Change message based on days count
+        // Get message based on total days
+        function getTimerMessage(days) {
             const messages = [
-                { max: 7, text: '"the first week feels like forever"' },
+                { max: 1, text: '"the first day feels like an eternity"' },
+                { max: 3, text: '"three days and everything feels different"' },
+                { max: 7, text: '"a week without you feels like a lifetime"' },
                 { max: 14, text: '"two weeks and i still reach for you"' },
                 { max: 30, text: '"a month without you feels like a year"' },
                 { max: 60, text: '"time moves slow when you\'re not here"' },
                 { max: 90, text: '"three months and the days blur together"' },
                 { max: 180, text: '"half a year of missing you"' },
                 { max: 365, text: '"a year without you, and i still count"' },
+                { max: 730, text: '"two years, and every second still matters"' },
                 { max: Infinity, text: '"every day without you is a day too long"' }
             ];
 
-            let message = '"time moves slow when you\'re not here"';
             for (const m of messages) {
                 if (days <= m.max) {
-                    message = m.text;
-                    break;
+                    return m.text;
                 }
             }
-            timerSubMessage.textContent = message;
+            return '"time moves slow when you\'re not here"';
+        }
+
+        // Update the timer display
+        function updateTimer() {
+            const startDateValue = startDateInput.value;
+            if (!startDateValue) {
+                daysDisplay.textContent = '0';
+                hoursDisplay.textContent = '00';
+                minutesDisplay.textContent = '00';
+                secondsDisplay.textContent = '00';
+                timerSubMessage.textContent = 'please set a date';
+                return;
+            }
+
+            const startDate = new Date(startDateValue + 'T00:00:00');
+            const now = new Date();
+
+            if (isNaN(startDate.getTime())) {
+                daysDisplay.textContent = '0';
+                hoursDisplay.textContent = '00';
+                minutesDisplay.textContent = '00';
+                secondsDisplay.textContent = '00';
+                timerSubMessage.textContent = 'invalid date';
+                return;
+            }
+
+            const diff = getTimeDifference(startDate, now);
+            
+            // Update display with padding for hours/minutes/seconds
+            daysDisplay.textContent = diff.days;
+            hoursDisplay.textContent = String(diff.hours).padStart(2, '0');
+            minutesDisplay.textContent = String(diff.minutes).padStart(2, '0');
+            secondsDisplay.textContent = String(diff.seconds).padStart(2, '0');
+
+            // Update message
+            timerSubMessage.textContent = getTimerMessage(diff.days);
         }
 
         // Update timer on button click
@@ -652,8 +725,8 @@
             updateTimer();
         });
 
-        // Auto-update timer every minute (to keep it fresh if page is open)
-        setInterval(updateTimer, 60000);
+        // Auto-update timer every second (so seconds tick!)
+        setInterval(updateTimer, 1000);
 
         // Initial update
         updateTimer();

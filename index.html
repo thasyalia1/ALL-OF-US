@@ -579,8 +579,8 @@
         // Auto-sync every 30 seconds
         setInterval(saveToCloud, 30000);
 
-        // ==// =====================================================
-// TIMER
+     // =====================================================
+// TIMER - FIXED!
 // =====================================================
 const daysEl = document.getElementById('daysDisplay');
 const hoursEl = document.getElementById('hoursDisplay');
@@ -592,22 +592,38 @@ const updateBtn = document.getElementById('updateTimerBtn');
 
 function calcDiff(start, end) {
     const ms = Math.abs(end - start);
-    const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60), d = Math.floor(h/24);
+    const s = Math.floor(ms/1000);
+    const m = Math.floor(s/60);
+    const h = Math.floor(m/60);
+    const d = Math.floor(h/24);
     return { days:d, hours:h%24, minutes:m%60, seconds:s%60 };
 }
 
 function getTimerMsg(days) {
-    const msgs = [
-        { max:1, text:'"the first day feels like an eternity"' },
-        { max:7, text:'"a week without you feels like a lifetime"' },
-        { max:30, text:'"a month without you feels like a year"' },
-        { max:60, text:'"time moves slow when you\'re not here"' },
-        { max:90, text:'"three months and the days blur together"' },
-        { max:365, text:'"a year without you, and i still count"' },
-        { max:Infinity, text:'"every day without you is a day too long"' }
-    ];
-    for (const m of msgs) { if (days <= m.max) return m.text; }
-    return '"time moves slow when you\'re not here"';
+    days = Number(days);
+    
+    // Detail messages based on days
+    if (days <= 1) {
+        return '"the first day feels like an eternity"';
+    } else if (days <= 3) {
+        return '"three days and everything feels different"';
+    } else if (days <= 7) {
+        return '"a week without you feels like a lifetime"';
+    } else if (days <= 14) {
+        return '"two weeks and i still reach for you"';
+    } else if (days <= 30) {
+        return '"a month without you feels like a year"';
+    } else if (days <= 60) {
+        return '"time moves slow when you\'re not here"';
+    } else if (days <= 90) {
+        return '"three months and the days blur together"';
+    } else if (days <= 180) {
+        return '"half a year of missing you"';
+    } else if (days <= 365) {
+        return '"a year without you, and i still count"';
+    } else {
+        return '"every day without you is a day too long"';
+    }
 }
 
 function loadTimerDate() {
@@ -628,29 +644,39 @@ function loadTimerDate() {
 function updateTimer() {
     const val = startDateInput.value;
     if (!val) { 
-        daysEl.textContent='0'; 
-        hoursEl.textContent='00'; 
-        minutesEl.textContent='00'; 
-        secondsEl.textContent='00'; 
-        timerMsg.textContent='please set a date'; 
+        daysEl.textContent = '0'; 
+        hoursEl.textContent = '00'; 
+        minutesEl.textContent = '00'; 
+        secondsEl.textContent = '00'; 
+        timerMsg.textContent = 'please set a date'; 
         return; 
     }
+    
     const start = new Date(val + 'T00:00:00');
     const now = new Date();
+    
     if (isNaN(start.getTime())) { 
-        daysEl.textContent='0'; 
-        hoursEl.textContent='00'; 
-        minutesEl.textContent='00'; 
-        secondsEl.textContent='00'; 
-        timerMsg.textContent='invalid date'; 
+        daysEl.textContent = '0'; 
+        hoursEl.textContent = '00'; 
+        minutesEl.textContent = '00'; 
+        secondsEl.textContent = '00'; 
+        timerMsg.textContent = 'invalid date'; 
         return; 
     }
+    
     const diff = calcDiff(start, now);
-    daysEl.textContent = diff.days;
+    const days = diff.days;
+    
+    daysEl.textContent = days;
     hoursEl.textContent = String(diff.hours).padStart(2, '0');
     minutesEl.textContent = String(diff.minutes).padStart(2, '0');
     secondsEl.textContent = String(diff.seconds).padStart(2, '0');
-    timerMsg.textContent = getTimerMsg(diff.days);
+    
+    // Update message based on days
+    timerMsg.textContent = getTimerMsg(days);
+    
+    // Debug: check if message is updating
+    console.log('Timer updated:', days, 'days - Message:', timerMsg.textContent);
 }
 
 // Update timer when button clicked
@@ -662,12 +688,14 @@ if (updateBtn) {
     });
 }
 
-// Load timer date and start
+// Load and start
 loadTimerDate();
 updateTimer();
 
 // Update every second
 setInterval(updateTimer, 1000);
+
+console.log('⏳ Timer system started!');
 
         // =====================================================
         // 6. BOTTLES (LETTERS)

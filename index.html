@@ -20,7 +20,7 @@
         }
 
         /* ============================================
-           INTRO SCREEN - 3D BOOK
+           INTRO SCREEN - VERTICAL BOOK
            ============================================ */
         #intro-screen {
             position: fixed;
@@ -72,13 +72,14 @@
             opacity: 0.8;
         }
 
+        /* BOOK - VERTICAL POSITION */
         .book {
             position: relative;
-            width: 340px;
-            height: 470px;
+            width: 280px;
+            height: 400px;
             transform-style: preserve-3d;
             transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: rotateY(-10deg) rotateX(2deg);
+            transform: rotateY(0deg) rotateX(0deg);
         }
 
         .book.open {
@@ -126,7 +127,7 @@
 
         .book-cover .main-title {
             font-family: 'Georgia', 'Times New Roman', serif;
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 700;
             color: #f4d068;
             text-align: center;
@@ -146,7 +147,7 @@
             width: 50%;
             height: 1px;
             background: linear-gradient(90deg, transparent, #a67c2e, transparent);
-            margin: 15px 0;
+            margin: 12px 0;
             position: relative;
             z-index: 1;
         }
@@ -165,20 +166,20 @@
 
         .book-cover .subtitle-bottom {
             font-family: 'Georgia', serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: rgba(244, 208, 104, 0.4);
             letter-spacing: 4px;
             text-transform: uppercase;
             font-weight: 300;
             position: relative;
             z-index: 1;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .book-cover .click-hint {
             position: absolute;
-            bottom: 22px;
-            font-size: 0.65rem;
+            bottom: 20px;
+            font-size: 0.6rem;
             color: rgba(244, 208, 104, 0.2);
             letter-spacing: 3px;
             animation: pulseHint 2.5s infinite;
@@ -276,8 +277,8 @@
         }
 
         .book-inside .sunflower-icon {
-            font-size: 4.5rem;
-            margin-bottom: 15px;
+            font-size: 4rem;
+            margin-bottom: 12px;
             animation: spinSunflower 8s linear infinite;
             filter: drop-shadow(0 4px 15px rgba(255, 215, 0, 0.15));
             position: relative;
@@ -286,7 +287,7 @@
 
         .book-inside .page-text {
             font-family: 'Georgia', 'Times New Roman', serif;
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 400;
             color: #3d1f16;
             text-align: center;
@@ -302,19 +303,19 @@
         }
 
         .book-inside .gold-line {
-            width: 50px;
+            width: 40px;
             height: 1px;
             background: linear-gradient(90deg, transparent, #a67c2e, transparent);
-            margin: 10px 0;
+            margin: 8px 0;
             position: relative;
             z-index: 1;
         }
 
         .book-inside .page-sub {
             font-family: 'Georgia', serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #8a6d5a;
-            margin-top: 8px;
+            margin-top: 6px;
             letter-spacing: 3px;
             font-style: italic;
             position: relative;
@@ -322,19 +323,25 @@
         }
 
         /* ============================================
-           SUNFLOWER PARTICLES
+           SUNFLOWER PARTICLES - FILL ENTIRE SCREEN!
            ============================================ */
         .sunflower-particle {
             position: fixed;
             pointer-events: none;
-            z-index: 999;
-            font-size: 3.5rem;
+            z-index: 9999;
+            font-size: 4rem;
             animation: flyOutBook 2.5s forwards ease-out;
         }
 
         @keyframes flyOutBook {
-            0% { opacity: 1; transform: translate(0,0) scale(0.2) rotate(0deg); }
-            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(2) rotate(var(--mr)); }
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--mx), var(--my)) scale(2.5) rotate(var(--mr));
+            }
         }
 
         @keyframes spinSunflower {
@@ -346,6 +353,38 @@
         @keyframes pulseHint {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 0.8; }
+        }
+
+        /* ============================================
+           TOAST NOTIFICATION
+           ============================================ */
+        .save-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2b2b2b;
+            color: #f4d068;
+            padding: 14px 28px;
+            border-radius: 3rem;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 5000;
+            border: 1px solid #f4d068;
+            font-family: 'Georgia', serif;
+            max-width: 90%;
+        }
+
+        .save-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .save-toast i {
+            margin-right: 8px;
         }
 
         /* ============================================
@@ -373,9 +412,6 @@
             transform: translateY(0) scale(1);
         }
 
-        /* ============================================
-           HEADER
-           ============================================ */
         .site-header {
             display: flex;
             flex-wrap: wrap;
@@ -424,9 +460,6 @@
             transform: scale(1.1);
         }
 
-        /* ============================================
-           NAVIGATION TABS
-           ============================================ */
         .nav-tabs {
             display: flex;
             flex-wrap: wrap;
@@ -461,9 +494,33 @@
             border-color: #f4d068;
         }
 
-        /* ============================================
-           PAGE SYSTEM
-           ============================================ */
+        /* Cloud sync status */
+        .sync-status {
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(244,208,104,0.3);
+            margin-bottom: 1rem;
+            padding: 4px;
+        }
+
+        .sync-status i {
+            margin-right: 4px;
+        }
+
+        .sync-status .synced {
+            color: #4caf50;
+        }
+
+        .sync-status .syncing {
+            color: #f4d068;
+            animation: pulseText 1s infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
         .page {
             display: none;
             animation: fadePage 0.5s ease;
@@ -494,9 +551,7 @@
             font-size: 0.95rem;
         }
 
-        /* ============================================
-           PAGE 1: BOTTLES
-           ============================================ */
+        /* BOTTLES */
         .bottle-feed {
             display: flex;
             flex-direction: column;
@@ -621,9 +676,6 @@
             color: #c0392b;
         }
 
-        /* ============================================
-           LETTER FORM
-           ============================================ */
         .letter-form {
             display: flex;
             flex-direction: column;
@@ -698,9 +750,7 @@
             margin-top: 4px;
         }
 
-        /* ============================================
-           PAGE 2: TIMER
-           ============================================ */
+        /* TIMER */
         .timer-display {
             background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
             border-radius: 2.5rem;
@@ -804,9 +854,7 @@
             transform: scale(1.02);
         }
 
-        /* ============================================
-           PAGE 3: BIRTHDAY
-           ============================================ */
+        /* BIRTHDAY */
         .wish-archive {
             display: flex;
             flex-direction: column;
@@ -916,9 +964,7 @@
             margin-top: 4px;
         }
 
-        /* ============================================
-           PAGE 4: GALLERY - PHOTOS WITH NAZIFF
-           ============================================ */
+        /* GALLERY */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1064,9 +1110,7 @@
             transform: scale(1.02);
         }
 
-        /* ============================================
-           MODAL - LETTER POPUP
-           ============================================ */
+        /* MODAL */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1183,9 +1227,6 @@
             font-family: 'Georgia', serif;
         }
 
-        /* ============================================
-           FOOTER
-           ============================================ */
         .site-footer {
             margin-top: 3rem;
             text-align: center;
@@ -1201,9 +1242,7 @@
             color: #f4d068;
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
+        /* RESPONSIVE */
         @media (max-width: 650px) {
             .site-header {
                 flex-direction: column;
@@ -1304,7 +1343,7 @@
 <body>
 
     <!-- ==========================================
-    INTRO SCREEN - 3D BOOK
+    INTRO SCREEN - VERTICAL BOOK
     ========================================== -->
     <div id="intro-screen">
         <div class="book-wrapper" onclick="openBook()">
@@ -1332,6 +1371,13 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- ==========================================
+    TOAST NOTIFICATION
+    ========================================== -->
+    <div class="save-toast" id="saveToast">
+        <i class="fas fa-check-circle"></i> <span id="toastMessage">Saved!</span>
     </div>
 
     <!-- ==========================================
@@ -1367,6 +1413,11 @@
                 <i class="fas fa-images"></i>
             </div>
         </header>
+
+        <!-- SYNC STATUS -->
+        <div class="sync-status" id="syncStatus">
+            <i class="fas fa-cloud"></i> <span id="syncText">Syncing...</span>
+        </div>
 
         <!-- NAVIGATION TABS -->
         <div class="nav-tabs">
@@ -1467,19 +1518,19 @@
                 <button id="addPhotoBtn"><i class="fas fa-plus-circle"></i> Add Photo</button>
             </div>
             <div style="text-align:center;margin-top:8px;font-size:0.7rem;color:rgba(244,208,104,0.3);">
-                <i class="fas fa-info-circle"></i> Click the photo placeholder to add your own image URL
+                <i class="fas fa-info-circle"></i> Paste an image URL (Imgur, Google Drive, etc.)
             </div>
         </div>
 
         <!-- FOOTER -->
         <footer class="site-footer">
             <i class="fas fa-heart"></i> for the ones we keep close <i class="fas fa-heart"></i>
-            <br><small style="font-size:0.7rem;">📚 Every letter, wish, and memory is saved forever</small>
+            <br><small style="font-size:0.7rem;">📚 All data syncs across devices via cloud storage</small>
         </footer>
     </div>
 
     <!-- ========================================== -->
-    <!-- JAVASCRIPT                                -->
+    <!-- JAVASCRIPT - FULL WITH CLOUD SYNC         -->
     <!-- ========================================== -->
     <script>
         // =====================================================
@@ -1494,18 +1545,18 @@
 
             setTimeout(() => {
                 const sunflowers = ['🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻', '🌻'];
-                for (let i = 0; i < 200; i++) {
+                for (let i = 0; i < 250; i++) {
                     const particle = document.createElement('div');
                     particle.classList.add('sunflower-particle');
                     particle.textContent = sunflowers[Math.floor(Math.random() * sunflowers.length)];
                     const angle = Math.random() * Math.PI * 2;
-                    const distance = 200 + Math.random() * 700;
+                    const distance = 200 + Math.random() * 800;
                     particle.style.setProperty('--mx', Math.cos(angle) * distance + 'px');
                     particle.style.setProperty('--my', Math.sin(angle) * distance - 100 + 'px');
                     particle.style.setProperty('--mr', (Math.random() * 720 - 360) + 'deg');
                     particle.style.left = window.innerWidth / 2 + 'px';
                     particle.style.top = window.innerHeight / 2 + 'px';
-                    const size = 2 + Math.random() * 3;
+                    const size = 2 + Math.random() * 3.5;
                     particle.style.fontSize = size + 'rem';
                     document.body.appendChild(particle);
                     setTimeout(() => particle.remove(), 3000);
@@ -1514,12 +1565,27 @@
                 setTimeout(() => {
                     introScreen.classList.add('hidden');
                     mainContent.classList.add('visible');
+                    showToast('🌻 Welcome! Everything auto-saves to cloud!');
                 }, 1200);
             }, 1500);
         }
 
         // =====================================================
-        // 2. TAB NAVIGATION
+        // 2. TOAST NOTIFICATION
+        // =====================================================
+        const toast = document.getElementById('saveToast');
+        const toastMessage = document.getElementById('toastMessage');
+        let toastTimeout;
+
+        function showToast(msg) {
+            toastMessage.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // =====================================================
+        // 3. TAB NAVIGATION
         // =====================================================
         const tabs = document.querySelectorAll('.nav-tab');
         const pages = {
@@ -1543,21 +1609,126 @@
         });
 
         // =====================================================
-        // 3. NOTIFICATION
+        // 4. GET CURRENT DATE
         // =====================================================
-        function showSaved(msg) {
-            console.log('💾', msg);
-            // You can add a toast notification here if you want
-        }
-
         function getCurrentDate() {
             const now = new Date();
             return now.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit',
                 minute: '2-digit' });
         }
 
+       // =====================================================
+// 5. CLOUD SYNC - JSONBin.io
+// =====================================================
+// 🔑 YOUR JSONBIN CREDENTIALS
+const BIN_ID = '6a5e1473f5f4af5e29a78528';
+const API_KEY = '$2a$10$QUcVpm..ytRfR7//DacsA.EADeaEqeN7nNwqXfodON2AMj7XcIPuC';
+
+const syncStatus = document.getElementById('syncStatus');
+const syncText = document.getElementById('syncText');
+
+function setSyncStatus(status, isSyncing = false) {
+    syncText.textContent = status;
+    syncText.className = isSyncing ? 'syncing' : 'synced';
+}
+
+// Save all data to cloud
+function saveToCloud(data) {
+    setSyncStatus('Saving to cloud...', true);
+
+    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': API_KEY
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
+        .then(() => {
+            setSyncStatus('✅ Synced to cloud');
+            showToast('💾 Saved to cloud!');
+        })
+        .catch(err => {
+            console.error('Save error:', err);
+            setSyncStatus('⚠️ Save failed, but data saved locally');
+        });
+}
+
+// Load all data from cloud
+function loadFromCloud(callback) {
+    setSyncStatus('Loading from cloud...', true);
+
+    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+            headers: {
+                'X-Master-Key': API_KEY
+            }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
+        .then(data => {
+            setSyncStatus('✅ Cloud loaded');
+            callback(data.record);
+        })
+        .catch(err => {
+            console.error('Load error:', err);
+            setSyncStatus('⚠️ Using local data');
+            callback(null);
+        });
+}
+
         // =====================================================
-        // 4. TIMER
+        // 6. MAIN DATA MANAGEMENT - ALL DATA SYNC
+        // =====================================================
+        function getAllData() {
+            return {
+                letters: JSON.parse(localStorage.getItem('letterArchive') || '[]'),
+                wishes: JSON.parse(localStorage.getItem('wishArchive') || '[]'),
+                photos: JSON.parse(localStorage.getItem('galleryPhotos') || '[]'),
+                timerDate: localStorage.getItem('timerStartDate') || ''
+            };
+        }
+
+        function setAllData(data) {
+            if (data.letters) localStorage.setItem('letterArchive', JSON.stringify(data.letters));
+            if (data.wishes) localStorage.setItem('wishArchive', JSON.stringify(data.wishes));
+            if (data.photos) localStorage.setItem('galleryPhotos', JSON.stringify(data.photos));
+            if (data.timerDate) localStorage.setItem('timerStartDate', data.timerDate);
+        }
+
+        // Sync all data to cloud
+        function syncAllToCloud() {
+            const data = getAllData();
+            saveToCloud(data);
+        }
+
+        // Load from cloud and apply
+        function loadAndApplyFromCloud() {
+            loadFromCloud(function(cloudData) {
+                if (cloudData) {
+                    setAllData(cloudData);
+                    // Reload all sections
+                    loadBottles();
+                    loadWishes();
+                    loadGallery();
+                    loadTimerDate();
+                    showToast('🔄 Data synced from cloud!');
+                }
+                // Always load from localStorage as fallback
+                loadBottles();
+                loadWishes();
+                loadGallery();
+                loadTimerDate();
+            });
+        }
+
+        // =====================================================
+        // 7. TIMER
         // =====================================================
         const daysEl = document.getElementById('daysDisplay');
         const hoursEl = document.getElementById('hoursDisplay');
@@ -1579,9 +1750,9 @@
                     day = String(d.getDate()).padStart(2, '0');
                 startDateInput.value = `${y}-${m}-${day}`;
                 localStorage.setItem('timerStartDate', startDateInput.value);
+                syncAllToCloud();
             }
         }
-        loadTimerDate();
 
         function calcDiff(start, end) {
             const ms = Math.abs(end - start);
@@ -1636,14 +1807,16 @@
 
         updateBtn.addEventListener('click', function() {
             localStorage.setItem('timerStartDate', startDateInput.value);
+            syncAllToCloud();
             updateTimer();
+            showToast('⏳ Timer updated!');
         });
 
         setInterval(updateTimer, 1000);
         updateTimer();
 
         // =====================================================
-        // 5. BOTTLES
+        // 8. BOTTLES
         // =====================================================
         const bottleFeed = document.getElementById('bottleFeed');
         const letterForm = document.getElementById('letterForm');
@@ -1696,6 +1869,7 @@
                 localStorage.setItem('letterArchive', JSON.stringify([defaultLetter]));
                 addBottleToDOM(defaultLetter.text, defaultLetter.sign, defaultLetter.date, 0);
                 updateLetterCount();
+                syncAllToCloud();
             }
         }
 
@@ -1747,7 +1921,9 @@
                 if (confirm('Delete this letter from the bottle?')) {
                     letters.splice(index, 1);
                     localStorage.setItem('letterArchive', JSON.stringify(letters));
+                    syncAllToCloud();
                     loadBottles();
+                    showToast('🗑️ Letter deleted!');
                 }
             }
         };
@@ -1770,8 +1946,10 @@
             const letters = saved ? JSON.parse(saved) : [];
             letters.push({ text, sign, date });
             localStorage.setItem('letterArchive', JSON.stringify(letters));
+            syncAllToCloud();
             letterContent.value = '';
             loadBottles();
+            showToast('🍾 Letter saved in a bottle!');
             const bottles = bottleFeed.querySelectorAll('.bottle-card');
             if (bottles.length > 0) {
                 bottles[bottles.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1781,7 +1959,7 @@
         loadBottles();
 
         // =====================================================
-        // 6. BIRTHDAY WISHES
+        // 9. BIRTHDAY WISHES
         // =====================================================
         const wishArchive = document.getElementById('wishArchive');
         const wishInput = document.getElementById('birthdayWishInput');
@@ -1808,6 +1986,7 @@
                 localStorage.setItem('wishArchive', JSON.stringify([defaultWish]));
                 addWishToDOM(defaultWish.text, defaultWish.date, 0);
                 updateWishCount();
+                syncAllToCloud();
             }
         }
 
@@ -1838,7 +2017,9 @@
                 if (confirm('Delete this wish?')) {
                     wishes.splice(index, 1);
                     localStorage.setItem('wishArchive', JSON.stringify(wishes));
+                    syncAllToCloud();
                     loadWishes();
+                    showToast('🗑️ Wish deleted!');
                 }
             }
         };
@@ -1851,8 +2032,10 @@
             const wishes = saved ? JSON.parse(saved) : [];
             wishes.push({ text, date });
             localStorage.setItem('wishArchive', JSON.stringify(wishes));
+            syncAllToCloud();
             wishInput.value = '';
             loadWishes();
+            showToast('🎂 Birthday wish saved!');
         });
 
         wishInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') wishBtn.click(); });
@@ -1860,7 +2043,7 @@
         loadWishes();
 
         // =====================================================
-        // 7. GALLERY - PHOTOS WITH NAZIFF
+        // 10. GALLERY
         // =====================================================
         const galleryGrid = document.getElementById('galleryGrid');
         const newPhotoName = document.getElementById('newPhotoName');
@@ -1887,7 +2070,6 @@
                     }
                 } catch (e) { console.error(e); }
             } else {
-                // Default sample photos
                 const defaults = [
                     { name: 'Our First Date', date: 'Jan 2025', emoji: '🌅', image: '' },
                     { name: 'Sunset Together', date: 'Feb 2025', emoji: '🌄', image: '' },
@@ -1895,6 +2077,7 @@
                 ];
                 localStorage.setItem('galleryPhotos', JSON.stringify(defaults));
                 defaults.forEach((p, i) => addPhotoToDOM(p.name, p.date, p.emoji, p.image, i));
+                syncAllToCloud();
             }
         }
 
@@ -1916,30 +2099,21 @@
             galleryGrid.appendChild(item);
         }
 
-        // Upload image function - opens file picker
         window.uploadImage = function(index) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    const imageData = ev.target.result;
-                    const saved = localStorage.getItem('galleryPhotos');
-                    if (saved) {
-                        const photos = JSON.parse(saved);
-                        if (index >= 0 && index < photos.length) {
-                            photos[index].image = imageData;
-                            localStorage.setItem('galleryPhotos', JSON.stringify(photos));
-                            loadGallery();
-                        }
+            const imageUrl = prompt('📸 Paste your image URL (from Imgur, Google Drive, etc.):');
+            if (imageUrl && imageUrl.trim() !== '') {
+                const saved = localStorage.getItem('galleryPhotos');
+                if (saved) {
+                    const photos = JSON.parse(saved);
+                    if (index >= 0 && index < photos.length) {
+                        photos[index].image = imageUrl.trim();
+                        localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+                        syncAllToCloud();
+                        loadGallery();
+                        showToast('📸 Photo updated!');
                     }
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
+                }
+            }
         };
 
         window.deletePhoto = function(index) {
@@ -1950,7 +2124,9 @@
                 if (confirm('Delete this photo?')) {
                     photos.splice(index, 1);
                     localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+                    syncAllToCloud();
                     loadGallery();
+                    showToast('🗑️ Photo deleted!');
                 }
             }
         };
@@ -1959,13 +2135,16 @@
             const name = newPhotoName.value.trim();
             if (!name) { alert('Please enter a photo title!'); return; }
             const date = newPhotoDate.value.trim() || '✧';
+            const image = prompt('📸 Paste image URL (from Imgur, Google Drive, etc.):', 'https://example.com/photo.jpg');
             const saved = localStorage.getItem('galleryPhotos');
             const photos = saved ? JSON.parse(saved) : [];
-            photos.push({ name, date, emoji: getRandomEmoji(), image: '' });
+            photos.push({ name, date, emoji: getRandomEmoji(), image: image || '' });
             localStorage.setItem('galleryPhotos', JSON.stringify(photos));
+            syncAllToCloud();
             newPhotoName.value = '';
             newPhotoDate.value = '';
             loadGallery();
+            showToast('📸 Photo added!');
         });
 
         newPhotoName.addEventListener('keypress', function(e) {
@@ -1975,13 +2154,39 @@
         loadGallery();
 
         // =====================================================
-        // 8. KEYBOARD SHORTCUT: ESC to close modal
+        // 11. LOAD FROM CLOUD ON PAGE LOAD
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to load from cloud after 2 seconds
+            setTimeout(() => {
+                loadAndApplyFromCloud();
+            }, 2000);
+        });
+
+        // Also sync to cloud every 30 seconds if there are changes
+        setInterval(() => {
+            // Only sync if cloud is enabled
+            if (BIN_ID && BIN_ID !== 'YOUR_BIN_ID_HERE') {
+                syncAllToCloud();
+            }
+        }, 30000);
+
+        // =====================================================
+        // 12. KEYBOARD SHORTCUT: ESC to close modal
         // =====================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
             }
         });
+
+        // =====================================================
+        // 13. CONSOLE HELP
+        // =====================================================
+        console.log('📖 I Keep U Forever');
+        console.log('💾 Data auto-saves to localStorage and cloud');
+        console.log('📸 Use Imgur for image URLs: https://imgur.com');
+        console.log('🔑 Set your JSONBin credentials at the top of the script');
     </script>
 </body>
 </html>

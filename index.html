@@ -1617,45 +1617,54 @@
                 minute: '2-digit' });
         }
 
-       // =====================================================
-// 5. CLOUD SYNC - JSONBin.io
 // =====================================================
-// 🔑 YOUR JSONBIN CREDENTIALS
+// 5. CLOUD SYNC - JSONBin.io (FULL SETUP)
+// =====================================================
 const BIN_ID = '6a5e1473f5f4af5e29a78528';
-const API_KEY = '$2a$10$QUcVpm..ytRfR7//DacsA.EADeaEqeN7nNwqXfodON2AMj7XcIPuC';
+const API_KEY = '$2a$10$f/ngll2/.AbE97TLoljda.TCQcUe76.l8k3A9jpsNw3enm/pxtFAK';
 
-const syncStatus = document.getElementById('syncStatus');
-const syncText = document.getElementById('syncText');
-
-function setSyncStatus(status, isSyncing = false) {
-    syncText.textContent = status;
-    syncText.className = isSyncing ? 'syncing' : 'synced';
+function saveToCloud(data) {
+    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Access-Key': API_KEY,  // ← Guna Access Key
+            'X-Bin-Versioning': 'false'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Network error');
+        return res.json();
+    })
+    .then(() => {
+        console.log('✅ Synced to cloud!');
+        showToast('💾 Saved to cloud!');
+    })
+    .catch(err => {
+        console.error('Save error:', err);
+        showToast('⚠️ Save failed, but data saved locally');
+    });
 }
 
-// Save all data to cloud
-function saveToCloud(data) {
-    setSyncStatus('Saving to cloud...', true);
-
-    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': API_KEY
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('Network response was not ok');
-            return res.json();
-        })
-        .then(() => {
-            setSyncStatus('✅ Synced to cloud');
-            showToast('💾 Saved to cloud!');
-        })
-        .catch(err => {
-            console.error('Save error:', err);
-            setSyncStatus('⚠️ Save failed, but data saved locally');
-        });
+function loadFromCloud(callback) {
+    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: {
+            'X-Access-Key': API_KEY  // ← Guna Access Key
+        }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Network error');
+        return res.json();
+    })
+    .then(data => {
+        console.log('✅ Cloud loaded!');
+        callback(data.record);
+    })
+    .catch(err => {
+        console.error('Load error:', err);
+        callback(null);
+    });
 }
 
 // Load all data from cloud

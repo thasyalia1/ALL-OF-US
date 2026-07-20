@@ -3,576 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌻 For You · Museum of Memory</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>For You</title>
     <style>
+        /* --- General Styling --- */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Georgia', serif;
-            background-color: #a71d31;
+            background-color: #a71d31; /* Deep rich red from the video */
             overflow-x: hidden;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* --- Intro Screen (Gift Box) --- */
         #intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #a71d31 0%, #7a1525 100%);
+            background-color: #a71d31;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 1.5s ease-out, visibility 1.5s ease-out;
+            z-index: 10;
+            transition: opacity 1s ease-out, visibility 1s;
         }
-
-        #intro-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .intro-sunflower {
-            font-size: 120px;
+        .gift-box {
+            font-size: 100px;
             cursor: pointer;
             transition: transform 0.3s ease;
             animation: bounce 2s infinite;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
         }
-
-        .intro-sunflower:hover {
-            transform: scale(1.15) rotate(10deg);
+        .gift-box:hover {
+            transform: scale(1.1);
         }
-
-        .intro-title {
-            color: #f4d068;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            font-size: 3.5rem;
+        .intro-text {
+            color: #fff;
+            font-size: 2rem;
             margin-top: 20px;
-            text-shadow: 3px 3px 0px #4a0710;
-            letter-spacing: 3px;
-        }
-
-        .intro-sub {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.2rem;
-            margin-top: 10px;
             font-style: italic;
-            letter-spacing: 5px;
+            opacity: 0.8;
         }
 
-        .sunflower-particle {
+        /* --- Flower Explosion Particles --- */
+        .flower-particle {
             position: fixed;
             pointer-events: none;
-            z-index: 999;
-            font-size: 2.8rem;
-            animation: flyOut 1.8s forwards ease-out;
+            z-index: 9;
+            font-size: 2.5rem;
+            animation: flyOut 1.5s forwards ease-out;
         }
 
-        @keyframes flyOut {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(0.3) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--mx), var(--my)) scale(1.8) rotate(var(--mr));
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
+        /* --- Main Scrapbook Container --- */
         #scrapbook {
-            max-width: 1280px;
+            max-width: 1200px;
             width: 95%;
             margin: 40px auto;
-            background: rgba(128, 19, 34, 0.95);
+            background-color: #801322; /* Slightly darker board background */
             border: 12px double #f4d068;
             border-radius: 10px;
             padding: 40px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            opacity: 0;
-            transform: translateY(30px) scale(0.98);
-            transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
-        }
-
-        #scrapbook.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .site-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            border-bottom: 2px dashed rgba(244, 208, 104, 0.3);
-            padding-bottom: 1.5rem;
-        }
-
-        .site-title h1 {
-            font-size: 2.6rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            color: #f4d068;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-        }
-        .site-title h1 i {
-            color: #f4d068;
-            margin-right: 10px;
-        }
-        .site-title small {
-            display: block;
-            font-size: 0.9rem;
-            color: rgba(244, 208, 104, 0.6);
-            letter-spacing: 3px;
-            margin-top: 4px;
-            font-family: 'Georgia', serif;
-        }
-
-        .nav-icons {
-            display: flex;
-            gap: 1.8rem;
-            font-size: 1.4rem;
-            color: rgba(244, 208, 104, 0.6);
-        }
-        .nav-icons i {
-            transition: 0.2s;
-            cursor: default;
-        }
-        .nav-icons i:hover {
-            color: #f4d068;
-            transform: scale(1.1);
-        }
-
-        .memory-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin-top: 1rem;
-        }
-
-        .card {
-            background: rgba(255, 248, 240, 0.92);
-            backdrop-filter: blur(4px);
-            border-radius: 2.5rem;
-            padding: 1.8rem 1.5rem 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(244, 208, 104, 0.2);
-            transition: 0.25s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 252, 248, 0.95);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #e7d7cb;
-            padding-bottom: 0.8rem;
-        }
-        .card-header i {
-            font-size: 2rem;
-            color: #a71d31;
-            width: 2.6rem;
-            text-align: center;
-        }
-        .card-header h2 {
-            font-weight: 400;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            color: #3e2c24;
-        }
-        .card-header .badge {
-            margin-left: auto;
-            font-size: 0.6rem;
-            background: #dccfc4;
-            padding: 2px 12px;
-            border-radius: 3rem;
-            color: #5a4a3e;
-        }
-
-        .save-notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #2b2b2b;
-            color: #f4d068;
-            padding: 14px 28px;
-            border-radius: 3rem;
-            font-size: 0.95rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            gap: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 2000;
-            border: 1px solid #f4d068;
+            transition: opacity 1s ease-out 0.5s, transform 1s ease-out 0.5s;
         }
-        .save-notification.show {
+        #scrapbook.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .timer-display {
-            background: linear-gradient(135deg, #f9efe6 0%, #f5e6da 100%);
-            border-radius: 2.5rem;
-            padding: 1.8rem 1.2rem;
-            margin-bottom: 1.5rem;
-            border: 2px solid #ebd6c8;
+        /* --- Scrapbook Elements --- */
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.02) rotate(1deg);
+        }
+
+        /* Polaroid Photo Style */
+        .polaroid {
+            background: #fff;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+            transform: rotate(-2deg);
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
-        .timer-display::before {
-            content: '⏳';
-            position: absolute;
-            top: -10px;
-            right: -10px;
+        .polaroid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+        .polaroid .caption {
+            margin-top: 15px;
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        /* Letter Section */
+        .letter-card {
+            grid-column: span 2;
+            background: #2b2b2b; /* Dark charcoal letter paper from video */
+            color: #f4eade;
+            border-left: 5px solid #bd9244;
+            padding: 30px;
+            border-radius: 5px;
+        }
+        @media (max-width: 768px) {
+            .letter-card { grid-column: span 1; }
+        }
+        .letter-header {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #666;
+            padding-bottom: 10px;
+            color: #bd9244;
+        }
+        .letter-body {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            white-space: pre-line;
+        }
+
+        /* Sticker/Decoration Layouts */
+        .decorations {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .sticker {
             font-size: 4rem;
-            opacity: 0.1;
-            transform: rotate(15deg);
+            filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.3));
+            animation: float 4s ease-in-out infinite;
+        }
+        .sticker:nth-child(2) { animation-delay: 1.5s; }
+
+        .headline {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #f4d068;
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 3.5rem;
+            text-shadow: 3px 3px 0px #4a0710;
+            margin-bottom: 10px;
         }
 
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 10px 0 8px;
+        /* --- Animations --- */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
-        .timer-block {
-            background: rgba(255, 248, 240, 0.6);
-            border-radius: 1.5rem;
-            padding: 10px 4px;
-            border: 1px solid #ebd6c8;
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
         }
-        .timer-block .number {
-            font-size: 2.4rem;
-            font-weight: 300;
-            color: #633f2e;
-            font-family: 'Georgia', serif;
-            line-height: 1.2;
-            display: block;
-        }
-        .timer-block .label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #8a7567;
-            font-weight: 400;
+        @keyframes flyOut {
+            0% { opacity: 1; transform: translate(0, 0) scale(0.3); }
+            100% { opacity: 0; transform: translate(var(--mx), var(--my)) scale(1.5) rotate(var(--mr)); }
         }
 
-        .timer-sub {
-            font-size: 0.85rem;
-            color: #a68b7a;
-            margin-top: 10px;
-            font-style: italic;
-            border-top: 1px dashed #dccfc4;
-            padding-top: 12px;
+        /* Utility class to hide elements */
+        .hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none;
         }
+    </style>
+</head>
+<body>
 
-        .timer-controls {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .timer-controls input {
-            background: rgba(255, 245, 235, 0.7);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            width: 140px;
-        }
-        .timer-controls input:focus {
-            outline: 2px solid #dbbcae;
-            background: #fffbf7;
-        }
-        .timer-controls button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 20px;
-            font-weight: 500;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-        }
-        .timer-controls button:hover {
-            background: #801322;
-            transform: scale(1.02);
-        }
+    <!-- Intro Screen: The Gift Box -->
+    <div id="intro-screen">
+        <div class="gift-box" onclick="openGift(event)">🎁</div>
+        <div class="intro-text">For Jim</div>
+    </div>
 
-        .letter-archive {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 320px;
-            overflow-y: auto;
-            padding-right: 4px;
-            margin-bottom: 15px;
-        }
-        .letter-archive::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter-archive::-webkit-scrollbar-track {
-            background: #f0e6de;
-            border-radius: 10px;
-        }
-        .letter-archive::-webkit-scrollbar-thumb {
-            background: #dccfc4;
-            border-radius: 10px;
-        }
+    <!-- Main Scrapbook content -->
+    <div id="scrapbook">
+        <h1 class="headline">Favorite Person</h1>
 
-        .letter-entry {
-            background: #fcf3ea;
-            padding: 14px 16px;
-            border-radius: 1.5rem;
-            border-left: 4px solid #a71d31;
-            animation: fadeIn 0.3s ease;
-            position: relative;
-        }
-        .letter-entry .letter-text {
-            font-style: italic;
-            color: #3e2c24;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-        }
-        .letter-entry .letter-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 6px;
-            font-size: 0.7rem;
-            color: #8f7668;
-        }
-        .letter-entry .delete-letter {
-            position: absolute;
-            top: 6px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #b48b7a;
-            cursor: pointer;
-            font-size: 0.9rem;
-            opacity: 0.4;
-            transition: 0.2s;
-        }
-        .letter-entry .delete-letter:hover {
-            opacity: 1;
-            color: #c0392b;
-        }
+        <!-- Photo 1 -->
+        <div class="polaroid">
+            <!-- Replace URL with your own photo -->
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500" alt="Us">
+            <div class="caption">Mementos & Heartbeats</div>
+        </div>
 
-        .letter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 6px;
-        }
-        .letter-form textarea {
-            background: rgba(255, 245, 235, 0.7);
-            border: 1px solid #decfc2;
-            border-radius: 2rem;
-            padding: 14px 16px;
-            font-size: 0.95rem;
-            resize: vertical;
-            min-height: 70px;
-            transition: 0.2s;
-            color: #3e2c24;
-        }
-        .letter-form textarea:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .letter-form .form-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .letter-form input {
-            flex: 1;
-            background: rgba(255, 245, 235, 0.7);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            min-width: 120px;
-        }
-        .letter-form input:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .letter-form button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 20px;
-            font-weight: 500;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
-        }
-        .letter-form button:hover {
-            background: #801322;
-        }
+        <!-- The Interactive Letter -->
+        <div class="card letter-card">
+            <div class="letter-header">
+                <strong>From:</strong> Joey <br>
+                <strong>For:</strong> Jim
+            </div>
+            <div class="letter-body">
+                My love, I wish I could take whatever is hurting you and carry it for a while so you could rest. Please don't worry about anything else right now. 
+                
+                Your only job is to sleep, drink plenty of water, let yourself be soft, and come back to me when your body is ready. I'm thinking of you every hour, wanting to smooth your hair back and sit quietly beside you. You don't have to be brave or cheerful for me. Just get better slowly, gently, completely. 
+                
+                I love you, and I'll be right here.
+            </div>
+        </div>
 
-        .letter-count {
-            font-size: 0.75rem;
-            color: #a18b7d;
-            text-align: right;
-            margin-top: 4px;
-        }
+        <!-- Stickers & Fun Stuff Section -->
+        <div class="decorations">
+            <div class="sticker">🧸</div>
+            <div class="sticker">💐</div>
+            <div class="sticker">🐈‍⬛ 🐈</div>
+        </div>
 
-        .wish-archive {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            padding-right: 4px;
-            margin-bottom: 15px;
-        }
-        .wish-archive::-webkit-scrollbar {
-            width: 4px;
-        }
-        .wish-archive::-webkit-scrollbar-track {
-            background: #f0e6de;
-            border-radius: 10px;
-        }
-        .wish-archive::-webkit-scrollbar-thumb {
-            background: #dccfc4;
-            border-radius: 10px;
-        }
+        <!-- Photo 2 -->
+        <div class="polaroid" style="transform: rotate(3deg);">
+            <!-- Replace URL with your own photo -->
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500" alt="Memories">
+            <div class="caption">Grow your own garden ✨</div>
+        </div>
+    </div>
 
-        .wish-entry {
-            background: #f9efe6;
-            padding: 12px 16px;
-            border-radius: 1.5rem;
-            border-left: 4px solid #f4d068;
-            animation: fadeIn 0.3s ease;
-            position: relative;
-        }
-        .wish-entry .wish-text {
-            color: #3e2c24;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .wish-entry .wish-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 4px;
-            font-size: 0.7rem;
-            color: #8f7668;
-        }
-        .wish-entry .delete-wish {
-            position: absolute;
-            top: 4px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #b48b7a;
-            cursor: pointer;
-            font-size: 0.9rem;
-            opacity: 0.4;
-            transition: 0.2s;
-        }
-        .wish-entry .delete-wish:hover {
-            opacity: 1;
-            color: #c0392b;
-        }
+    <script>
+        function openGift(event) {
+            const introScreen = document.getElementById('intro-screen');
+            const scrapbook = document.getElementById('scrapbook');
+            
+            // Flower bouquet emojis to simulate the video burst effect
+            const flowers = ['🌸', '🌹', '🌺', '🌻', '🌼', '🌷', '💐', '💝'];
+            
+            // Create particle explosion based on click position
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('flower-particle');
+                particle.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                
+                // Random vector trajectories for explosion look
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 300;
+                const mx = Math.cos(angle) * distance + 'px';
+                const my = Math.sin(angle) * distance + 'px';
+                const mr = Math.random() * 360 + 'deg';
+                
+                particle.style.setProperty('--mx', mx);
+                particle.style.setProperty('--my', my);
+                particle.style.setProperty('--mr', mr);
+                
+                particle.style.left = event.clientX + 'px';
+                particle.style.top = event.clientY + 'px';
+                
+                document.body.appendChild(particle);
+                
+                // Remove particle from DOM after animation completes
+                setTimeout(() => particle.remove(), 1500);
+            }
 
-        .birthday-input-area {
-            display: flex;
-            gap: 6px;
-            margin-top: 6px;
-            flex-wrap: wrap;
+            // Hide the gift intro screen and fade in the scrapbook layout
+            introScreen.classList.add('hidden');
+            scrapbook.classList.add('visible');
         }
-        .birthday-input-area input {
-            flex: 1;
-            background: rgba(255, 245, 235, 0.6);
-            border: 1px solid #decfc2;
-            border-radius: 3rem;
-            padding: 8px 16px;
-            min-width: 140px;
-        }
-        .birthday-input-area input:focus {
-            outline: 2px solid #a71d31;
-            background: #fffbf7;
-        }
-        .birthday-input-area button {
-            background: #a71d31;
-            border: none;
-            border-radius: 3rem;
-            padding: 6px 18px;
-            cursor: pointer;
-            color: #fff;
-            font-weight: 500;
-        }
-        .birthday-input-area button:hover {
-            background: #801322;
-        }
-
-        .wish-count {
-            font-size: 0.75rem;
-            color: #a18b7d;
-            text-align: right;
-            margin-top: 4px;
-        }
-
-        .memory-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .memory-gallery::-webkit-scrollbar {
-            width: 4px;
-        }
-        .memory-gallery::-webkit-scrollbar-track {
-            background: #f0e6de;
-            border-radius: 10px;
-        }
-        .memory-gallery::-webkit-scrollbar-thumb {
-            background: #dccfc4;
-            border-radius: 10px;
-        }
-
-        .memory-item {
-            background: #f7eee6;
-            border-radius: 2rem;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid #e3d0c0;
-            transition: 0.15s;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
+    </script>
+</body>
+</html>
